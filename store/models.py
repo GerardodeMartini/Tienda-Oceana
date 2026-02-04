@@ -1,0 +1,39 @@
+from django.db import models
+from django.urls import reverse
+
+class Category(models.Model):
+    name = models.CharField(max_length=255, db_index=True, verbose_name='Nombre')
+    slug = models.SlugField(max_length=255, unique=True, verbose_name='Slug / URL')
+    
+    class Meta:
+        verbose_name = 'Categoría'
+        verbose_name_plural = 'Categorías'
+
+    def get_absolute_url(self):
+        return reverse('store:product_list_by_category', args=[self.slug])
+
+    def __str__(self):
+        return self.name
+
+class Product(models.Model):
+    category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE, verbose_name='Categoría')
+    title = models.CharField(max_length=255, verbose_name='Título')
+    description = models.TextField(blank=True, verbose_name='Descripción')
+    image = models.ImageField(upload_to='products/', default='products/default.png', verbose_name='Imagen')
+    slug = models.SlugField(max_length=255, unique=True, verbose_name='Slug / URL') # Adding unique limit for better urls
+    price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Precio')
+    stock = models.IntegerField(default=0, verbose_name='Stock')
+    is_active = models.BooleanField(default=True, verbose_name='Activo')
+    created = models.DateTimeField(auto_now_add=True, verbose_name='Creado')
+    updated = models.DateTimeField(auto_now=True, verbose_name='Actualizado')
+
+    class Meta:
+        verbose_name = 'Producto'
+        verbose_name_plural = 'Productos'
+        ordering = ('-created',)
+
+    def get_absolute_url(self):
+        return reverse('store:product_detail', args=[self.slug])
+
+    def __str__(self):
+        return self.title

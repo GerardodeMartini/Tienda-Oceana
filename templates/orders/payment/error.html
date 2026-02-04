@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Error en el Pago{% endblock %}
+
+{% block content %}
+<div class="container" style="margin-top: 5rem; text-align: center;">
+    <div class="checkout-card" style="max-width: 600px; margin: 0 auto; border-color: var(--danger-color);">
+        <h1 style="color: var(--danger-color); margin-bottom: 2rem;">Hubo un problema con el pago</h1>
+        <p style="color: var(--text-secondary); margin-bottom: 2rem;">
+            No pudimos iniciar el proceso de pago con Mercado Pago. Esto puede deberse a un problema de configuración o
+            con los datos del pedido.
+        </p>
+
+        <div
+            style="background: rgba(239, 68, 68, 0.1); padding: 1rem; border-radius: var(--radius-sm); margin-bottom: 2rem; text-align: left;">
+            <strong style="color: var(--danger-color);">Detalles técnicos:</strong>
+            <pre
+                style="color: var(--text-primary); margin-top: 0.5rem; font-size: 0.85rem; overflow-x: auto;">{{ error }}</pre>
+        </div>
+
+        <p>
+            <a href="{% url 'cart:cart_detail' %}" class="btn btn-secondary">← Volver al carrito</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

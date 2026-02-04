@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ product.title }} - Océana{% endblock %}
+
+{% block content %}
+<div style="margin-top: 2rem;">
+    <!-- Breadcrumb -->
+    <a href="{% url 'store:product_list' %}"
+        style="color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 0.9rem; display: inline-flex; align-items: center; margin-bottom: 2rem;">
+        <span style="margin-right: 0.5rem;">←</span> Volver a la Colección
+    </a>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start;">
+        <!-- Image Gallery -->
+        <div class="detail-gallery">
+            {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.title }}"
+                style="width: 100%; height: auto; display: block;">
+            {% else %}
+            <div
+                style="width: 100%; aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; background: #f5f5f4; color: #a8a29e;">
+                <span>Sin imagen disponible</span>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Product Details -->
+        <div style="display: flex; flex-direction: column; padding-top: 1rem;">
+            <span
+                style="color: var(--primary); font-weight: 600; letter-spacing: 2px; text-transform: uppercase; font-size: 0.8rem; margin-bottom: 0.5rem;">
+                <a href="{{ product.category.get_absolute_url }}" style="color: inherit; text-decoration: none;">
+                    {{ product.category.name }}
+                </a>
+            </span>
+
+            <h1
+                style="font-family: var(--font-heading); font-size: 3rem; margin: 0 0 1rem; color: var(--primary-dark); line-height: 1.1;">
+                {{ product.title }}
+            </h1>
+
+            <div
+                style="font-size: 2.25rem; font-weight: 700; color: var(--secondary); margin-bottom: 2rem; font-family: var(--font-heading);">
+                ${{ product.price }}
+            </div>
+
+            <div style="line-height: 1.8; color: var(--text-main); margin-bottom: 3rem; font-size: 1.05rem;">
+                {{ product.description|linebreaks }}
+            </div>
+
+            <!-- Action Card -->
+            <div
+                style="padding: 2.5rem; background: var(--bg-surface); border-radius: var(--radius-card); box-shadow: var(--shadow-soft);">
+                {% if product.stock > 0 %}
+                <div
+                    style="margin-bottom: 1.5rem; color: var(--success); font-weight: 600; display: flex; align-items: center; font-size: 0.9rem;">
+                    <span
+                        style="width: 8px; height: 8px; background: var(--success); border-radius: 50%; margin-right: 0.5rem;"></span>
+                    Stock disponible: {{ product.stock }} unidades
+                </div>
+
+                <form action="{% url 'cart:cart_add' product.id %}" method="post" style="display: grid; gap: 1.5rem;">
+                    {% csrf_token %}
+                    <div>
+                        <label
+                            style="display: block; margin-bottom: 0.5rem; color: var(--text-muted); font-size: 0.85rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;">Cantidad</label>
+                        {{ cart_product_form.quantity }}
+                        <style>
+                            #id_quantity {
+                                width: 100%;
+                                padding: 1rem;
+                                background: var(--bg-soft);
+                                border: 1px solid transparent;
+                                border-radius: var(--radius-soft);
+                                color: var(--text-main);
+                                font-family: var(--font-body);
+                                font-size: 1rem;
+                            }
+
+                            #id_quantity:focus {
+                                background: white;
+                                border-color: var(--primary);
+                                outline: none;
+                            }
+                        </style>
+                    </div>
+
+                    <button type="submit" class="btn"
+                        style="width: 100%; padding: 1rem; font-size: 1.1rem; justify-content: space-between;">
+                        <span>Agregar al Carrito</span>
+                        <span>🛒</span>
+                    </button>
+                </form>
+                {% else %}
+                <button disabled class="btn btn-secondary"
+                    style="width: 100%; cursor: not-allowed; opacity: 0.7; padding: 1rem;">
+                    Producto Agotado momentáneamente
+                </button>
+                {% endif %}
+            </div>
+
+            <div
+                style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid rgba(0,0,0,0.05); color: var(--text-muted); font-size: 0.9rem; text-align: center;">
+                <p>🌿 Envío gratis en compras superiores a $100,000</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

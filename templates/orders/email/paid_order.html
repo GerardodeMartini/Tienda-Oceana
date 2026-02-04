@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        body {
+            font-family: sans-serif;
+            color: #333;
+        }
+
+        h1 {
+            color: #2c3e50;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            background: #f9f9f9;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .total {
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>¡Gracias por tu compra, {{ order.first_name }}!</h1>
+    <p>Hemos recibido tu pago correctamente. Aquí tienes el resumen de tu pedido #{{ order.id }}:</p>
+
+    <ul>
+        {% for item in order.items.all %}
+        <li>
+            {{ item.quantity }}x {{ item.product.title }}
+            - ${{ item.get_cost }}
+        </li>
+        {% endfor %}
+    </ul>
+
+    <p class="total">Total pagado: ${{ order.get_total_cost }}</p>
+
+    <p>Te avisaremos cuando tu pedido sea enviado.</p>
+
+    <p>Atentamente,<br>El equipo de Tienda Virtual</p>
+</body>
+
+</html>

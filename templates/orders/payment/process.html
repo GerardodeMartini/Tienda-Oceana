@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Pago en proceso{% endblock %}
+
+{% block content %}
+<div class="container mt-5 text-center">
+    <h1>Finaliza tu compra</h1>
+    <p>Estás a un paso de completar tu pedido. Haz clic en el botón de abajo para pagar con Mercado Pago.</p>
+
+    <div id="wallet_container"></div>
+</div>
+
+<script src="https://sdk.mercadopago.com/js/v2"></script>
+<script>
+    const mp = new MercadoPago('{{ public_key }}');
+    const bricksBuilder = mp.bricks();
+
+    bricksBuilder.create("wallet", "wallet_container", {
+        initialization: {
+            preferenceId: '{{ preference_id }}',
+        },
+        customization: {
+            texts: {
+                valueProp: 'smart_option',
+            },
+        },
+    });
+</script>
+{% endblock %}

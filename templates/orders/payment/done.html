@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Pago Completado{% endblock %}
+
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="card p-5 text-center shadow-lg" style="
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 20px;
+        max-width: 500px;
+        width: 100%;
+        color: white; /* Asumiendo tema oscuro/mixto, ajusta si es fondo blanco */
+    ">
+        <div class="mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="#28a745"
+                class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                <path
+                    d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+            </svg>
+        </div>
+
+        <h1 class="fw-bold mb-3" style="color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">¡Gracias por tu compra!
+        </h1>
+        <p class="fs-5 mb-4" style="color: #f0f0f0;">Tu pedido ha sido procesado con éxito. Hemos enviado un correo de
+            confirmación a tu email.</p>
+
+        <a href="{% url 'store:product_list' %}" class="btn btn-lg btn-light fw-bold px-5"
+            style="border-radius: 50px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+            Seguir comprando
+        </a>
+    </div>
+</div>
+{% endblock %}

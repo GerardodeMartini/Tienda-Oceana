@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}Editar {{ product.title }} - Panel{% endblock %}
+
+{% block content %}
+<div
+    style="max-width: 600px; margin: 3rem auto; background: var(--bg-card); padding: 2rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h1 style="margin: 0;">{% if title %}{{ title }}{% else %}Editar Producto{% endif %}</h1>
+        <a href="{% url 'store:seller_dashboard' %}" style="color: var(--text-secondary);">Cancelar</a>
+    </div>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {% if form.errors %}
+        <div
+            style="background: rgba(239, 68, 68, 0.1); border: 1px solid var(--danger); padding: 1rem; margin-bottom: 1rem; border-radius: var(--radius-sm);">
+            {{ form.errors }}
+        </div>
+        {% endif %}
+
+        {% for field in form %}
+        <div style="margin-bottom: 1.5rem;">
+            <label style="display: block; margin-bottom: 0.5rem; color: var(--text-muted);">
+                {{ field.label }}
+                <!-- Helper link to create category inline -->
+                {% if field.name == 'category' %}
+                <a href="{% url 'store:category_create' %}?next={{ request.path }}"
+                    style="float: right; font-size: 0.8em; color: var(--accent-color);">+ Nueva Categoría</a>
+                {% endif %}
+            </label>
+            {{ field }}
+            <style>
+                input[type="text"],
+                input[type="number"],
+                textarea,
+                select {
+                    width: 100%;
+                    padding: 0.75rem;
+                    background: var(--bg-primary);
+                    border: 1px solid var(--border-color);
+                    border-radius: var(--radius-sm);
+                    color: white;
+                    font-family: inherit;
+                }
+
+                /* Fix for Select Options Visibility */
+                option {
+                    color: black;
+                    background: white;
+                }
+
+                input[type="checkbox"] {
+                    width: auto;
+                }
+            </style>
+        </div>
+        {% endfor %}
+
+        <button type="submit" class="btn" style="width: 100%; margin-top: 1rem;">Guardar Cambios</button>
+    </form>
+</div>
+{% endblock %}

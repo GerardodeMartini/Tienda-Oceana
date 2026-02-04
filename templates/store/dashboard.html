@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}Panel Vendedor - Océana{% endblock %}
+
+{% block content %}
+<div style="margin-top: 2rem;">
+    <h1 style="color: var(--accent-color);">Panel de Control</h1>
+
+    <!-- Stats Cards -->
+    <div class="grid"
+        style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+        <div
+            style="background: var(--bg-card); padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+            <h3 style="margin: 0; color: var(--text-secondary);">Total Productos</h3>
+            <p style="font-size: 2rem; font-weight: bold; margin: 0.5rem 0;">{{ total_products }}</p>
+        </div>
+        <div
+            style="background: var(--bg-card); padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+            <h3 style="margin: 0; color: var(--text-secondary);">Stock Bajo</h3>
+            <p
+                style="font-size: 2rem; font-weight: bold; margin: 0.5rem 0; color: {% if low_stock > 0 %}var(--danger-color){% else %}var(--success-color){% endif %};">
+                {{ low_stock }}</p>
+        </div>
+        <div
+            style="background: var(--bg-card); padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+            <h3 style="margin: 0; color: var(--text-secondary);">Valor Inventario</h3>
+            <p style="font-size: 2rem; font-weight: bold; margin: 0.5rem 0;">${{ total_value }}</p>
+        </div>
+    </div>
+
+    <!-- Products Table -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h2 style="margin: 0;">Inventario</h2>
+        <div style="display: flex; gap: 1rem;">
+            <a href="{% url 'store:category_create' %}" class="btn btn-secondary">＋ Nueva Categoría</a>
+            <a href="{% url 'store:product_create' %}" class="btn">＋ Nuevo Producto</a>
+        </div>
+    </div>
+
+    <div
+        style="background: var(--bg-card); border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border-color);">
+        <table style="width: 100%; border-collapse: collapse; text-align: left;">
+            <thead style="background: var(--bg-secondary);">
+                <tr>
+                    <th style="padding: 1rem;">ID</th>
+                    <th style="padding: 1rem;">Imagen</th>
+                    <th style="padding: 1rem;">Producto</th>
+                    <th style="padding: 1rem;">Precio</th>
+                    <th style="padding: 1rem;">Stock</th>
+                    <th style="padding: 1rem;">Estado</th>
+                    <th style="padding: 1rem;">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                <tr style="border-bottom: 1px solid var(--border-color);">
+                    <td style="padding: 1rem; color: var(--text-secondary);">#{{ product.id }}</td>
+                    <td style="padding: 0.5rem 1rem;">
+                        {% if product.image %}
+                        <img src="{{ product.image.url }}"
+                            style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px;">
+                        {% endif %}
+                    </td>
+                    <td style="padding: 1rem;">{{ product.title }}</td>
+                    <td style="padding: 1rem;">${{ product.price }}</td>
+                    <td style="padding: 1rem;">
+                        <!-- Updated Stock Logic -->
+                        {% if product.stock > 0 %}
+                        <span style="color: var(--success-color);">{{ product.stock }} Unidades</span>
+                        {% else %}
+                        <span style="color: var(--danger-color);">Agotado</span>
+                        {% endif %}
+                    </td>
+                    <td style="padding: 1rem;">
+                        {% if product.is_active %}Active{% else %}Hidden{% endif %}
+                    </td>
+                    <td style="padding: 1rem;">
+                        <a href="{% url 'store:product_edit' product.id %}" class="btn btn-secondary"
+                            style="padding: 0.25rem 0.5rem; font-size: 0.8rem;">Editar</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

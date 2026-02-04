@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Registro - Océana{% endblock %}
+
+{% block content %}
+<div
+    style="max-width: 500px; margin: 4rem auto; padding: 2rem; background: var(--bg-card); border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+    <h1 style="text-align: center; margin-bottom: 2rem;">Crear Cuenta</h1>
+    <form method="post">
+        {% csrf_token %}
+        {% for field in user_form %}
+        <div style="margin-bottom: 1rem;">
+            <label style="display: block; margin-bottom: 0.5rem; color: var(--text-muted);">{{ field.label }}</label>
+            {{ field }}
+            {% if field.help_text %}
+            <small style="color: #666; display: block; margin-top: 5px;">{{ field.help_text }}</small>
+            {% endif %}
+            {% for error in field.errors %}
+            <div style="color: var(--danger); font-size: 0.9em; margin-top: 5px;">{{ error }}</div>
+            {% endfor %}
+            <style>
+                input[type="text"],
+                input[type="password"],
+                input[type="email"] {
+                    width: 100%;
+                    padding: 0.75rem;
+                    background: var(--bg-primary);
+                    border: 1px solid var(--border-color);
+                    border-radius: var(--radius-sm);
+                    color: var(--text-primary);
+                }
+            </style>
+        </div>
+        {% endfor %}
+        <button type="submit" class="btn" style="width: 100%; margin-top: 1rem;">Registrarse</button>
+    </form>
+</div>
+{% endblock %}

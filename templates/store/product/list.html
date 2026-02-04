@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+{% if category %}{{ category.name }} - Océana{% else %}Catálogo - Océana{% endif %}
+{% endblock %}
+
+{% block content %}
+
+{% if category.slug == "off" %}
+<div class="banner-off">
+    <h1>Tesoro Natural: Oportunidades Únicas</h1>
+    <p>Descubre productos seleccionados con precios especiales por tiempo limitado.</p>
+</div>
+{% endif %}
+
+{% if not category %}
+<div class="hero">
+    <h1>Lo Mejor de la Naturaleza, para Ti</h1>
+    <p>Descubre nuestra selección de productos orgánicos, puros y sostenibles para tu bienestar.</p>
+</div>
+<!-- Banner Link to Offers -->
+<div class="container" style="margin-bottom: 2rem;">
+    <a href="{% url 'store:product_list_by_category' 'off' %}" style="text-decoration: none; display: block;">
+        <div class="banner-off"
+            style="margin-bottom: 0; padding: 3rem 2rem; transform: scale(1); transition: transform 0.3s ease;">
+            <h2 style="font-size: 2.5rem; color: white; margin: 0;">✨ Tesoros en Oferta ✨</h2>
+            <p style="color: rgba(255,255,255,0.9); margin-top: 0.5rem;">Explorar descuentos exclusivos</p>
+        </div>
+    </a>
+    <style>
+        .banner-off:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px -5px rgba(212, 175, 55, 0.6);
+        }
+    </style>
+</div>
+{% endif %}
+
+<div
+    style="display: grid; grid-template-columns: 240px 1fr; gap: 4rem; align-items: start; margin-top: {% if category %}4rem{% else %}0{% endif %};">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <h3>Categorías</h3>
+        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <a href="{% url 'store:product_list' %}" class="cat-link {% if not category %}active{% endif %}">
+                Todas las Colecciones
+            </a>
+            {% for c in categories %}
+            <a href="{{ c.get_absolute_url }}" class="cat-link {% if category.slug == c.slug %}active{% endif %}">
+                {{ c.name }}
+            </a>
+            {% endfor %}
+        </div>
+    </aside>
+
+    <!-- Product Grid -->
+    <main>
+        <div
+            style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 3rem; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 1rem;">
+            <h2 style="margin: 0; font-size: 2rem; color: var(--primary-dark);">
+                {% if category %}{{ category.name }}{% else %}Destacados{% endif %}
+            </h2>
+            <span
+                style="color: var(--text-light); font-size: 0.9rem; font-weight: 500; letter-spacing: 1px; text-transform: uppercase;">
+                {{ products.count }} productos
+            </span>
+        </div>
+
+        <div class="grid">
+            {% for product in products %}
+            <div class="card">
+                <a href="{{ product.get_absolute_url }}" class="card-image-wrapper">
+                    {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="{{ product.title }}">
+                    {% else %}
+                    <div
+                        style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: #f5f5f4; color: #a8a29e;">
+                        <span>Sin imagen</span>
+                    </div>
+                    {% endif %}
+                </a>
+                <div class="card-body">
+                    <a href="{{ product.get_absolute_url }}" style="text-decoration: none;">
+                        <h3 class="card-title">{{ product.title }}</h3>
+                    </a>
+                    <span class="card-price">${{ product.price }}</span>
+                    <a href="{{ product.get_absolute_url }}" class="btn"
+                        style="padding: 0.6rem 1.5rem; font-size: 0.9rem; width: 100%; max-width: 200px;">
+                        Ver Detalles
+                    </a>
+                </div>
+            </div>
+            {% empty %}
+            <div style="grid-column: 1/-1; text-align: center; padding: 6rem; color: var(--text-muted);">
+                <p style="font-size: 1.5rem; font-family: var(--font-heading);">No se encontraron productos en esta
+                    colección.</p>
+                <p>Intenta explorar otras categorías.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </main>
+</div>
+{% endblock %}
