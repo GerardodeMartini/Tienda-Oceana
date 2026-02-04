@@ -95,3 +95,10 @@ def category_create(request):
         form = CategoryForm()
     
     return render(request, 'store/category_create.html', {'form': form})
+
+@staff_member_required
+def product_delete(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    if request.method == 'POST':
+        product.delete()
+    return redirect('store:seller_dashboard')

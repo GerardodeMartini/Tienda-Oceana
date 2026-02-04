@@ -60,5 +60,19 @@
 
         <button type="submit" class="btn" style="width: 100%; margin-top: 1rem;">Guardar Cambios</button>
     </form>
+
+    {% if product %}
+    <div style="margin-top: 3rem; border-top: 1px solid var(--border-color); padding-top: 2rem;">
+        <h3 style="color: var(--danger); font-size: 1.2rem; margin-bottom: 1rem;">Zona de Peligro</h3>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Si eliminas este producto, no
+            podrás recuperarlo.</p>
+        <form action="{% url 'store:product_delete' product.id %}" method="post"
+            onsubmit="return confirm('¿Estás seguro de que quieres eliminar este producto? Esta acción no se puede deshacer.');">
+            {% csrf_token %}
+            <button type="submit" class="btn" style="background-color: var(--danger); width: 100%;">Eliminar
+                Producto</button>
+        </form>
+    </div>
+    {% endif %}
 </div>
 {% endblock %}

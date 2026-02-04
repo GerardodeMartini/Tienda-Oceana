@@ -19,7 +19,7 @@ class Product(models.Model):
     category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE, verbose_name='Categoría')
     title = models.CharField(max_length=255, verbose_name='Título')
     description = models.TextField(blank=True, verbose_name='Descripción')
-    image = models.ImageField(upload_to='products/', default='products/default.png', verbose_name='Imagen')
+    image = models.ImageField(upload_to='products/', default='products/default.png', verbose_name='Imagen', blank=True)
     slug = models.SlugField(max_length=255, unique=True, verbose_name='Slug / URL') # Adding unique limit for better urls
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Precio')
     stock = models.IntegerField(default=0, verbose_name='Stock')
