@@ -26,6 +26,13 @@ class Product(models.Model):
     is_active = models.BooleanField(default=True, verbose_name='Activo')
     created = models.DateTimeField(auto_now_add=True, verbose_name='Creado')
     updated = models.DateTimeField(auto_now=True, verbose_name='Actualizado')
+    
+    BRAND_CHOICES = (
+        ('oceana', 'Océana'),
+        ('heiwa', 'Heiwa'),
+        ('both', 'Ambos (Ecosistema)'),
+    )
+    brand = models.CharField(max_length=20, choices=BRAND_CHOICES, default='both', verbose_name='Marca del Producto')
 
     class Meta:
         verbose_name = 'Producto'

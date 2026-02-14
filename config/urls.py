@@ -16,6 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import TemplateView
 from django.conf import settings
 from django.conf.urls.static import static
 from . import admin as admin_config # Loads admin customization
@@ -25,7 +26,12 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path('cart/', include('cart.urls', namespace='cart')),
     path('orders/', include('orders.urls', namespace='orders')),
-    path('', include('store.urls', namespace='store')),
+    # Rutas por marca (apuntan a las mismas vistas, el middleware maneja el tema)
+    path('oceana/', include('store.urls', namespace='store_oceana')),
+    path('heiwa/', include('store.urls', namespace='store_heiwa')),
+    # Ruta Ecosistema (Default)
+    # Ruta Ecosistema (Landing Page)
+    path('', TemplateView.as_view(template_name='landing.html'), name='home'),
 ]
 
 if settings.DEBUG:

@@ -3,12 +3,18 @@ from .models import Category, Product
 from cart.forms import CartAddProductForm
 from django.contrib.admin.views.decorators import staff_member_required
 from .forms import ProductForm, CategoryForm
-from django.db.models import Sum, F
+from django.db.models import Sum, F, Q
 
 def product_list(request, category_slug=None):
     category = None
     categories = Category.objects.all()
     products = Product.objects.filter(is_active=True)
+    
+    # Filter by Brand based on Session Theme
+    current_theme = request.session.get('theme', 'ecosystem')
+    if current_theme in ['oceana', 'heiwa']:
+        # Filter for the specific brand OR products marked as 'both'
+        products = products.filter(Q(brand=current_theme) | Q(brand='both'))
     
     if category_slug:
         category = get_object_or_404(Category, slug=category_slug)

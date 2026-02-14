@@ -15,10 +15,84 @@
 {% endif %}
 
 {% if not category %}
+{% if request.session.theme == 'heiwa' %}
+<style>
+    .manifesto-text-heiwa {
+        font-family: var(--font-heading);
+        font-style: italic;
+        line-height: 1.4;
+        font-size: 0.95rem;
+        white-space: pre-line;
+        max-width: 800px;
+        margin: 0 auto;
+        color: var(--primary-dark);
+    }
+</style>
+<div style="padding: 4rem 1rem; text-align: center; margin-bottom: 3rem;">
+    <h1
+        style="font-size: 1.5rem; margin-bottom: 0.5rem; letter-spacing: 2px; text-transform: uppercase; color: var(--primary);">
+        Manifiesto Heiwa</h1>
+    <div class="manifesto-text-heiwa">
+        HEIWA ES UN ESTADO. Una pausa. Una respiración. Un retorno a tu centro.
+        Vivimos en un mundo que estimula, exige, acelera.
+        Pero nuestros cuerpos, nuestras mentes, nuestras emociones... no evolucionaron para vivir así.
+
+        Heiwa nace como respuesta a ese desbalance.
+        Somos una línea de fórmulas neurobotánicas, hechas con inteligencia vegetal: plantas y hongos que han aprendido
+        a adaptarse, y ahora nos enseñan a hacer lo mismo.
+
+        Creemos en una salud que no es solo ausencia de enfermedad, sino presencia de equilibrio.
+        Un bienestar que nace de dentro, que se siente, que se sostiene.
+        Nos inspiramos en la sabiduría ancestral y en la ciencia que honra lo natural.
+
+        No creemos en soluciones rápidas. Creemos en la constancia, en el ritual, en la conexión profunda.
+        Este no es un suplemento más. Es una herramienta para ayudarte a habitar tu cuerpo, a silenciar el ruido, y
+        volver a lo esencial.
+
+        Heiwa significa paz. Y esa paz, empieza en vos.
+    </div>
+</div>
+{% elif request.session.theme == 'oceana' %}
+<style>
+    .manifesto-text {
+        font-family: var(--font-heading);
+        font-style: italic;
+        line-height: 1.4;
+        font-size: 0.95rem;
+        white-space: pre-line;
+        max-width: 800px;
+        margin: 0 auto;
+        color: var(--secondary);
+    }
+</style>
+<div style="padding: 4rem 1rem; text-align: center; margin-bottom: 3rem;">
+    <h1
+        style="font-size: 1.5rem; margin-bottom: 0.5rem; letter-spacing: 2px; text-transform: uppercase; color: var(--primary);">
+        Manifiesto Océana</h1>
+    <div class="manifesto-text">
+        OCÉANA NO ES SOLO COSMÉTICA. Es un acto de conciencia.
+        Es el encuentro entre naturaleza viva y ciencia sensible.
+        Creamos fórmulas que respetan tu piel, tu cuerpo, tu entorno y tus ritmos.
+        Fórmulas biointeligentes que se adaptan, que equilibran, que responden.
+
+        Porque entendemos que la piel no es un envoltorio: es un órgano emocional, un reflejo del mundo interno y
+        externo.
+        Por eso trabajamos con ingredientes de origen natural, neuroactivos, adaptógenos botánicos, complejos
+        antipolución y tecnologías limpias.
+        Nuestra biocosmética no busca corregirte.
+
+        Busca cuidarte. Escucharte. Reequilibrarte.
+        Como el océano: profunda, viva, regeneradora.
+        Así es tu piel. Así es Océana.
+    </div>
+</div>
+{% else %}
 <div class="hero">
     <h1>Lo Mejor de la Naturaleza, para Ti</h1>
     <p>Descubre nuestra selección de productos orgánicos, puros y sostenibles para tu bienestar.</p>
 </div>
+{% endif %}
+
 <!-- Banner Link to Offers -->
 <div class="container" style="margin-bottom: 2rem;">
     <a href="{% url 'store:product_list_by_category' 'off' %}" style="text-decoration: none; display: block;">
@@ -57,7 +131,7 @@
     <!-- Product Grid -->
     <main>
         <div
-            style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 3rem; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 1rem;">
+            style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 3rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem;">
             <h2 style="margin: 0; font-size: 2rem; color: var(--primary-dark);">
                 {% if category %}{{ category.name }}{% else %}Destacados{% endif %}
             </h2>
@@ -75,7 +149,7 @@
                     <img src="{{ product.image.url }}" alt="{{ product.title }}">
                     {% else %}
                     <div
-                        style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: #f5f5f4; color: #a8a29e;">
+                        style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: var(--bg-soft); color: var(--text-light);">
                         <span>Sin imagen</span>
                     </div>
                     {% endif %}

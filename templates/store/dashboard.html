@@ -4,26 +4,26 @@
 
 {% block content %}
 <div style="margin-top: 2rem;">
-    <h1 style="color: var(--accent-color);">Panel de Control</h1>
+    <h1 style="color: var(--primary);">Panel de Control</h1>
 
     <!-- Stats Cards -->
     <div class="grid"
         style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
         <div
-            style="background: var(--bg-card); padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
-            <h3 style="margin: 0; color: var(--text-secondary);">Total Productos</h3>
+            style="background: var(--bg-surface); padding: 1.5rem; border-radius: var(--radius-card); border: 1px solid var(--border-color);">
+            <h3 style="margin: 0; color: var(--text-muted);">Total Productos</h3>
             <p style="font-size: 2rem; font-weight: bold; margin: 0.5rem 0;">{{ total_products }}</p>
         </div>
         <div
-            style="background: var(--bg-card); padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
-            <h3 style="margin: 0; color: var(--text-secondary);">Stock Bajo</h3>
+            style="background: var(--bg-surface); padding: 1.5rem; border-radius: var(--radius-card); border: 1px solid var(--border-color);">
+            <h3 style="margin: 0; color: var(--text-muted);">Stock Bajo</h3>
             <p
-                style="font-size: 2rem; font-weight: bold; margin: 0.5rem 0; color: {% if low_stock > 0 %}var(--danger-color){% else %}var(--success-color){% endif %};">
+                style="font-size: 2rem; font-weight: bold; margin: 0.5rem 0; color: {% if low_stock > 0 %}var(--danger){% else %}var(--success){% endif %};">
                 {{ low_stock }}</p>
         </div>
         <div
-            style="background: var(--bg-card); padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
-            <h3 style="margin: 0; color: var(--text-secondary);">Valor Inventario</h3>
+            style="background: var(--bg-surface); padding: 1.5rem; border-radius: var(--radius-card); border: 1px solid var(--border-color);">
+            <h3 style="margin: 0; color: var(--text-muted);">Valor Inventario</h3>
             <p style="font-size: 2rem; font-weight: bold; margin: 0.5rem 0;">${{ total_value }}</p>
         </div>
     </div>
@@ -38,9 +38,9 @@
     </div>
 
     <div
-        style="background: var(--bg-card); border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border-color);">
+        style="background: var(--bg-surface); border-radius: var(--radius-card); overflow: hidden; border: 1px solid var(--border-color);">
         <table style="width: 100%; border-collapse: collapse; text-align: left;">
-            <thead style="background: var(--bg-secondary);">
+            <thead style="background: var(--bg-soft);">
                 <tr>
                     <th style="padding: 1rem;">ID</th>
                     <th style="padding: 1rem;">Imagen</th>
@@ -54,7 +54,7 @@
             <tbody>
                 {% for product in products %}
                 <tr style="border-bottom: 1px solid var(--border-color);">
-                    <td style="padding: 1rem; color: var(--text-secondary);">#{{ product.id }}</td>
+                    <td style="padding: 1rem; color: var(--text-muted);">#{{ product.id }}</td>
                     <td style="padding: 0.5rem 1rem;">
                         {% if product.image %}
                         <img src="{{ product.image.url }}"
@@ -66,9 +66,9 @@
                     <td style="padding: 1rem;">
                         <!-- Updated Stock Logic -->
                         {% if product.stock > 0 %}
-                        <span style="color: var(--success-color);">{{ product.stock }} Unidades</span>
+                        <span style="color: var(--success);">{{ product.stock }} Unidades</span>
                         {% else %}
-                        <span style="color: var(--danger-color);">Agotado</span>
+                        <span style="color: var(--danger);">Agotado</span>
                         {% endif %}
                     </td>
                     <td style="padding: 1rem;">

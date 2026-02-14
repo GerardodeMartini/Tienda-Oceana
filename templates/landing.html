@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio - Ecosistema Océana & Heiwa</title>
+    <!-- Google Fonts: Playfair Display (Serif) & Quicksand (Rounded Sans) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Quicksand:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            /* Palette Ecosystem Base */
+            --bg-body: #F4F1EC;
+            --bg-soft: #F0EEEC;
+            --text-main: #262626;
+            --border-color: #C9CED2;
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Quicksand', sans-serif;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-body);
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 1000px;
+            padding: 2rem;
+            width: 100%;
+        }
+
+        h1 {
+            font-family: var(--font-heading);
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            color: #122033;
+            /* Dark Blue Hint */
+        }
+
+        p.subtitle {
+            font-size: 1.2rem;
+            color: #595959;
+            margin-bottom: 4rem;
+            font-weight: 500;
+        }
+
+        .split-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .split-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .brand-card {
+            background: #FFFFFF;
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 3rem 2rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Océana Style */
+        .card-oceana:hover {
+            border-color: #122033;
+            transform: translateY(-8px);
+            background: linear-gradient(180deg, rgba(18, 32, 51, 0.03) 0%, rgba(255, 255, 255, 0) 100%);
+            box-shadow: 0 10px 30px rgba(18, 32, 51, 0.1);
+        }
+
+        .card-oceana h2 {
+            font-family: var(--font-heading);
+            color: #122033;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Heiwa Style */
+        .card-heiwa:hover {
+            border-color: #3D5339;
+            transform: translateY(-8px);
+            background: linear-gradient(180deg, rgba(61, 83, 57, 0.03) 0%, rgba(255, 255, 255, 0) 100%);
+            box-shadow: 0 10px 30px rgba(61, 83, 57, 0.1);
+        }
+
+        .card-heiwa h2 {
+            font-family: var(--font-heading);
+            color: #3D5339;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta-text {
+            margin-top: auto;
+            padding-top: 1.5rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .brand-card:hover .cta-text {
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Océana & Heiwa</h1>
+        <p class="subtitle" style="font-size: 1.1rem; line-height: 1.6; max-width: 800px; margin: 0 auto 3rem auto;">
+            Océana & Heiwa es un ecosistema de bienestar integral que fusiona la sabiduría ancestral con la ciencia
+            moderna. Mientras Océana protege y nutre tu piel con fórmulas bioadaptativas y superfoods, Heiwa potencia tu
+            energía y sistema neurobiológico mediante tecnología avanzada natural. Juntas, proponen un retorno a la
+            naturaleza como el camino definitivo hacia una vida plena y en armonía.
+        </p>
+
+        <div class="split-container">
+            <a href="/oceana/" class="brand-card card-oceana">
+                <h2>Océana</h2>
+                <p style="text-align: justify; font-size: 0.95rem; line-height: 1.5;">Es un acto de conciencia, el
+                    encuentro entre naturaleza viva y ciencia sensible. Crea fórmulas biointeligentes que se adaptan,
+                    equilibran y respetan la piel, el cuerpo y el entorno. Utiliza ingredientes neuroactivos,
+                    adaptógenos botánicos y complejos antipolución. Busca cuidar, escuchar y reequilibrar la piel, no
+                    corregirla.</p>
+                <div class="cta-text">Ingresar a Tienda →</div>
+            </a>
+
+            <a href="/heiwa/" class="brand-card card-heiwa">
+                <h2>Heiwa</h2>
+                <p style="text-align: justify; font-size: 0.95rem; line-height: 1.5;">Es un estado, una pausa, que nace
+                    como respuesta al desbalance del mundo moderno que estimula y acelera. Ofrece fórmulas
+                    neurobotánicas hechas con inteligencia vegetal (plantas y hongos). Su objetivo es el equilibrio y la
+                    presencia de bienestar que nace desde dentro.</p>
+                <div class="cta-text">Ingresar a Tienda →</div>
+            </a>
+        </div>
+    </div>
+</body>
+
+</html>
