@@ -47,7 +47,8 @@
                             style="padding: 0.25rem 0.75rem; font-size: 0.8rem; border-radius: 20px;">Salir</button>
                     </form>
                     {% else %}
-                    <a href="{% url 'accounts:login' %}" style="font-weight: 600; color: var(--text-main);">Ingresar</a>
+                    <a href="{% url 'accounts:login' %}?next={{ request.path }}"
+                        style="font-weight: 600; color: var(--text-main);">Ingresar</a>
                     <a href="{% url 'accounts:register' %}" class="btn"
                         style="padding: 0.4rem 1rem; font-size: 0.9rem;">Crear Cuenta</a>
                     {% endif %}

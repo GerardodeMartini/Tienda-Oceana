@@ -49,8 +49,18 @@ def seller_dashboard(request):
 
 @staff_member_required
 def product_create(request):
+    initial_data = {}
+    title = 'Nuevo Producto'
+    
+    # Handle Combo Context
+    if request.GET.get('type') == 'combo':
+        title = 'Nuevo Combo / Kit'
+        initial_data['brand'] = 'both'
+        initial_data['is_combo'] = True
+        initial_data['description'] = 'Incluye: \n- '
+        
     if request.method == 'POST':
-        form = ProductForm(request.POST, request.FILES)
+        form = ProductForm(request.POST, request.FILES, user=request.user)
         if form.is_valid():
             product = form.save(commit=False)
             # Auto-generate slug from title if not handled by model save
@@ -67,20 +77,20 @@ def product_create(request):
             product.save()
             return redirect('store:seller_dashboard')
     else:
-        form = ProductForm()
+        form = ProductForm(initial=initial_data, user=request.user)
     
-    return render(request, 'store/product_edit.html', {'form': form, 'title': 'Nuevo Producto'})
+    return render(request, 'store/product_edit.html', {'form': form, 'title': title})
 
 @staff_member_required
 def product_edit(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     if request.method == 'POST':
-        form = ProductForm(request.POST, request.FILES, instance=product)
+        form = ProductForm(request.POST, request.FILES, instance=product, user=request.user)
         if form.is_valid():
             form.save()
             return redirect('store:seller_dashboard')
     else:
-        form = ProductForm(instance=product)
+        form = ProductForm(instance=product, user=request.user)
     
     return render(request, 'store/product_edit.html', {'form': form, 'product': product, 'title': f'Editar {product.title}'})
 

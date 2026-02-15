@@ -113,7 +113,7 @@ body {
     /* Gradient no-repeat, Texture repeat */
     background-size: cover, auto;
     /* Gradient covers viewport, Texture auto */
-    background-attachment: fixed, scroll;
+    background-attachment: scroll, scroll;
 
     color: var(--text-main);
     line-height: 1.6;

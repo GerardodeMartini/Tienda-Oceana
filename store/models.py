@@ -33,6 +33,10 @@ class Product(models.Model):
         ('both', 'Ambos (Ecosistema)'),
     )
     brand = models.CharField(max_length=20, choices=BRAND_CHOICES, default='both', verbose_name='Marca del Producto')
+    
+    # Combo specific fields
+    is_combo = models.BooleanField(default=False, verbose_name='Es Combo/Kit')
+    components = models.ManyToManyField('self', blank=True, symmetrical=False, verbose_name='Productos del Combo')
 
     class Meta:
         verbose_name = 'Producto'

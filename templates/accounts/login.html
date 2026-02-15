@@ -8,6 +8,9 @@
     <h1 style="text-align: center; margin-bottom: 2rem;">Acceso Clientes</h1>
     <form method="post">
         {% csrf_token %}
+        {% if next %}
+        <input type="hidden" name="next" value="{{ next }}" />
+        {% endif %}
         <!-- Simple rendering for now, can be improved with custom form rendering -->
         <div class="form-group">
             <label for="{{ form.username.id_for_label }}">Nombre de Usuario</label>

@@ -33,6 +33,8 @@
         <h2 style="margin: 0;">Inventario</h2>
         <div style="display: flex; gap: 1rem;">
             <a href="{% url 'store:category_create' %}" class="btn btn-secondary">＋ Nueva Categoría</a>
+            <a href="{% url 'store:product_create' %}?type=combo" class="btn btn-secondary"
+                style="background-color: var(--secondary); color: white; border: none;">＋ Nuevo Combo</a>
             <a href="{% url 'store:product_create' %}" class="btn">＋ Nuevo Producto</a>
         </div>
     </div>

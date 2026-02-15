@@ -21,7 +21,7 @@
         {% endif %}
 
         {% for field in form %}
-        <div style="margin-bottom: 1.5rem;">
+        <div style="margin-bottom: 1.5rem;" id="field-{{ field.name }}" class="form-field-wrapper">
             <label style="display: block; margin-bottom: 0.5rem; color: var(--text-muted);">
                 {{ field.label }}
                 <!-- Helper link to create category inline -->
@@ -31,6 +31,23 @@
                 {% endif %}
             </label>
             {{ field }}
+
+            {% if field.name == 'components' %}
+            <!-- Discount Calculator for Combos -->
+            <div id="combo-calculator"
+                style="margin-top: 1rem; padding: 1rem; background: var(--bg-soft); border-radius: var(--radius-sm); display: none;">
+                <label style="display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Descuento (%)</label>
+                <input type="number" id="discount-percent" placeholder="0" min="0" max="100"
+                    style="margin-bottom: 1rem;">
+                <p style="font-size: 0.9rem; color: var(--text-muted);">
+                    Suma componentes: <strong id="components-sum">$0.00</strong><br>
+                    Precio Final: <strong id="combo-final-price" style="color: var(--success);">$0.00</strong>
+                </p>
+                <button type="button" id="apply-discount" class="btn btn-secondary"
+                    style="font-size: 0.8rem; padding: 0.5rem;">Aplicar Precio</button>
+            </div>
+            {% endif %}
+
             <style>
                 input[type="text"],
                 input[type="number"],
@@ -54,9 +71,82 @@
                 input[type="checkbox"] {
                     width: auto;
                 }
+
+                /* Multiple Select Height */
+                select[multiple] {
+                    height: 200px;
+                }
             </style>
         </div>
         {% endfor %}
+
+        <!-- Component Prices Data for JS -->
+        <script>
+            const componentPrices = {};
+            {% for component in form.components.field.queryset %}
+            componentPrices['{{ component.id }}'] = {{ component.price|stringformat:".2f" }};
+            {% endfor %}
+
+            document.addEventListener('DOMContentLoaded', function () {
+                const isComboCheckbox = document.querySelector('input[name="is_combo"]');
+                const componentsField = document.querySelector('#field-components'); // Wrapper
+                const componentsSelect = document.querySelector('select[name="components"]');
+                const discountInput = document.getElementById('discount-percent');
+                const applyBtn = document.getElementById('apply-discount');
+                const priceInput = document.getElementById('id_price');
+                const sumDisplay = document.getElementById('components-sum');
+                const finalDisplay = document.getElementById('combo-final-price');
+                const calculator = document.getElementById('combo-calculator');
+
+                function toggleComboFields() {
+                    if (isComboCheckbox.checked) {
+                        componentsField.style.display = 'block';
+                        calculator.style.display = 'block';
+                    } else {
+                        componentsField.style.display = 'none';
+                        calculator.style.display = 'none';
+                    }
+                }
+
+                function calculatePrice() {
+                    let sum = 0;
+                    const selectedOptions = Array.from(componentsSelect.selectedOptions);
+                    selectedOptions.forEach(option => {
+                        const price = parseFloat(componentPrices[option.value] || 0);
+                        sum += price;
+                    });
+
+                    const discount = parseFloat(discountInput.value) || 0;
+                    const finalPrice = sum * (1 - discount / 100);
+
+                    sumDisplay.textContent = '$' + sum.toFixed(2);
+                    finalDisplay.textContent = '$' + finalPrice.toFixed(2);
+
+                    return finalPrice;
+                }
+
+                if (isComboCheckbox) {
+                    isComboCheckbox.addEventListener('change', toggleComboFields);
+                    toggleComboFields(); // Init
+                }
+
+                if (componentsSelect) {
+                    componentsSelect.addEventListener('change', calculatePrice);
+                }
+
+                if (applyBtn) {
+                    applyBtn.addEventListener('click', function () {
+                        const price = calculatePrice();
+                        priceInput.value = price.toFixed(2);
+                    });
+                }
+
+                // Also calc on discount input change
+                if (discountInput) {
+                    discountInput.addEventListener('input', calculatePrice);
+                }
+            });
+        </script>
 
         <button type="submit" class="btn" style="width: 100%; margin-top: 1rem;">Guardar Cambios</button>
     </form>
