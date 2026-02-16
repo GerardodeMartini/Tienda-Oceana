@@ -18,6 +18,10 @@ def order_create(request):
             # Calcular costo de envío
             shipping_price = get_shipping_cost(order.stat_province, cart.get_total_price())
             order.shipping_cost = shipping_price
+            
+            if request.user.is_authenticated:
+                order.user = request.user
+            
             order.save()
             
             for item in cart:
@@ -32,7 +36,20 @@ def order_create(request):
             # redirect for payment
             return redirect('orders:payment_process')
     else:
-        form = OrderCreateForm()
+        # Pre-fill form if user is authenticated
+        initial_data = {}
+        if request.user.is_authenticated:
+            initial_data = {
+                'first_name': request.user.first_name,
+                'last_name': request.user.last_name,
+                'email': request.user.email,
+            }
+            # Try to get phone from profile
+            if hasattr(request.user, 'profile') and request.user.profile.phone_number:
+                initial_data['phone'] = request.user.profile.phone_number
+                
+        form = OrderCreateForm(initial=initial_data)
+        
     return render(request,
                   'orders/order/create.html',
                   {'cart': cart, 'form': form})
@@ -168,16 +185,30 @@ def payment_webhook(request):
                                 order.paid = True
                                 order.save()
                                 
-                                # Enviar Email
+                                # Enviar Email al Comprador
                                 subject = f'Pedido #{order.id} confirmado - Tienda Virtual'
                                 message = f'Hola {order.first_name},\n\nTu pedido #{order.id} ha sido confirmado.\n\nGracias por tu compra.'
                                 html_message = render_to_string('orders/email/paid_order.html', {'order': order})
                                 
                                 try:
                                     send_mail(subject, message, settings.EMAIL_HOST_USER, [order.email], html_message=html_message)
-                                    print(f"EMAIL SENT to {order.email}")
+                                    print(f"BUYER EMAIL SENT to {order.email}")
                                 except Exception as e_mail:
-                                    print(f"EMAIL ERROR: {e_mail}")
+                                    print(f"BUYER EMAIL ERROR: {e_mail}")
+
+                                # Enviar Email al Vendedor (Admin)
+                                admin_subject = f'Nuevo Pedido #{order.id} - {order.first_name} {order.last_name}'
+                                admin_message = f'Nuevo pedido confirmado.\nID: {order.id}\nTotal: ${order.get_total_cost()}'
+                                html_admin_message = render_to_string('orders/email/admin_new_order.html', {'order': order})
+                                
+                                # Asumiendo que el mail del vendedor es el mismo que EMAIL_HOST_USER o uno fijo
+                                seller_email = settings.EMAIL_HOST_USER 
+                                
+                                try:
+                                    send_mail(admin_subject, admin_message, settings.EMAIL_HOST_USER, [seller_email], html_message=html_admin_message)
+                                    print(f"SELLER EMAIL SENT to {seller_email}")
+                                except Exception as e_admin_mail:
+                                    print(f"SELLER EMAIL ERROR: {e_admin_mail}")
                                     
                             else:
                                 order.save()
@@ -190,3 +221,10 @@ def payment_webhook(request):
                 print(f"WEBHOOK ERROR: {e}")
 
     return HttpResponse(status=200)
+
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def user_orders(request):
+    orders = Order.objects.filter(user=request.user)
+    return render(request, 'orders/order/user_list.html', {'orders': orders})

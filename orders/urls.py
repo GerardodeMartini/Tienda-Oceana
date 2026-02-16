@@ -9,4 +9,5 @@ urlpatterns = [
     path('payment/done/', views.payment_done, name='payment_done'),
     path('payment/canceled/', views.payment_canceled, name='payment_canceled'),
     path('webhook/', views.payment_webhook, name='payment_webhook'),
+    path('my-orders/', views.user_orders, name='user_orders'),
 ]

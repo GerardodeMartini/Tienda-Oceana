@@ -12,7 +12,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Quicksand:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=2">
 </head>
 
 <body data-theme="{{ request.session.theme|default:'ecosystem' }}">
@@ -41,6 +41,9 @@
 
                     {% if user.is_authenticated %}
                     <span style="color: var(--text-muted); font-size: 0.9rem;">Hola, {{ user.username }}</span>
+                    <a href="{% url 'orders:user_orders' %}"
+                        style="color: var(--primary); font-weight: 600; font-size: 0.9rem; margin-left: 1rem; margin-right: 1rem;">Mis
+                        Compras</a>
                     <form action="{% url 'accounts:logout' %}" method="post" style="display:inline;">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-secondary"
@@ -89,6 +92,57 @@
         {% block content %}
         {% endblock %}
     </div>
+    <footer class="site-footer">
+        <div class="text-rotator-container">
+            <p class="rotator-text" id="footer-phrase">Tu mente no necesita más estimulación. Necesita descanso.
+                Neurobotánica para reconectar con tu centro</p>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const phrases = [
+                    "Tu mente no necesita más estimulación. Necesita descanso. Neurobotánica para reconectar con tu centro",
+                    "Fórmulas inteligentes de plantas y hongos que equilibran cuerpo, mente y emociones, Basado en ciencia, inspirado en rituales ancestrales",
+                    "Reconciliar ciencia, naturaleza y mente en un nuevo paradigma de bienestar: desde la raíz"
+                ];
+
+                let currentIndex = 0;
+                const phraseElement = document.getElementById('footer-phrase');
+
+                setInterval(() => {
+                    // 1. Rotate out (flip up/back)
+                    phraseElement.classList.add('rotate-out');
+
+                    setTimeout(() => {
+                        // 2. Change text while invisible
+                        currentIndex = (currentIndex + 1) % phrases.length;
+                        phraseElement.innerText = phrases[currentIndex];
+
+                        // 3. Prepare for entry (flip down/start position)
+                        phraseElement.classList.remove('rotate-out');
+                        phraseElement.classList.add('rotate-in-start');
+
+                        // Force reflow to ensure browser registers the start position
+                        void phraseElement.offsetWidth;
+
+                        // 4. Rotate in (flip to normal)
+                        phraseElement.classList.remove('rotate-in-start');
+                        phraseElement.classList.add('rotate-in-end');
+
+                        // cleanup class after transition
+                        setTimeout(() => {
+                            phraseElement.classList.remove('rotate-in-end');
+                        }, 600); // match css transition time
+
+                    }, 600); // Match CSS transition time for exit
+
+                }, 5000); // Change every 5 seconds
+            });
+        </script>
+        <div class="footer-copyright">
+            &copy; {% now "Y" %} Océana & Heiwa. Todos los derechos reservados.
+        </div>
+    </footer>
 </body>
 
 </html>

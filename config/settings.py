@@ -141,8 +141,14 @@ MEDIA_ROOT = BASE_DIR / 'media'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
-# Email Backend (Console for Development)
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# Email Backend (Brevo SMTP)
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp-relay.brevo.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = env('BREVO_SMTP_LOGIN', default='')
+EMAIL_HOST_PASSWORD = env('BREVO_SMTP_PASSWORD', default='')
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER # Or a specific sender address
 # Mercado Pago Settings
 MERCADOPAGO_PUBLIC_KEY = env('MERCADOPAGO_PUBLIC_KEY', default='')
 MERCADOPAGO_ACCESS_TOKEN = env('MERCADOPAGO_ACCESS_TOKEN', default='')

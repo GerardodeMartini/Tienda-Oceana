@@ -6,10 +6,8 @@ def register(request):
     if request.method == 'POST':
         user_form = UserRegistrationForm(request.POST)
         if user_form.is_valid():
-            new_user = user_form.save(commit=False)
-            new_user.set_password(user_form.cleaned_data['password'])
-            new_user.save()
-            login(request, new_user) # Log in immediately
+            new_user = user_form.save() # This now creates user + profile
+            login(request, new_user)
             return redirect('store:product_list')
     else:
         user_form = UserRegistrationForm()
