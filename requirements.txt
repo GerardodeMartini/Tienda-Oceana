@@ -2,3 +2,9 @@ Django>=5.0
 Pillow
 django-environ
 mercadopago
+gunicorn
+whitenoise
+dj-database-url
+psycopg2-binary
+django-anymail[amazon_ses]
+boto3

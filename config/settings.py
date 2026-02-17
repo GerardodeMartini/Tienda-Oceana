@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 import os
 import environ
 from pathlib import Path
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -35,7 +36,12 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['oceana-heiwa.com.ar', 'www.oceana-heiwa.com.ar', '127.0.0.1', 'localhost'])
+
+CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS', default=['https://oceana-heiwa.com.ar', 'https://www.oceana-heiwa.com.ar'])
+
+# Trust the X-Forwarded-Proto header for identifying HTTPS
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 
 # Application definition
@@ -51,10 +57,12 @@ INSTALLED_APPS = [
     'cart',
     'accounts',
     'orders',
+    'anymail',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -89,10 +97,10 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
+        conn_max_age=600
+    )
 }
 
 
@@ -132,6 +140,16 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 # Media files (Images)
 MEDIA_URL = '/media/'
@@ -141,14 +159,27 @@ MEDIA_ROOT = BASE_DIR / 'media'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
-# Email Backend (Brevo SMTP)
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp-relay.brevo.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = env('BREVO_SMTP_LOGIN', default='')
-EMAIL_HOST_PASSWORD = env('BREVO_SMTP_PASSWORD', default='')
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER # Or a specific sender address
+# Email Backend (Anymail: Amazon SES or Brevo)
+EMAIL_PROVIDER = env('EMAIL_PROVIDER', default='BREVO')
+
+if EMAIL_PROVIDER == 'SES':
+    EMAIL_BACKEND = "anymail.backends.amazon_ses.EmailBackend"
+    ANYMAIL = {
+        "AMAZON_SES_CLIENT_PARAMS": {
+            "aws_access_key_id": env('AWS_ACCESS_KEY_ID', default=''),
+            "aws_secret_access_key": env('AWS_SECRET_ACCESS_KEY', default=''),
+            "region_name": env('AWS_SES_REGION_NAME', default='us-east-1'),
+        },
+    }
+else:
+    # Brevo by default
+    EMAIL_BACKEND = "anymail.backends.brevo.EmailBackend"
+    ANYMAIL = {
+        "BREVO_API_KEY": env('BREVO_API_KEY', default=''),
+    }
+
+DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL', default='no-reply@oceana-heiwa.com.ar')
+SERVER_EMAIL = DEFAULT_FROM_EMAIL
 # Mercado Pago Settings
 MERCADOPAGO_PUBLIC_KEY = env('MERCADOPAGO_PUBLIC_KEY', default='')
 MERCADOPAGO_ACCESS_TOKEN = env('MERCADOPAGO_ACCESS_TOKEN', default='')
