@@ -1,5 +1,5 @@
-# Usar imagen base oficial de Python
-FROM python:3.10-slim
+# Usar imagen base oficial de Python (Bookworm es la versión estable actual de Debian)
+FROM python:3.10-slim-bookworm
 
 # Establecer directorio de trabajo
 WORKDIR /app
@@ -7,8 +7,8 @@ WORKDIR /app
 # Establecer variables de entorno
 # PYTHONDONTWRITEBYTECODE: Previene que Python escriba archivos pyc
 # PYTHONUNBUFFERED: Asegura que la salida de Python se envíe directamente al terminal
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
 # Instalar dependencias del sistema
 # build-essential: para compilar ciertos paquetes de Python
