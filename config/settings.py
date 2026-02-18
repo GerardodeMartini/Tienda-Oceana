@@ -224,3 +224,7 @@ if not DEBUG:
     # Secure Cookies
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
+
+# Cloudflare Turnstile
+TURNSTILE_SITE_KEY = env('TURNSTILE_SITE_KEY', default='')
+TURNSTILE_SECRET_KEY = env('TURNSTILE_SECRET_KEY', default='')
