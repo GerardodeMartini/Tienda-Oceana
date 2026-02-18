@@ -18,8 +18,8 @@
 {% if request.session.theme == 'heiwa' %}
 <style>
     .manifesto-text-heiwa {
-        font-family: var(--font-heading);
-        font-style: italic;
+        font-family: var(--font-body);
+        /* font-style: italic; Removed for cleaner look */
         line-height: 1.4;
         font-size: 0.95rem;
         white-space: pre-line;
@@ -55,8 +55,8 @@
 {% elif request.session.theme == 'oceana' %}
 <style>
     .manifesto-text {
-        font-family: var(--font-heading);
-        font-style: italic;
+        font-family: var(--font-body);
+        /* font-style: italic; Removed for cleaner look */
         line-height: 1.4;
         font-size: 0.95rem;
         white-space: pre-line;
