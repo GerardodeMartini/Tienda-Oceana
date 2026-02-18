@@ -31,7 +31,31 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY')
+# SECURITY WARNING: keep the secret key used in production secret!
+# Use a default for build time (e.g. collectstatic) but require it in production
+SECRET_KEY = env('SECRET_KEY', default='django-insecure-build-key-only-do-not-use-in-production')
+
+# Logging Configuration to capture errors in Console
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    },
+}
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
