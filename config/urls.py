@@ -29,6 +29,8 @@ urlpatterns = [
     # Rutas por marca (apuntan a las mismas vistas, el middleware maneja el tema)
     path('oceana/', include('store.urls', namespace='store_oceana')),
     path('heiwa/', include('store.urls', namespace='store_heiwa')),
+    # Ruta Genérica para Dashboard y Gestión
+    path('store/', include('store.urls', namespace='store')),
     # Ruta Ecosistema (Default)
     # Ruta Ecosistema (Landing Page)
     path('', TemplateView.as_view(template_name='landing.html'), name='home'),

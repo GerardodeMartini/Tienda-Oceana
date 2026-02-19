@@ -4,7 +4,7 @@
 
 {% block content %}
 <div
-    style="max-width: 600px; margin: 3rem auto; background: var(--bg-card); padding: 2rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+    style="max-width: 1000px; margin: 3rem auto; background: var(--bg-card); padding: 2rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
         <h1 style="margin: 0;">{% if title %}{{ title }}{% else %}Editar Producto{% endif %}</h1>
         <a href="{% url 'store:seller_dashboard' %}" style="color: var(--text-secondary);">Cancelar</a>
@@ -31,6 +31,38 @@
                 {% endif %}
             </label>
             {{ field }}
+
+            {% if field.name == 'components' %}
+            <div id="combo-selector-container" style="display: none; margin-top: 0.5rem;">
+                <!-- Custom Dual List Box -->
+                <div style="display: flex; gap: 1rem; align-items: flex-start;">
+                    <!-- Available -->
+                    <div style="flex: 1;">
+                        <small style="display:block; margin-bottom: 5px;">Disponibles</small>
+                        <input type="text" id="filter-available" placeholder="Buscar..."
+                            style="width: 100%; padding: 0.5rem; margin-bottom: 0.5rem; border: 1px solid var(--border-color); border-radius: 4px; color: #333;">
+                        <select id="available-list" multiple
+                            style="width: 100%; height: 200px; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 4px; color: #333; background: #fff;">
+                        </select>
+                    </div>
+                    <!-- Buttons -->
+                    <div
+                        style="display: flex; flex-direction: column; gap: 0.5rem; justify-content: center; height: 200px;">
+                        <button type="button" id="btn-add" class="btn btn-secondary"
+                            style="padding: 0.5rem;">&gt;</button>
+                        <button type="button" id="btn-remove" class="btn btn-secondary"
+                            style="padding: 0.5rem;">&lt;</button>
+                    </div>
+                    <!-- Selected -->
+                    <div style="flex: 1;">
+                        <small style="display:block; margin-bottom: 5px;">En el Combo</small>
+                        <select id="selected-list" multiple
+                            style="width: 100%; height: 238px; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 4px; color: #333; background: #f0fdf4;">
+                        </select>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
 
             {% if field.name == 'components' %}
             <!-- Discount Calculator for Combos -->
@@ -83,11 +115,16 @@
         <!-- Component Prices Data for JS -->
         <script>
             const componentPrices = {};
+            const componentBrands = {};
+            {% load l10n %}
             {% for component in form.components.field.queryset %}
-            componentPrices['{{ component.id }}'] = {{ component.price|stringformat:".2f" }};
+            // Use unlocalize to force dot separator
+            componentPrices['{{ component.id }}'] = {{ component.price | unlocalize }};
+            componentBrands['{{ component.id }}'] = "{{ component.get_brand_display }}";
             {% endfor %}
 
             document.addEventListener('DOMContentLoaded', function () {
+                // ... Existing variables ...
                 const isComboCheckbox = document.querySelector('input[name="is_combo"]');
                 const componentsField = document.querySelector('#field-components'); // Wrapper
                 const componentsSelect = document.querySelector('select[name="components"]');
@@ -98,6 +135,66 @@
                 const finalDisplay = document.getElementById('combo-final-price');
                 const calculator = document.getElementById('combo-calculator');
 
+                // --- Dual List Box Logic ---
+                const container = document.getElementById("combo-selector-container");
+                const availableList = document.getElementById("available-list");
+                const selectedList = document.getElementById("selected-list");
+                const btnAdd = document.getElementById("btn-add");
+                const btnRemove = document.getElementById("btn-remove");
+                const filterInput = document.getElementById("filter-available");
+
+                if (componentsSelect && container) {
+                    // Hide original select but keep it for form submission
+                    componentsSelect.style.display = 'none';
+                    container.style.display = 'block';
+
+                    // 1. Initialize Lists
+                    Array.from(componentsSelect.options).forEach(option => {
+                        const brand = componentBrands[option.value] || '';
+                        const textWithBrand = brand ? `${option.text} (${brand})` : option.text;
+                        const newOption = new Option(textWithBrand, option.value);
+
+                        if (option.selected) {
+                            selectedList.add(newOption);
+                        } else {
+                            availableList.add(newOption);
+                        }
+                    });
+
+                    // 2. Filter
+                    filterInput.addEventListener("keyup", function () {
+                        const filter = this.value.toLowerCase();
+                        Array.from(availableList.options).forEach(option => {
+                            const text = option.text.toLowerCase();
+                            option.style.display = text.includes(filter) ? "" : "none";
+                        });
+                    });
+
+                    // 3. Move Items & Sync
+                    function moveItems(source, dest, selectStatus) {
+                        const optionsToMove = Array.from(source.selectedOptions);
+                        optionsToMove.forEach(option => {
+                            dest.add(option); // Move visual option
+
+                            // Sync hidden original select
+                            const originalOption = Array.from(componentsSelect.options).find(o => o.value === option.value);
+                            if (originalOption) originalOption.selected = selectStatus;
+                        });
+
+                        // Sort destination list alphabetically
+                        const sortedOptions = Array.from(dest.options).sort((a, b) => a.text.localeCompare(b.text));
+                        dest.innerHTML = '';
+                        sortedOptions.forEach(o => dest.add(o));
+
+                        // Recalculate Price if function exists
+                        if (typeof calculatePrice === "function") calculatePrice();
+                    }
+
+                    btnAdd.addEventListener("click", () => moveItems(availableList, selectedList, true));
+                    btnRemove.addEventListener("click", () => moveItems(selectedList, availableList, false));
+                }
+
+                // ... Existing Toggle Logic ...
                 function toggleComboFields() {
                     if (isComboCheckbox.checked) {
                         componentsField.style.display = 'block';
@@ -110,7 +207,10 @@
 
                 function calculatePrice() {
                     let sum = 0;
+                    // Look at Selected List for calculation, NOT the original select directly (though they should be synced)
+                    // Better to use the original select which serves as source of truth
                     const selectedOptions = Array.from(componentsSelect.selectedOptions);
+
                     selectedOptions.forEach(option => {
                         const price = parseFloat(componentPrices[option.value] || 0);
                         sum += price;
@@ -130,9 +230,8 @@
                     toggleComboFields(); // Init
                 }
 
-                if (componentsSelect) {
-                    componentsSelect.addEventListener('change', calculatePrice);
-                }
+                // Remove direct change listener on hidden select as it won't fire on JS change
+                // Calculation is triggered by moveItems now.
 
                 if (applyBtn) {
                     applyBtn.addEventListener('click', function () {
@@ -141,7 +240,6 @@
                     });
                 }
 
-                // Also calc on discount input change
                 if (discountInput) {
                     discountInput.addEventListener('input', calculatePrice);
                 }

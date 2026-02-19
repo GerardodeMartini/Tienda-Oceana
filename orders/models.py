@@ -18,6 +18,7 @@ class Order(models.Model):
     payment_status = models.CharField(max_length=50, blank=True, default='')
     shipping_cost = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     stat_province = models.CharField(max_length=2, blank=True, default='') # Código de provincia
+    shipped = models.BooleanField(default=False, verbose_name='Enviado')
 
     class Meta:
         ordering = ('-created',)

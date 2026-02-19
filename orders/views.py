@@ -228,3 +228,27 @@ from django.contrib.auth.decorators import login_required
 def user_orders(request):
     orders = Order.objects.filter(user=request.user)
     return render(request, 'orders/order/user_list.html', {'orders': orders})
+
+from django.contrib.auth.decorators import user_passes_test
+
+@user_passes_test(lambda u: u.is_staff)
+def admin_order_list(request):
+    orders = Order.objects.all().order_by('-created')
+    return render(request, 'orders/order/admin_list.html', {'orders': orders})
+
+@user_passes_test(lambda u: u.is_staff)
+def admin_order_detail(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    return render(request, 'orders/order/admin_detail.html', {'order': order})
+
+from django.contrib import messages
+
+@user_passes_test(lambda u: u.is_staff)
+def admin_order_toggle_shipped(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    if request.method == 'POST':
+        order.shipped = not order.shipped
+        order.save()
+        status = "ENVIADO" if order.shipped else "NO ENVIADO"
+        messages.success(request, f'Estado de envío actualizado a: {status}')
+    return redirect('orders:admin_order_detail', order_id=order.id)

@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}Detalle Venta #{{ order.id }}{% endblock %}
+
+{% block content %}
+<div
+    style="max-width: 800px; margin: 0 auto; background: var(--bg-card); padding: 2rem; border-radius: var(--radius-md); box-shadow: var(--shadow-sm);">
+
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h1>Venta #{{ order.id }}</h1>
+        <a href="{% url 'orders:admin_order_list' %}" class="btn btn-secondary">Volver al Listado</a>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+
+        <!-- Cliente -->
+        <div style="padding: 1.5rem; background: var(--bg-primary); border-radius: 8px;">
+            <h3 style="margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">
+                Cliente</h3>
+            <p><strong>Nombre:</strong> {{ order.first_name }} {{ order.last_name }}</p>
+            <p><strong>Email:</strong> {{ order.email }}</p>
+            <p><strong>Teléfono:</strong> {{ order.phone|default:"-" }}</p>
+            <p><strong>Dirección:</strong> {{ order.address }}, {{ order.city }} (CP: {{ order.postal_code }})</p>
+        </div>
+
+        <!-- Estado -->
+        <div style="padding: 1.5rem; background: var(--bg-primary); border-radius: 8px;">
+            <h3 style="margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">
+                Estado</h3>
+            <p><strong>Fecha Compra:</strong> {{ order.created|date:"d/m/Y H:i" }}</p>
+            <p><strong>Estado Pago:</strong>
+                {% if order.paid %}
+                <span class="badge" style="background: var(--success); color: white;">PAGADO</span>
+                {% else %}
+                <span class="badge" style="background: var(--warning); color: #333;">PENDIENTE</span>
+                {% endif %}
+            </p>
+            <p><strong>ID MercadoPago:</strong> {{ order.mercadopago_id|default:"-" }}</p>
+            <p><strong>Estado MP:</strong> {{ order.payment_status|default:"-" }}</p>
+
+            <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 1rem 0;">
+
+            <p style="margin-bottom: 0.5rem;"><strong>Estado Envío:</strong>
+                {% if order.shipped %}
+                <span class="badge" style="background: var(--success); color: white;">ENVIADO</span>
+                {% else %}
+                <span class="badge" style="background: var(--danger); color: white;">NO ENVIADO</span>
+                {% endif %}
+            </p>
+
+            <form action="{% url 'orders:admin_order_toggle_shipped' order.id %}" method="post">
+                {% csrf_token %}
+                {% if order.shipped %}
+                <button type="submit" class="btn btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.9em;">Marcar
+                    como NO Enviado</button>
+                {% else %}
+                <button type="submit" class="btn" style="padding: 0.4rem 0.8rem; font-size: 0.9em;">Marcar como
+                    ENVIADO</button>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+
+    <!-- Productos -->
+    <h3 style="margin-bottom: 1rem;">Productos</h3>
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 2rem;">
+        <thead>
+            <tr style="border-bottom: 2px solid var(--border-color);">
+                <th style="padding: 0.5rem; text-align: left;">Producto</th>
+                <th style="padding: 0.5rem; text-align: center;">Cantidad</th>
+                <th style="padding: 0.5rem; text-align: right;">Precio Unit.</th>
+                <th style="padding: 0.5rem; text-align: right;">Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in order.items.all %}
+            <tr style="border-bottom: 1px solid var(--border-color);">
+                <td style="padding: 0.8rem 0.5rem;">{{ item.product.title }}</td>
+                <td style="padding: 0.8rem 0.5rem; text-align: center;">{{ item.quantity }}</td>
+                <td style="padding: 0.8rem 0.5rem; text-align: right;">${{ item.price }}</td>
+                <td style="padding: 0.8rem 0.5rem; text-align: right;">${{ item.get_cost }}</td>
+            </tr>
+            {% endfor %}
+
+            {% if order.shipping_cost > 0 %}
+            <tr style="border-bottom: 1px solid var(--border-color);">
+                <td colspan="3" style="padding: 0.8rem 0.5rem; text-align: right;"><strong>Envío</strong></td>
+                <td style="padding: 0.8rem 0.5rem; text-align: right;">${{ order.shipping_cost }}</td>
+            </tr>
+            {% endif %}
+
+            <tr>
+                <td colspan="3" style="padding: 1rem 0.5rem; text-align: right; font-size: 1.2rem;">
+                    <strong>TOTAL</strong>
+                </td>
+                <td style="padding: 1rem 0.5rem; text-align: right; font-size: 1.2rem; color: var(--primary);">
+                    <strong>${{ order.get_total_cost }}</strong>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+{% endblock %}

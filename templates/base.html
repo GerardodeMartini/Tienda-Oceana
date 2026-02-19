@@ -55,9 +55,17 @@
 
                     {% if user.is_authenticated %}
                     <!-- Greeting moved up -->
+
+                    {% if user.is_staff %}
+                    <a href="{% url 'orders:admin_order_list' %}"
+                        style="color: var(--accent-gold); font-weight: 700; font-size: 0.9rem; white-space: nowrap; border-bottom: 2px solid var(--accent-gold);">Historial
+                        Ventas</a>
+                    {% else %}
                     <a href="{% url 'orders:user_orders' %}"
                         style="color: var(--primary); font-weight: 600; font-size: 0.9rem; white-space: nowrap;">Mis
                         Compras</a>
+                    {% endif %}
+
                     <form action="{% url 'accounts:logout' %}" method="post" style="display:inline;">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-secondary"

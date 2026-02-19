@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}Historial de Ventas{% endblock %}
+
+{% block content %}
+<div style="background: var(--bg-card); padding: 2rem; border-radius: var(--radius-md); box-shadow: var(--shadow-sm);">
+    <h1 style="margin-bottom: 1.5rem; text-align: center;">Historial de Ventas (Admin)</h1>
+
+    <div style="overflow-x: auto;">
+        <table style="width: 100%; border-collapse: collapse; min-width: 600px;">
+            <thead>
+                <tr style="border-bottom: 2px solid var(--border-color);">
+                    <th style="padding: 1rem; text-align: left;">ID</th>
+                    <th style="padding: 1rem; text-align: left;">Fecha</th>
+                    <th style="padding: 1rem; text-align: left;">Cliente</th>
+                    <th style="padding: 1rem; text-align: left;">Pago</th>
+                    <th style="padding: 1rem; text-align: center;">Envío</th>
+                    <th style="padding: 1rem; text-align: right;">Total</th>
+                    <th style="padding: 1rem; text-align: center;">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr style="border-bottom: 1px solid var(--border-color);">
+                    <td style="padding: 1rem;">#{{ order.id }}</td>
+                    <td style="padding: 1rem;">{{ order.created|date:"d/m/Y H:i" }}</td>
+                    <td style="padding: 1rem;">
+                        <strong>{{ order.first_name }} {{ order.last_name }}</strong><br>
+                        <span style="font-size: 0.85em; color: var(--text-muted);">{{ order.email }}</span>
+                    </td>
+                    <td style="padding: 1rem;">
+                        {% if order.paid %}
+                        <span class="badge" style="background: var(--success); color: white;">Pagado</span>
+                        {% else %}
+                        <span class="badge" style="background: var(--warning); color: #333;">Pendiente</span>
+                        {% endif %}
+                        <br>
+                        <small>{{ order.payment_status|default:"-" }}</small>
+                    </td>
+                    <td style="padding: 1rem; text-align: center;">
+                        {% if order.shipped %}
+                        <span style="color: var(--success); font-size: 1.2rem;">✅</span>
+                        {% else %}
+                        <span style="color: var(--danger); font-size: 1.2rem;">❌</span>
+                        {% endif %}
+                    </td>
+                    <td style="padding: 1rem; text-align: right;">${{ order.get_total_cost }}</td>
+                    <td style="padding: 1rem; text-align: center;">
+                        <a href="{% url 'orders:admin_order_detail' order.id %}" class="btn"
+                            style="padding: 0.4rem 0.8rem; font-size: 0.9em;">Ver Detalle</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" style="padding: 2rem; text-align: center; color: var(--text-muted);">
+                        No hay ventas registradas aún.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
