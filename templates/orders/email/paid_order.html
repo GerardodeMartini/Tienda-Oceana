@@ -45,7 +45,19 @@
         {% endfor %}
     </ul>
 
-    <p class="total">Total pagado: ${{ order.get_total_cost }}</p>
+    <p class="total">Total del Pedido: ${{ order.get_total_cost|add:order.shipping_cost }}</p>
+
+    <p><strong>Método de pago:</strong> {{ order.get_payment_method_display }}</p>
+
+    {% if order.payment_method == 'transferencia' %}
+    <p>Para completar tu compra, por favor transfiere el total a la siguiente cuenta y envíanos el comprobante
+        respondendiendo a este correo.</p>
+    <p><strong>CBU / ALIAS:</strong> oceanatienda.mp <em>(o el alias que corresponda)</em></p>
+    {% endif %}
+
+    <p><strong>Datos de contacto del vendedor:</strong><br>
+        Email: soporte@oceana-heiwa.com.ar<br>
+        Teléfono: +54 9 11 1234-5678</p>
 
     <p>Te avisaremos cuando tu pedido sea enviado.</p>
 

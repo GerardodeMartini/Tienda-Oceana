@@ -33,8 +33,13 @@ def order_create(request):
             cart.clear()
             # set the order in the session
             request.session['order_id'] = order.id
-            # redirect for payment
-            return redirect('orders:payment_process')
+            
+            if order.payment_method == 'transferencia':
+                process_order_completion(order)
+                return redirect('orders:transfer_done')
+            else:
+                # redirect for payment
+                return redirect('orders:payment_process')
     else:
         # Pre-fill form if user is authenticated
         initial_data = {}
@@ -144,6 +149,55 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.conf import settings
 
+def process_order_completion(order):
+    if order.stock_reduced:
+        return
+    
+    order.stock_reduced = True
+    order.save()
+
+    # Reducir stock
+    low_stock_products = []
+    for item in order.items.all():
+        product = item.product
+        if product.stock >= item.quantity:
+            product.stock -= item.quantity
+        else:
+            product.stock = 0
+        product.save()
+        
+        if product.stock <= 10:
+            low_stock_products.append(product)
+
+    # Email al comprador
+    subject = f'Pedido #{order.id} confirmado - Tienda Virtual'
+    html_message = render_to_string('orders/email/paid_order.html', {'order': order})
+    try:
+        send_mail(subject, '', settings.EMAIL_HOST_USER, [order.email], html_message=html_message)
+        print(f"BUYER EMAIL SENT to {order.email}")
+    except Exception as e_mail:
+        print(f"BUYER EMAIL ERROR: {e_mail}")
+
+    # Email al vendedor (Nueva orden)
+    seller_email = settings.EMAIL_HOST_USER 
+    admin_subject = f'Nuevo Pedido #{order.id} - {order.first_name} {order.last_name}'
+    html_admin_message = render_to_string('orders/email/admin_new_order.html', {'order': order})
+    try:
+        send_mail(admin_subject, '', settings.EMAIL_HOST_USER, [seller_email], html_message=html_admin_message)
+        print(f"SELLER EMAIL SENT to {seller_email}")
+    except Exception as e_admin_mail:
+        print(f"SELLER EMAIL ERROR: {e_admin_mail}")
+
+    # Email de stock bajo (Vendedor)
+    if low_stock_products:
+        stock_subject = '⚠️ Alerta de Stock Bajo'
+        html_stock_message = render_to_string('orders/email/low_stock_alert.html', {'products': low_stock_products})
+        try:
+            send_mail(stock_subject, '', settings.EMAIL_HOST_USER, [seller_email], html_message=html_stock_message)
+            print(f"STOCK EMAIL SENT to {seller_email}")
+        except Exception as e_stock_mail:
+            print(f"STOCK EMAIL ERROR: {e_stock_mail}")
+
 @csrf_exempt
 def payment_webhook(request):
     if request.method == 'POST':
@@ -179,39 +233,13 @@ def payment_webhook(request):
                         try:
                             order = Order.objects.get(id=external_reference)
                             order.payment_status = status
+                            order.save()
                             
                             # Si el estado cambia a aprobado y no estaba pagado antes
                             if status == 'approved' and not order.paid:
                                 order.paid = True
                                 order.save()
-                                
-                                # Enviar Email al Comprador
-                                subject = f'Pedido #{order.id} confirmado - Tienda Virtual'
-                                message = f'Hola {order.first_name},\n\nTu pedido #{order.id} ha sido confirmado.\n\nGracias por tu compra.'
-                                html_message = render_to_string('orders/email/paid_order.html', {'order': order})
-                                
-                                try:
-                                    send_mail(subject, message, settings.EMAIL_HOST_USER, [order.email], html_message=html_message)
-                                    print(f"BUYER EMAIL SENT to {order.email}")
-                                except Exception as e_mail:
-                                    print(f"BUYER EMAIL ERROR: {e_mail}")
-
-                                # Enviar Email al Vendedor (Admin)
-                                admin_subject = f'Nuevo Pedido #{order.id} - {order.first_name} {order.last_name}'
-                                admin_message = f'Nuevo pedido confirmado.\nID: {order.id}\nTotal: ${order.get_total_cost()}'
-                                html_admin_message = render_to_string('orders/email/admin_new_order.html', {'order': order})
-                                
-                                # Asumiendo que el mail del vendedor es el mismo que EMAIL_HOST_USER o uno fijo
-                                seller_email = settings.EMAIL_HOST_USER 
-                                
-                                try:
-                                    send_mail(admin_subject, admin_message, settings.EMAIL_HOST_USER, [seller_email], html_message=html_admin_message)
-                                    print(f"SELLER EMAIL SENT to {seller_email}")
-                                except Exception as e_admin_mail:
-                                    print(f"SELLER EMAIL ERROR: {e_admin_mail}")
-                                    
-                            else:
-                                order.save()
+                                process_order_completion(order)
                                 
                             print(f"ORDER UPDATED: {order.id} status is now {status}")
                         except Order.DoesNotExist:
@@ -252,3 +280,11 @@ def admin_order_toggle_shipped(request, order_id):
         status = "ENVIADO" if order.shipped else "NO ENVIADO"
         messages.success(request, f'Estado de envío actualizado a: {status}')
     return redirect('orders:admin_order_detail', order_id=order.id)
+
+def transfer_done(request):
+    order_id = request.session.get('order_id')
+    order = None
+    if order_id:
+        order = get_object_or_404(Order, id=order_id)
+    return render(request, 'orders/payment/transfer_done.html', {'order': order})
+

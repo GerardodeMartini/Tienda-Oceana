@@ -19,6 +19,13 @@ class Order(models.Model):
     shipping_cost = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     stat_province = models.CharField(max_length=2, blank=True, default='') # Código de provincia
     shipped = models.BooleanField(default=False, verbose_name='Enviado')
+    
+    PAYMENT_CHOICES = [
+        ('mercadopago', 'Mercado Pago'),
+        ('transferencia', 'Transferencia Bancaria'),
+    ]
+    payment_method = models.CharField(max_length=20, choices=PAYMENT_CHOICES, default='mercadopago', verbose_name='Método de Pago')
+    stock_reduced = models.BooleanField(default=False)
 
     class Meta:
         ordering = ('-created',)

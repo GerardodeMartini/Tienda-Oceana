@@ -131,6 +131,7 @@
                 const discountInput = document.getElementById('discount-percent');
                 const applyBtn = document.getElementById('apply-discount');
                 const priceInput = document.getElementById('id_price');
+                const priceFieldWrapper = document.getElementById('field-price');
                 const sumDisplay = document.getElementById('components-sum');
                 const finalDisplay = document.getElementById('combo-final-price');
                 const calculator = document.getElementById('combo-calculator');
@@ -199,9 +200,11 @@
                     if (isComboCheckbox.checked) {
                         componentsField.style.display = 'block';
                         calculator.style.display = 'block';
+                        if (priceFieldWrapper) priceFieldWrapper.style.display = 'none'; // Ocultar input manual de precio
                     } else {
                         componentsField.style.display = 'none';
                         calculator.style.display = 'none';
+                        if (priceFieldWrapper) priceFieldWrapper.style.display = 'block'; // Mostrar input manual
                     }
                 }
 
@@ -246,7 +249,37 @@
             });
         </script>
 
-        <button type="submit" class="btn" style="width: 100%; margin-top: 1rem;">Guardar Cambios</button>
+        <!-- Imagenes Adicionales (Galería) -->
+        <div style="margin-top: 2rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem;">
+            <h3 style="margin-bottom: 1rem; color: var(--text-primary);">Galería de Imágenes (Opcional)</h3>
+
+            {% if product and product.images.all %}
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
+                {% for img in product.images.all %}
+                <div
+                    style="position: relative; width: 100px; height: 100px; border-radius: var(--radius-sm); overflow: hidden; border: 1px solid var(--border-color);">
+                    <img src="{{ img.image.url }}" style="width: 100%; height: 100%; object-fit: cover;">
+                    <form action="{% url 'store:product_image_delete' img.id %}" method="post"
+                        style="position: absolute; top: 0; right: 0; background: rgba(0,0,0,0.5); padding: 2px;">
+                        {% csrf_token %}
+                        <button type="submit"
+                            style="background: none; border: none; color: white; cursor: pointer; font-size: 1.2rem; line-height: 1;">&times;</button>
+                    </form>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <label style="display: block; margin-bottom: 0.5rem; color: var(--text-muted);">
+                Agregar nuevas imágenes a la galería
+            </label>
+            <input type="file" name="gallery_images" multiple accept="image/*"
+                style="width: 100%; padding: 0.75rem; background: var(--bg-primary); border: 1px dashed var(--border-color); border-radius: var(--radius-sm); color: white; cursor: pointer;">
+            <small style="color: var(--text-muted); display: block; margin-top: 0.5rem;">Puedes seleccionar varios
+                archivos a la vez manteniendo presionada la tecla Ctrl (o Cmd en Mac).</small>
+        </div>
+
+        <button type="submit" class="btn" style="width: 100%; margin-top: 2rem;">Guardar Cambios</button>
     </form>
 
     {% if product %}

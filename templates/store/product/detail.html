@@ -14,14 +14,75 @@
     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start;">
         <!-- Image Gallery -->
         <div class="detail-gallery">
-            {% if product.image %}
-            <img src="{{ product.image.url }}" alt="{{ product.title }}"
-                style="width: 100%; height: auto; display: block;">
-            {% else %}
+            <!-- Main Image -->
             <div
-                style="width: 100%; aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; background: var(--bg-soft); color: var(--text-light);">
-                <span>Sin imagen disponible</span>
+                style="margin-bottom: 1rem; border: 1px solid var(--border-color); border-radius: var(--radius-card); overflow: hidden; background: white;">
+                {% if product.image %}
+                <img id="main-product-image" src="{{ product.image.url }}" alt="{{ product.title }}"
+                    style="width: 100%; height: auto; display: block; aspect-ratio: 1/1; object-fit: contain;">
+                {% else %}
+                <div id="main-product-image"
+                    style="width: 100%; aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; background: var(--bg-soft); color: var(--text-light);">
+                    <span>Sin imagen disponible</span>
+                </div>
+                {% endif %}
             </div>
+
+            <!-- Thumbnails Gallery -->
+            {% if product.images.all %}
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                <!-- Main image thumbnail -->
+                {% if product.image %}
+                <div class="gallery-thumbnail active" onclick="changeMainImage('{{ product.image.url }}', this)"
+                    style="width: 80px; height: 80px; border-radius: var(--radius-sm); overflow: hidden; cursor: pointer; border: 2px solid var(--primary); transition: all 0.2s;">
+                    <img src="{{ product.image.url }}" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                {% endif %}
+
+                <!-- Additional images thumbnails -->
+                {% for img in product.images.all %}
+                <div class="gallery-thumbnail" onclick="changeMainImage('{{ img.image.url }}', this)"
+                    style="width: 80px; height: 80px; border-radius: var(--radius-sm); overflow: hidden; cursor: pointer; border: 2px solid transparent; opacity: 0.7; transition: all 0.2s;">
+                    <img src="{{ img.image.url }}" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                {% endfor %}
+            </div>
+
+            <script>
+                function changeMainImage(url, thumbnailElement) {
+                    // Update main image source
+                    const mainImage = document.getElementById('main-product-image');
+                    if (mainImage.tagName === 'IMG') {
+                        mainImage.src = url;
+                    }
+
+                    // Update thumbnails styling
+                    const thumbnails = document.querySelectorAll('.gallery-thumbnail');
+                    thumbnails.forEach(thumb => {
+                        thumb.style.borderColor = 'transparent';
+                        thumb.style.opacity = '0.7';
+                        thumb.classList.remove('active');
+                    });
+
+                    thumbnailElement.style.borderColor = 'var(--primary)';
+                    thumbnailElement.style.opacity = '1';
+                    thumbnailElement.classList.add('active');
+                }
+
+                // Add hover effect via JS since inline styles make hover tricky
+                document.querySelectorAll('.gallery-thumbnail').forEach(el => {
+                    el.addEventListener('mouseover', function () {
+                        if (!this.classList.contains('active')) {
+                            this.style.opacity = '1';
+                        }
+                    });
+                    el.addEventListener('mouseout', function () {
+                        if (!this.classList.contains('active')) {
+                            this.style.opacity = '0.7';
+                        }
+                    });
+                });
+            </script>
             {% endif %}
         </div>
 

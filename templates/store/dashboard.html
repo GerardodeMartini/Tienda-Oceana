@@ -47,6 +47,7 @@
                     <th style="padding: 1rem;">ID</th>
                     <th style="padding: 1rem;">Imagen</th>
                     <th style="padding: 1rem;">Producto</th>
+                    <th style="padding: 1rem;">Marca</th>
                     <th style="padding: 1rem;">Precio</th>
                     <th style="padding: 1rem;">Stock</th>
                     <th style="padding: 1rem;">Estado</th>
@@ -64,6 +65,18 @@
                         {% endif %}
                     </td>
                     <td style="padding: 1rem;">{{ product.title }}</td>
+                    <td style="padding: 1rem;">
+                        <span
+                            style="background: var(--bg-soft); padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.9em; margin-right: 0.3rem;">
+                            {{ product.get_brand_display }}
+                        </span>
+                        {% if product.is_combo %}
+                        <span
+                            style="background: var(--warning); color: #fff; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.9em;">
+                            Combo
+                        </span>
+                        {% endif %}
+                    </td>
                     <td style="padding: 1rem;">${{ product.price }}</td>
                     <td style="padding: 1rem;">
                         <!-- Updated Stock Logic -->

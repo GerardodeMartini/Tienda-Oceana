@@ -75,6 +75,12 @@ def product_create(request):
                 product.slug = f'{base_slug}-{uuid.uuid4().hex[:6]}'
                 
             product.save()
+            
+            # Handle Gallery Images
+            from .models import ProductImage
+            for f in request.FILES.getlist('gallery_images'):
+                ProductImage.objects.create(product=product, image=f)
+                
             return redirect('store:seller_dashboard')
     else:
         form = ProductForm(initial=initial_data, user=request.user)
@@ -88,6 +94,12 @@ def product_edit(request, product_id):
         form = ProductForm(request.POST, request.FILES, instance=product, user=request.user)
         if form.is_valid():
             form.save()
+            
+            # Handle Gallery Images
+            from .models import ProductImage
+            for f in request.FILES.getlist('gallery_images'):
+                ProductImage.objects.create(product=product, image=f)
+                
             return redirect('store:seller_dashboard')
     else:
         form = ProductForm(instance=product, user=request.user)
@@ -118,3 +130,13 @@ def product_delete(request, product_id):
     if request.method == 'POST':
         product.delete()
     return redirect('store:seller_dashboard')
+
+from .models import ProductImage
+
+@staff_member_required
+def product_image_delete(request, image_id):
+    image = get_object_or_404(ProductImage, id=image_id)
+    product_id = image.product.id
+    if request.method == 'POST':
+        image.delete()
+    return redirect('store:product_edit', product_id=product_id)

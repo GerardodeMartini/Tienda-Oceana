@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        body {
+            font-family: sans-serif;
+            color: #333;
+        }
+
+        h1 {
+            color: #e74c3c;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            background: #fdf2e9;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 5px;
+            border-left: 4px solid #e67e22;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>⚠️ Alerta de Stock Bajo</h1>
+    <p>Los siguientes productos han alcanzado un stock de 10 unidades o menos y requieren reposición:</p>
+    <ul>
+        {% for product in products %}
+        <li>
+            <strong>{{ product.title }}</strong> - Quedan {{ product.stock }} unidades
+            ({% if product.brand == 'oceana' %}Océana{% elif product.brand == 'heiwa' %}Heiwa{% else %}Ambos{% endif %})
+        </li>
+        {% endfor %}
+    </ul>
+    <p>Por favor, considere reponer el inventario pronto.</p>
+</body>
+
+</html>
