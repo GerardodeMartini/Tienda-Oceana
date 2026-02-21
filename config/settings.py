@@ -204,6 +204,7 @@ else:
 
 DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL', default='no-reply@oceana-heiwa.com.ar')
 SERVER_EMAIL = DEFAULT_FROM_EMAIL
+ADMIN_EMAIL = env('ADMIN_EMAIL', default='gerardodemartini@gmail.com')
 # Mercado Pago Settings
 MERCADOPAGO_PUBLIC_KEY = env('MERCADOPAGO_PUBLIC_KEY', default='')
 MERCADOPAGO_ACCESS_TOKEN = env('MERCADOPAGO_ACCESS_TOKEN', default='')

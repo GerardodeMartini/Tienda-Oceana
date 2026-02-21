@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Verifica tu Correo Electrónico{% endblock %}
+
+{% block content %}
+<div style="min-height: 50vh; display: flex; align-items: center; justify-content: center; padding: 2rem;">
+    <div
+        style="max-width: 500px; width: 100%; text-align: center; background: white; padding: 3rem; border-radius: var(--radius-card); box-shadow: var(--shadow-sm);">
+        <div style="font-size: 3rem; margin-bottom: 1rem;">✉️</div>
+
+        <h2
+            style="font-family: var(--font-heading); color: var(--primary-dark); margin-bottom: 1rem; font-size: 1.8rem;">
+            Verifica tu correo electrónico
+        </h2>
+
+        <p style="color: var(--text-main); line-height: 1.6; margin-bottom: 2rem; font-size: 1.1rem;">
+            Hemos enviado un correo electrónico a <strong>{{ email }}</strong> con un enlace para activar tu cuenta.
+        </p>
+
+        <p
+            style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem; line-height: 1.5; background: var(--bg-soft); padding: 1rem; border-radius: var(--radius-sm);">
+            Por favor, revisa tu bandeja de entrada y la carpeta de spam o correo no deseado. Debes hacer clic en el
+            enlace para poder iniciar sesión y comprar en nuestra tienda.
+        </p>
+
+        <a href="{% url 'store:product_list' %}" class="btn btn-secondary" style="width: 100%;">
+            Volver a la Tienda
+        </a>
+    </div>
+</div>
+{% endblock %}

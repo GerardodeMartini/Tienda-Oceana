@@ -173,17 +173,17 @@ def process_order_completion(order):
     subject = f'Pedido #{order.id} confirmado - Tienda Virtual'
     html_message = render_to_string('orders/email/paid_order.html', {'order': order})
     try:
-        send_mail(subject, '', settings.EMAIL_HOST_USER, [order.email], html_message=html_message)
+        send_mail(subject, '', settings.DEFAULT_FROM_EMAIL, [order.email], html_message=html_message)
         print(f"BUYER EMAIL SENT to {order.email}")
     except Exception as e_mail:
         print(f"BUYER EMAIL ERROR: {e_mail}")
 
     # Email al vendedor (Nueva orden)
-    seller_email = settings.EMAIL_HOST_USER 
+    seller_email = settings.ADMIN_EMAIL 
     admin_subject = f'Nuevo Pedido #{order.id} - {order.first_name} {order.last_name}'
     html_admin_message = render_to_string('orders/email/admin_new_order.html', {'order': order})
     try:
-        send_mail(admin_subject, '', settings.EMAIL_HOST_USER, [seller_email], html_message=html_admin_message)
+        send_mail(admin_subject, '', settings.DEFAULT_FROM_EMAIL, [seller_email], html_message=html_admin_message)
         print(f"SELLER EMAIL SENT to {seller_email}")
     except Exception as e_admin_mail:
         print(f"SELLER EMAIL ERROR: {e_admin_mail}")
@@ -193,7 +193,7 @@ def process_order_completion(order):
         stock_subject = '⚠️ Alerta de Stock Bajo'
         html_stock_message = render_to_string('orders/email/low_stock_alert.html', {'products': low_stock_products})
         try:
-            send_mail(stock_subject, '', settings.EMAIL_HOST_USER, [seller_email], html_message=html_stock_message)
+            send_mail(stock_subject, '', settings.DEFAULT_FROM_EMAIL, [seller_email], html_message=html_stock_message)
             print(f"STOCK EMAIL SENT to {seller_email}")
         except Exception as e_stock_mail:
             print(f"STOCK EMAIL ERROR: {e_stock_mail}")
