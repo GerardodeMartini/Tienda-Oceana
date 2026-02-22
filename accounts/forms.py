@@ -25,3 +25,14 @@ class UserRegistrationForm(forms.ModelForm):
             user.save()
             Profile.objects.create(user=user, phone_number=self.cleaned_data['phone_number'])
         return user
+
+from django.contrib.auth.forms import AuthenticationForm
+
+class CustomAuthForm(AuthenticationForm):
+    def confirm_login_allowed(self, user):
+        if not user.is_active:
+            raise forms.ValidationError(
+                "Esta cuenta está inactiva.",
+                code='inactive',
+            )
+        super().confirm_login_allowed(user)
