@@ -19,7 +19,15 @@ from django.urls import path, include
 from django.views.generic import TemplateView
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.sitemaps.views import sitemap
+from store.sitemaps import ProductSitemap, CategorySitemap, StaticViewSitemap
 from . import admin as admin_config # Loads admin customization
+
+sitemaps = {
+    'products': ProductSitemap,
+    'categories': CategorySitemap,
+    'static': StaticViewSitemap,
+}
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,8 +37,10 @@ urlpatterns = [
     # Rutas por marca (apuntan a las mismas vistas, el middleware maneja el tema)
     path('oceana/', include('store.urls', namespace='store_oceana')),
     path('heiwa/', include('store.urls', namespace='store_heiwa')),
-    # Ruta Genérica para Dashboard y Gestión
     path('store/', include('store.urls', namespace='store')),
+    # Sitemap & Robots
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
+    path('robots.txt', TemplateView.as_view(template_name="robots.txt", content_type="text/plain")),
     # Ruta Ecosistema (Default)
     # Ruta Ecosistema (Landing Page)
     path('', TemplateView.as_view(template_name='landing.html'), name='home'),

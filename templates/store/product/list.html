@@ -5,6 +5,32 @@
 {% if category %}{{ category.name }} - Océana{% else %}Catálogo - Océana{% endif %}
 {% endblock %}
 
+{% block meta_description %}
+{% if category %}Explora nuestra colección de {{ category.name }} en Océana & Heiwa. Fórmulas inteligentes para
+equilibrar mente y cuerpo y cuidar tu bienestar de forma natural.{% else %}Descubre todo el catálogo de Océana & Heiwa.
+Productos y kits de puro bienestar, neurobotánica, adaptógenos y cosmética limpia.{% endif %}
+{% endblock %}
+
+{% block og_title %}
+{% if category %}{{ category.name }} - Océana{% else %}Catálogo - Océana{% endif %}
+{% endblock %}
+
+{% block og_description %}
+{% if category %}Explora nuestra colección de {{ category.name }} en Océana & Heiwa. Fórmulas inteligentes para
+equilibrar mente y cuerpo.{% else %}Descubre todo el catálogo de Océana & Heiwa. Productos y kits de bienestar,
+neurobotánica y adaptógenos.{% endif %}
+{% endblock %}
+
+{% block twitter_title %}
+{% if category %}{{ category.name }} - Océana{% else %}Catálogo - Océana{% endif %}
+{% endblock %}
+
+{% block twitter_description %}
+{% if category %}Explora nuestra colección de {{ category.name }} en Océana & Heiwa. Fórmulas inteligentes para
+equilibrar mente y cuerpo.{% else %}Descubre todo el catálogo de Océana & Heiwa. Productos y kits de bienestar,
+neurobotánica y adaptógenos.{% endif %}
+{% endblock %}
+
 {% block content %}
 
 {% if category.slug == "off" %}

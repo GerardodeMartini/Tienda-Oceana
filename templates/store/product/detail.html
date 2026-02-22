@@ -3,6 +3,19 @@
 
 {% block title %}{{ product.title }} - Océana{% endblock %}
 
+{% block meta_description %}{{ product.description|truncatewords:25 }}{% endblock %}
+
+{% block og_title %}{{ product.title }} - Océana{% endblock %}
+{% block og_description %}{{ product.description|truncatewords:25 }}{% endblock %}
+{% block og_image %}{% if product.image %}{{ request.scheme }}://{{ request.get_host }}{{ product.image.url }}{% else
+%}{{ block.super }}{% endif %}{% endblock %}
+{% block og_type %}product{% endblock %}
+
+{% block twitter_title %}{{ product.title }} - Océana{% endblock %}
+{% block twitter_description %}{{ product.description|truncatewords:25 }}{% endblock %}
+{% block twitter_image %}{% if product.image %}{{ request.scheme }}://{{ request.get_host }}{{ product.image.url }}{%
+else %}{{ block.super }}{% endif %}{% endblock %}
+
 {% block content %}
 <div style="margin-top: 2rem;">
     <!-- Breadcrumb -->
