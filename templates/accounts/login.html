@@ -11,7 +11,21 @@
         {% if next %}
         <input type="hidden" name="next" value="{{ next }}" />
         {% endif %}
-        <!-- Simple rendering for now, can be improved with custom form rendering -->
+        <!-- Error Handling -->
+        {% if form.non_field_errors %}
+        <div class="alert error"
+            style="background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; padding: 1rem; margin-bottom: 1.5rem; border-radius: 4px; font-size: 0.9rem;">
+            {% for error in form.non_field_errors %}
+            {% if "inactive" in error or "inactiva" in error %}
+            Esta cuenta está inactiva. Por favor verifique su correo para validarla.
+            {% elif "correct" in error or "correctos" in error %}
+            Por favor introduzca un nombre de usuario o contraseña correctos.
+            {% else %}
+            {{ error }}
+            {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
         <div class="form-group">
             <label for="{{ form.username.id_for_label }}">Nombre de Usuario</label>
             {{ form.username }}
