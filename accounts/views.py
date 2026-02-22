@@ -58,7 +58,7 @@ def register(request):
                     except Exception as e:
                         print(f"Error enviando email de activación a {new_user.email}: {e}")
                     
-                    return render(request, 'accounts/registration_pending.html', {'email': new_user.email})
+                    return render(request, 'accounts/registration_pending.html', {'email': new_user.email, 'username': new_user.username})
             except Exception as e:
                  messages.error(request, 'Error al conectar con el servicio de seguridad.')
         else:
