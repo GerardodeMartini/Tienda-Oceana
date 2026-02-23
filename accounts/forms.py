@@ -27,12 +27,31 @@ class UserRegistrationForm(forms.ModelForm):
         return user
 
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import authenticate
+from django.core.exceptions import ValidationError
 
 class CustomAuthForm(AuthenticationForm):
-    def confirm_login_allowed(self, user):
-        if not user.is_active:
-            raise forms.ValidationError(
-                "Esta cuenta está inactiva.",
-                code='inactive',
-            )
-        super().confirm_login_allowed(user)
+    def clean(self):
+        username = self.cleaned_data.get('username')
+        password = self.cleaned_data.get('password')
+
+        if username is not None and password:
+            self.user_cache = authenticate(self.request, username=username, password=password)
+            
+            # Django's authenticate() returns None for inactive users in recent versions.
+            # So, if authenticate fails, let's manually check if the user exists but is inactive.
+            if self.user_cache is None:
+                from django.db.models import Q
+                user = User.objects.filter(Q(username=username) | Q(email=username)).first()
+                if user and not user.is_active:
+                    raise ValidationError(
+                        "Esta cuenta está inactiva. Por favor verifique su correo para validarla.",
+                        code='inactive',
+                    )
+            
+            if self.user_cache is None:
+                raise self.get_invalid_login_error()
+            else:
+                self.confirm_login_allowed(self.user_cache)
+
+        return self.cleaned_data
