@@ -197,12 +197,10 @@ if EMAIL_PROVIDER == 'SES':
         },
     }
 elif EMAIL_PROVIDER == 'RESEND':
-    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-    EMAIL_HOST = "smtp.resend.com"
-    EMAIL_PORT = 465
-    EMAIL_USE_SSL = True
-    EMAIL_HOST_USER = "resend"
-    EMAIL_HOST_PASSWORD = env('RESEND_API_KEY', default='')
+    EMAIL_BACKEND = "anymail.backends.resend.EmailBackend"
+    ANYMAIL = {
+        "RESEND_API_KEY": env('RESEND_API_KEY', default=''),
+    }
 else:
     # Brevo by default
     EMAIL_BACKEND = "anymail.backends.brevo.EmailBackend"

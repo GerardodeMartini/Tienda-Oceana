@@ -6,5 +6,5 @@ gunicorn
 whitenoise
 dj-database-url
 psycopg2-binary
-django-anymail[amazon_ses]
+django-anymail[amazon_ses,resend]
 boto3
