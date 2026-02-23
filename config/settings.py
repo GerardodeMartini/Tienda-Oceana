@@ -184,7 +184,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
-# Email Backend (Anymail: Amazon SES or Brevo)
+# Email Backend (Anymail: Amazon SES, Brevo, or Resend SMTP)
 EMAIL_PROVIDER = env('EMAIL_PROVIDER', default='BREVO')
 
 if EMAIL_PROVIDER == 'SES':
@@ -196,6 +196,13 @@ if EMAIL_PROVIDER == 'SES':
             "region_name": env('AWS_SES_REGION_NAME', default='us-east-1'),
         },
     }
+elif EMAIL_PROVIDER == 'RESEND':
+    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+    EMAIL_HOST = "smtp.resend.com"
+    EMAIL_PORT = 465
+    EMAIL_USE_SSL = True
+    EMAIL_HOST_USER = "resend"
+    EMAIL_HOST_PASSWORD = env('RESEND_API_KEY', default='')
 else:
     # Brevo by default
     EMAIL_BACKEND = "anymail.backends.brevo.EmailBackend"
