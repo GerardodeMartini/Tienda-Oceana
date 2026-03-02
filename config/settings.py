@@ -62,9 +62,10 @@ DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['oceana-heiwa.com.ar', 'www.oceana-heiwa.com.ar', '127.0.0.1', 'localhost'])
 
-CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS', default=['https://oceana-heiwa.com.ar', 'https://www.oceana-heiwa.com.ar'])
+CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS', default=['https://oceana-heiwa.com.ar', 'https://www.oceana-heiwa.com.ar', 'http://oceana-heiwa.com.ar'])
 
-# Trust the X-Forwarded-Proto header for identifying HTTPS
+# For reverse proxy (Coolify + Cloudflare)
+USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 
