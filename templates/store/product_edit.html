@@ -259,12 +259,9 @@
                 <div
                     style="position: relative; width: 100px; height: 100px; border-radius: var(--radius-sm); overflow: hidden; border: 1px solid var(--border-color);">
                     <img src="{{ img.image.url }}" style="width: 100%; height: 100%; object-fit: cover;">
-                    <form action="{% url 'store:product_image_delete' img.id %}" method="post"
-                        style="position: absolute; top: 0; right: 0; background: rgba(0,0,0,0.5); padding: 2px;">
-                        {% csrf_token %}
-                        <button type="submit"
-                            style="background: none; border: none; color: white; cursor: pointer; font-size: 1.2rem; line-height: 1;">&times;</button>
-                    </form>
+                    <a href="#"
+                        onclick="event.preventDefault(); if(confirm('¿Eliminar esta imagen?')) { document.getElementById('delete-img-{{ img.id }}').submit(); }"
+                        style="position: absolute; top: 0; right: 0; background: rgba(0,0,0,0.5); padding: 2px; color: white; cursor: pointer; font-size: 1.2rem; line-height: 1; text-decoration: none;">&times;</a>
                 </div>
                 {% endfor %}
             </div>
@@ -281,6 +278,16 @@
 
         <button type="submit" class="btn" style="width: 100%; margin-top: 2rem;">Guardar Cambios</button>
     </form>
+
+    <!-- Hidden forms for image deletion (must be outside the main form) -->
+    {% if product and product.images.all %}
+    {% for img in product.images.all %}
+    <form id="delete-img-{{ img.id }}" action="{% url 'store:product_image_delete' img.id %}" method="post"
+        style="display: none;">
+        {% csrf_token %}
+    </form>
+    {% endfor %}
+    {% endif %}
 
     {% if product %}
     <div style="margin-top: 3rem; border-top: 1px solid var(--border-color); padding-top: 2rem;">
