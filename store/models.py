@@ -44,60 +44,11 @@ class Product(models.Model):
         verbose_name_plural = 'Productos'
         ordering = ('-created',)
 
-    def save(self, *args, **kwargs):
-        if self.image and self.image.name != 'products/default.png':
-            # Check if image is new or has changed
-            is_new_image = False
-            if not self.pk:
-                is_new_image = True
-            else:
-                try:
-                    old_obj = Product.objects.get(pk=self.pk)
-                    if old_obj.image != self.image:
-                        is_new_image = True
-                except Product.DoesNotExist:
-                    is_new_image = True
-
-            if is_new_image:
-                try:
-                    img = Image.open(self.image)
-                    
-                    if img.mode in ("RGBA", "P"):
-                        img = img.convert("RGB")
-                    
-                    img.thumbnail((1000, 1000), Image.Resampling.LANCZOS)
-                    
-                    output = BytesIO()
-                    img.save(output, format='JPEG', quality=85, optimize=True)
-                    output.seek(0)
-                    
-                    # Prevent changing the default.png name accidentally
-                    name_parts = self.image.name.split('.')
-                    new_name = name_parts[0] if len(name_parts) > 0 else 'image'
-                    
-                    self.image = InMemoryUploadedFile(
-                        output,
-                        'ImageField',
-                        f"{new_name}.jpg",
-                        'image/jpeg',
-                        sys.getsizeof(output),
-                        None
-                    )
-                except Exception as e:
-                    print(f"Error compressing Product image: {e}")
-                    
-        super().save(*args, **kwargs)
-
     def get_absolute_url(self):
         return reverse('store:product_detail', args=[self.slug])
 
     def __str__(self):
         return self.title
-
-import sys
-from io import BytesIO
-from django.core.files.uploadedfile import InMemoryUploadedFile
-from PIL import Image
 
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, related_name='images', on_delete=models.CASCADE)
@@ -109,48 +60,3 @@ class ProductImage(models.Model):
 
     def __str__(self):
         return f"Image for {self.product.title}"
-
-    def save(self, *args, **kwargs):
-        if self.image:
-            # Check if image is new or has changed
-            is_new_image = False
-            if not self.pk:
-                is_new_image = True
-            else:
-                try:
-                    old_obj = ProductImage.objects.get(pk=self.pk)
-                    if old_obj.image != self.image:
-                        is_new_image = True
-                except ProductImage.DoesNotExist:
-                    is_new_image = True
-
-            if is_new_image:
-                try:
-                    img = Image.open(self.image)
-                    
-                    # Convert to RGB if needed (e.g. RGBA pngs)
-                    if img.mode in ("RGBA", "P"):
-                        img = img.convert("RGB")
-                    
-                    # Resize to max 1000x1000 maintaing aspect ratio
-                    img.thumbnail((1000, 1000), Image.Resampling.LANCZOS)
-                    
-                    output = BytesIO()
-                    # Save as WebP for optimal compression, fallback to JPEG
-                    img.save(output, format='JPEG', quality=85, optimize=True)
-                    output.seek(0)
-                    
-                    # Change the file name to ensure it has correct extension if we wanted, 
-                    # but simple compression on the same filename is safer for now
-                    self.image = InMemoryUploadedFile(
-                        output,
-                        'ImageField',
-                        f"{self.image.name.split('.')[0]}.jpg",
-                        'image/jpeg',
-                        sys.getsizeof(output),
-                        None
-                    )
-                except Exception as e:
-                    print(f"Error compressing ProductImage: {e}")
-                    
-        super().save(*args, **kwargs)
