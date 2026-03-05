@@ -62,11 +62,18 @@
                 <!-- Center: Brand -->
                 <a href="{% url 'store:product_list' %}" class="brand" style="margin: 0; justify-self: center;">
                     {% if request.session.theme == 'heiwa' %}
-                    🌿 Heiwa
+                    <img src="{% static 'img/Logo final_Heiwa_Logo combinado_marron (1).png' %}" alt="Heiwa"
+                        style="height: 50px; width: auto; vertical-align: middle;">
                     {% elif request.session.theme == 'oceana' %}
-                    🌊 Océana
+                    <img src="{% static 'img/logo_oceana.png' %}" alt="Océana"
+                        style="height: 50px; width: auto; vertical-align: middle;">
                     {% else %}
-                    🌐 Océana & Heiwa
+                    <div style="display: flex; gap: 10px; align-items: center; justify-content: center;">
+                        <img src="{% static 'img/logo_oceana.png' %}" alt="Océana" style="height: 40px; width: auto;">
+                        <span style="font-weight: 300; font-size: 1.2rem; color: var(--text-muted);">&amp;</span>
+                        <img src="{% static 'img/Logo final_Heiwa_Logo combinado_marron (1).png' %}" alt="Heiwa"
+                            style="height: 40px; width: auto;">
+                    </div>
                     {% endif %}
                 </a>
 
