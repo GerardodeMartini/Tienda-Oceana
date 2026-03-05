@@ -63,16 +63,16 @@
                 <a href="{% url 'store:product_list' %}" class="brand" style="margin: 0; justify-self: center;">
                     {% if request.session.theme == 'heiwa' %}
                     <img src="{% static 'img/Logo final_Heiwa_Logo combinado_marron (1).png' %}" alt="Heiwa"
-                        style="height: 100px; width: auto; vertical-align: middle;">
+                        style="height: 150px; width: auto; vertical-align: middle;">
                     {% elif request.session.theme == 'oceana' %}
                     <img src="{% static 'img/logo_oceana.png' %}" alt="Océana"
-                        style="height: 100px; width: auto; vertical-align: middle;">
+                        style="height: 150px; width: auto; vertical-align: middle;">
                     {% else %}
-                    <div style="display: flex; gap: 15px; align-items: center; justify-content: center;">
-                        <img src="{% static 'img/logo_oceana.png' %}" alt="Océana" style="height: 80px; width: auto;">
-                        <span style="font-weight: 300; font-size: 1.5rem; color: var(--text-muted);">&amp;</span>
+                    <div style="display: flex; gap: 20px; align-items: center; justify-content: center;">
+                        <img src="{% static 'img/logo_oceana.png' %}" alt="Océana" style="height: 120px; width: auto;">
+                        <span style="font-weight: 300; font-size: 2rem; color: var(--text-muted);">&amp;</span>
                         <img src="{% static 'img/Logo final_Heiwa_Logo combinado_marron (1).png' %}" alt="Heiwa"
-                            style="height: 80px; width: auto;">
+                            style="height: 120px; width: auto;">
                     </div>
                     {% endif %}
                 </a>
