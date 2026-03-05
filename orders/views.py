@@ -73,17 +73,12 @@ def payment_process(request):
             "unit_price": float(item.price),
         })
     
-    # Agregar Ítem de Envío si existe costo
-    if order.shipping_cost > 0:
-        items.append({
-            "title": "Costo de Envío",
-            "quantity": 1,
-            "unit_price": float(order.shipping_cost),
-        })
-        
+    # El costo de envío ahora es a convenir y no se cobra en MercadoPago        
     success_url = request.build_absolute_uri(reverse('orders:payment_done'))
     failure_url = request.build_absolute_uri(reverse('orders:payment_canceled'))
     pending_url = request.build_absolute_uri(reverse('orders:payment_done'))
+
+    webhook_url = request.build_absolute_uri(reverse('orders:payment_webhook'))
 
     preference_data = {
         "items": items,
@@ -92,6 +87,7 @@ def payment_process(request):
             "failure": failure_url,
             "pending": pending_url,
         },
+        "notification_url": webhook_url,
         # "auto_return": "approved",
         "external_reference": str(order.id),
     }

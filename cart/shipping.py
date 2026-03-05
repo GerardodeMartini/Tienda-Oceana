@@ -37,19 +37,6 @@ ZONE_TDF = ['V'] # Tierra del Fuego
 def get_shipping_cost(province_code, subtotal):
     """
     Calcula el costo de envío basado en la provincia y el subtotal de la compra.
+    Ahora el envío se coordina a convenir, por lo que el costo calculado es 0.
     """
-    subtotal = Decimal(subtotal)
-    
-    # Envío gratis para compras mayores a $100,000
-    if subtotal > 100000:
-        return Decimal(0)
-
-    if province_code in ZONE_LOCAL:
-        return Decimal(5000)
-    elif province_code in ZONE_NEAR:
-        return Decimal(15500)
-    elif province_code in ZONE_TDF:
-        return Decimal(25000)
-    else:
-        # Resto del País
-        return Decimal(20000)
+    return Decimal(0)

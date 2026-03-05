@@ -45,7 +45,7 @@
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             Envío
-                            <span id="shipping-cost">$0.00</span>
+                            <span id="shipping-cost">A convenir</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center fw-bold fs-5">
                             Total
@@ -56,12 +56,6 @@
 
                 <!-- Precios de envío para JS -->
                 <script>
-                    const shippingPrices = {
-                        'L': 5000,
-                        'B': 15500, 'C': 15500, 'X': 15500, 'D': 15500, 'R': 15500, 'Q': 15500,
-                        'V': 25000,
-                        'REST': 20000
-                    };
                     const subtotal = parseFloat("{{ cart.get_total_price }}");
 
                     document.addEventListener('DOMContentLoaded', function () {
@@ -70,30 +64,8 @@
                         const totalDisplay = document.getElementById('total-price');
 
                         function updateTotal() {
-                            const province = provinceSelect.value;
-                            let shipping = 0;
-
-                            if (subtotal > 100000) {
-                                shipping = 0;
-                            } else if (province) {
-                                if (shippingPrices[province]) {
-                                    shipping = shippingPrices[province];
-                                } else {
-                                    // Si no es una de las "cercanas" o "local" o "tdf", es resto del país
-                                    // Pero cuidado, mi objeto shippingPrices solo tiene las claves explícitas
-                                    // Debo replicar la lógica del backend 'ZONE_NEAR', etc o simplemente incluir todas en el objeto.
-
-                                    // Mejor estrategia para JS simple:
-                                    // Asumimos REST por default, y sobreescribimos si machea
-                                    shipping = 20000;
-                                    if (['L'].includes(province)) shipping = 5000;
-                                    else if (['B', 'C', 'X', 'D', 'R', 'Q'].includes(province)) shipping = 15500;
-                                    else if (['V'].includes(province)) shipping = 25000;
-                                }
-                            }
-
-                            shippingDisplay.innerText = `$${shipping.toLocaleString('es-AR', { minimumFractionDigits: 2 })}`;
-                            totalDisplay.innerText = `$${(subtotal + shipping).toLocaleString('es-AR', { minimumFractionDigits: 2 })}`;
+                            shippingDisplay.innerText = "A convenir";
+                            totalDisplay.innerText = `$${(subtotal).toLocaleString('es-AR', { minimumFractionDigits: 2 })}`;
                         }
 
                         if (provinceSelect) {
