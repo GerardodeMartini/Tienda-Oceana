@@ -36,6 +36,9 @@ class Order(models.Model):
     def get_total_cost(self):
         return sum(item.get_cost() for item in self.items.all())
 
+    def get_total_with_shipping(self):
+        return self.get_total_cost() + self.shipping_cost
+
 class OrderItem(models.Model):
     order = models.ForeignKey(Order,
                               related_name='items',
