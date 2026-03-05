@@ -2,6 +2,8 @@ import mercadopago
 from django.conf import settings
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
 from .models import OrderItem, Order
 from .forms import OrderCreateForm
 from cart.cart import Cart
@@ -141,9 +143,7 @@ from django.http import HttpResponse
 def payment_canceled(request):
     return render(request, 'orders/payment/canceled.html')
 
-from django.core.mail import send_mail
-from django.template.loader import render_to_string
-from django.conf import settings
+
 
 def process_order_completion(order):
     if order.stock_reduced:
