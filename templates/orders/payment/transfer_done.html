@@ -16,12 +16,26 @@
             <p style="margin-top: 1rem; color: var(--text-secondary);">
                 Te hemos enviado un correo electrónico con los detalles del pedido y la
                 información bancaria. Para confirmar tu compra:
-            </p>
             <ol style="margin-top: 1rem; margin-bottom: 1.5rem; color: var(--text-secondary); padding-left: 1.5rem;">
-                <li>Realiza la transferencia por <strong>${{ order.get_total_with_shipping }}</strong>.
+                <li>Realiza la transferencia por <strong>${{ order.get_total_with_shipping }}</strong> usando estos
+                    datos:
+                    <ul
+                        style="list-style-type: none; padding-left: 0; margin-top: 10px; background-color: var(--surface-light, rgba(0,0,0,0.05)); padding: 15px; border-radius: 8px;">
+                        <li><strong>Titular:</strong> Carla Antonella Bianciotti</li>
+                        <li><strong>CUIT/CUIL:</strong> 27-40402719-6</li>
+                        <li><strong>Alias:</strong> tienda.oceana.heiwa</li>
+                        <li><strong>Entidad:</strong> Uala Bank S.A.U</li>
+                    </ul>
                 </li>
                 <li>Envíanos el comprobante por WhatsApp indicando tu número de pedido (#{{ order.id }}).</li>
             </ol>
+
+            <div
+                style="background-color: rgba(255, 193, 7, 0.1); border-left: 4px solid #ffc107; padding: 1rem; margin-bottom: 1.5rem; color: var(--text-secondary); font-size: 0.9rem;">
+                <strong>Sugerencia de seguridad:</strong> Al momento de ingresar el Alias en tu aplicación bancaria,
+                asegúrate de que el nombre que aparezca como receptor coincida exactamente con <strong>Carla Antonella
+                    Bianciotti</strong> antes de confirmar el envío de dinero.
+            </div>
 
             <div style="text-align: center; margin-top: 2rem;">
                 <a href="https://wa.me/5493512160900?text={{ 'Hola! Acabo de hacer el pedido #'|urlencode }}{{ order.id }}{{ ' por transferencia web y te envío mi comprobante:'|urlencode }}"

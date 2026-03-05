@@ -50,13 +50,20 @@
     <p><strong>Método de pago:</strong> {{ order.get_payment_method_display }}</p>
 
     {% if order.payment_method == 'transferencia' %}
-    <p>Para confirmar tu compra, debes transferir el total a la siguiente cuenta y enviarnos el comprobante tocando el
-        botón de WhatsApp debajo. Una vez verificado el pago procederemos con el envío.</p>
-    <p style="background: #eef2f3; padding: 10px; border-radius: 5px;">
-        <strong>ALIAS:</strong> tienda.oceana.heiwa<br>
-        <strong>CBU/CVU:</strong> [CBU A CONFIRMAR]<br>
-        <strong>Titular:</strong> [TITULAR A CONFIRMAR]
-    </p>
+    <div style="background: #eef2f3; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+        <h3 style="margin-top: 0; color: #333;">Datos de la Cuenta</h3>
+        <p style="margin: 5px 0;"><strong>Titular:</strong> Carla Antonella Bianciotti</p>
+        <p style="margin: 5px 0;"><strong>CUIT/CUIL:</strong> 27-40402719-6</p>
+        <p style="margin: 5px 0;"><strong>Alias:</strong> tienda.oceana.heiwa</p>
+        <p style="margin: 5px 0;"><strong>Banco/Entidad:</strong> Uala Bank S.A.U</p>
+    </div>
+
+    <div
+        style="background-color: #fff3cd; color: #856404; padding: 10px 15px; border-left: 4px solid #ffeeba; margin-bottom: 20px;">
+        <strong>Sugerencia de seguridad:</strong> Al momento de ingresar el Alias en tu aplicación bancaria, asegúrate
+        de que el nombre que aparezca como receptor coincida exactamente con <strong>Carla Antonella Bianciotti</strong>
+        antes de confirmar el envío de dinero.
+    </div>
     {% else %}
     <p>Para coordinar el envío de tus productos, por favor contáctanos por WhatsApp enviándonos tu número de pedido.</p>
     {% endif %}
