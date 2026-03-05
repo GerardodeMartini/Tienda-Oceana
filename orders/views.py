@@ -35,7 +35,7 @@ def order_create(request):
             request.session['order_id'] = order.id
             
             if order.payment_method == 'transferencia':
-                process_order_completion(order)
+                send_order_emails(order, is_completed=False)
                 return redirect('orders:transfer_done')
             else:
                 # redirect for payment
@@ -165,6 +165,10 @@ def process_order_completion(order):
         if product.stock <= 10:
             low_stock_products.append(product)
 
+    send_order_emails(order, is_completed=True, low_stock_products=low_stock_products)
+
+
+def send_order_emails(order, is_completed=False, low_stock_products=None):
     # Email al comprador
     subject = f'Pedido #{order.id} confirmado - Tienda Virtual'
     html_message = render_to_string('orders/email/paid_order.html', {'order': order})

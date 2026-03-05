@@ -50,14 +50,25 @@
     <p><strong>Método de pago:</strong> {{ order.get_payment_method_display }}</p>
 
     {% if order.payment_method == 'transferencia' %}
-    <p>Para completar tu compra, por favor transfiere el total a la siguiente cuenta y envíanos el comprobante
-        respondendiendo a este correo.</p>
-    <p><strong>CBU / ALIAS:</strong> oceanatienda.mp <em>(o el alias que corresponda)</em></p>
+    <p>Para confirmar tu compra, debes transferir el total a la siguiente cuenta y enviarnos el comprobante tocando el
+        botón de WhatsApp debajo. Una vez verificado el pago procederemos con el envío.</p>
+    <p style="background: #eef2f3; padding: 10px; border-radius: 5px;">
+        <strong>ALIAS:</strong> [ALIAS A CONFIRMAR] <em>(Próximamente)</em><br>
+        <strong>CBU/CVU:</strong> [CBU A CONFIRMAR]<br>
+        <strong>Titular:</strong> [TITULAR A CONFIRMAR]
+    </p>
+    {% else %}
+    <p>Para coordinar el envío de tus productos, por favor contáctanos por WhatsApp enviándonos tu número de pedido.</p>
     {% endif %}
 
-    <p><strong>Datos de contacto del vendedor:</strong><br>
-        Email: soporte@oceana-heiwa.com.ar<br>
-        Teléfono: +54 9 11 1234-5678</p>
+    <div style="margin-top: 30px;">
+        <p><strong>Datos de contacto de la vendedora:</strong><br>
+            Oceana Heiwa Tienda</p>
+        <a href="https://wa.me/5493512160900?text={{ 'Hola! Vengo de la tienda web. Mi número de pedido es #'|urlencode }}{{ order.id }}"
+            style="display: inline-block; background-color: #25D366; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">
+            📱 Contactar por WhatsApp
+        </a>
+    </div>
 
     <p>Te avisaremos cuando tu pedido sea enviado.</p>
 
