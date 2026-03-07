@@ -589,7 +589,8 @@ textarea:focus,
     left: 0;
     width: 100%;
     pointer-events: none;
-    z-index: -1;
+    z-index: 0;
+    /* Cambio crítico: de -1 a 0 para que no quede detrás del background del body */
     overflow-x: hidden;
 }
 
