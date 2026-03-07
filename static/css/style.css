@@ -584,77 +584,111 @@ textarea:focus,
 
 /* --- Background Decorators --- */
 .bg-elements-container {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
     pointer-events: none;
     z-index: -1;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 .bg-element {
     position: absolute;
-    opacity: 0.08;
-    /* Muy sutil, casi marca de agua */
+    opacity: 0.15;
     max-width: 180px;
-    filter: grayscale(20%);
-    /* Apaga un poco el color para no distraer */
+    filter: grayscale(10%);
 }
 
-/* Esparcirlas de forma pseudoaleatoria y rotarlas */
+/* Esparcirlas usando vh para que superen el límite de una ventana normal */
 .bg-element-1 {
-    top: 5%;
-    left: 5%;
+    top: 5vh;
+    left: 5vw;
     transform: rotate(15deg);
     max-width: 150px;
 }
 
 .bg-element-2 {
-    top: 15%;
-    right: 5%;
+    top: 35vh;
+    right: 5vw;
     transform: rotate(-25deg);
     max-width: 200px;
 }
 
 .bg-element-3 {
-    bottom: 20%;
-    left: 8%;
+    top: 65vh;
+    left: 8vw;
     transform: rotate(45deg);
     max-width: 180px;
 }
 
 .bg-element-4 {
-    bottom: 10%;
-    right: 12%;
+    top: 100vh;
+    right: 12vw;
     transform: rotate(-10deg);
     max-width: 130px;
 }
 
 .bg-element-5 {
-    top: 40%;
-    left: 50%;
+    top: 130vh;
+    left: 50vw;
     transform: translate(-50%, -50%) rotate(30deg);
-    opacity: 0.04;
+    opacity: 0.08;
     max-width: 400px;
 }
 
 /* Gigante centro */
 .bg-element-6 {
-    top: 50%;
-    left: -50px;
+    top: 160vh;
+    left: -5vw;
     transform: rotate(90deg);
     max-width: 250px;
-    opacity: 0.06;
+    opacity: 0.12;
 }
 
 .bg-element-7 {
-    top: 60%;
-    right: 2%;
+    top: 200vh;
+    right: 3vw;
     transform: rotate(-45deg);
     max-width: 160px;
 }
+
+.bg-element-8 {
+    top: 240vh;
+    left: 15vw;
+    transform: rotate(35deg);
+    max-width: 140px;
+}
+
+.bg-element-9 {
+    top: 280vh;
+    right: 20vw;
+    transform: rotate(-15deg);
+    max-width: 190px;
+}
+
+.bg-element-10 {
+    top: 330vh;
+    left: 5vw;
+    transform: rotate(80deg);
+    max-width: 220px;
+}
+
+.bg-element-11 {
+    top: 380vh;
+    right: 8vw;
+    transform: rotate(-60deg);
+    max-width: 170px;
+}
+
+.bg-element-12 {
+    top: 430vh;
+    left: 40vw;
+    transform: rotate(10deg);
+    max-width: 250px;
+    opacity: 0.10;
+}
+
 
 /* --- Footer & Circulating Widget --- */
 .site-footer {
