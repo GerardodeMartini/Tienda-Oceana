@@ -105,21 +105,29 @@
 body {
     margin: 0;
     font-family: var(--font-body);
-    /* Soft Sage/Stone Mist - Clearly distinct from white */
     background-color: var(--bg-body);
-    /* Combine gradient concept with existing noise texture */
-    background-image: var(--bg-gradient), url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
-    background-repeat: no-repeat, repeat;
-    /* Gradient no-repeat, Texture repeat */
-    background-size: cover, auto;
-    /* Gradient covers viewport, Texture auto */
-    background-attachment: scroll, scroll;
-
     color: var(--text-main);
     line-height: 1.6;
     overflow-x: hidden;
     position: relative;
     -webkit-font-smoothing: antialiased;
+}
+
+/* Pseudo-elemento para aplicar la textura y tener control exacto del z-index del fondo */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    background-image: var(--bg-gradient), url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
+    background-repeat: no-repeat, repeat;
+    background-size: cover, auto;
+    background-attachment: scroll, scroll;
+    z-index: -2;
+    /* El fondo y textura están abajo del todo */
 }
 
 h1,
@@ -589,14 +597,14 @@ textarea:focus,
     left: 0;
     width: 100%;
     pointer-events: none;
-    z-index: 0;
-    /* Cambio crítico: de -1 a 0 para que no quede detrás del background del body */
+    z-index: -1;
+    /* Cambio crítico: lo devolvemos a -1 para que no superponga a otros pseudo-elemenentos. Textura en -2 */
     overflow-x: hidden;
 }
 
 .bg-element {
     position: absolute;
-    opacity: 0.15;
+    opacity: 0.20;
     max-width: 180px;
     filter: grayscale(10%);
 }
