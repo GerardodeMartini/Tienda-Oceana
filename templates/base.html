@@ -37,7 +37,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Quicksand:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=3">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=4">
 </head>
 
 <body data-theme="{{ request.session.theme|default:'ecosystem' }}">
@@ -45,6 +45,7 @@
     <!-- Background Elements -->
     <div class="bg-elements-container">
         {% if request.session.theme == 'oceana' %}
+        <!-- Bloque 1 (Arriba) -->
         <img src="{% static 'img/elementos_oceana/Elementos graficos_oceana_Oceana_caracol.png' %}"
             class="bg-element bg-element-1" alt="">
         <img src="{% static 'img/elementos_oceana/Elementos graficos_oceana_Oceana_flor.png' %}"
@@ -57,7 +58,45 @@
             class="bg-element bg-element-6" alt="">
         <img src="{% static 'img/elementos_oceana/Elementos graficos_oceana_Oceana_stingray.png' %}"
             class="bg-element bg-element-7" alt="">
+        <!-- Bloque 2 (Medio/Abajo) - Repetimos y esparcimos -->
+        <img src="{% static 'img/elementos_oceana/Elementos graficos_oceana_Oceana_flor.png' %}"
+            class="bg-element bg-element-8" alt="">
+        <img src="{% static 'img/elementos_oceana/Elementos graficos_oceana_Oceana_ondas.png' %}"
+            class="bg-element bg-element-9" alt="">
+        <img src="{% static 'img/elementos_oceana/Elementos graficos_oceana_Oceana_caracol.png' %}"
+            class="bg-element bg-element-10" alt="">
+        <img src="{% static 'img/elementos_oceana/Elementos graficos_oceana_Oceana_stingray.png' %}"
+            class="bg-element bg-element-11" alt="">
+        <img src="{% static 'img/elementos_oceana/Elementos graficos_oceana_Oceana_redondita.png' %}"
+            class="bg-element bg-element-12" alt="">
         {% elif request.session.theme == 'heiwa' %}
+        <!-- Bloque 1 (Arriba) -->
+        <img src="{% static 'img/elementos_heiwa/Logo final_Heiwa_Brote (1).png' %}" class="bg-element bg-element-1"
+            alt="">
+        <img src="{% static 'img/elementos_heiwa/Logo final_Heiwa_Enso (1).png' %}" class="bg-element bg-element-2"
+            alt="">
+        <img src="{% static 'img/elementos_heiwa/Logo final_Heiwa_Espiral (1).png' %}" class="bg-element bg-element-3"
+            alt="">
+        <img src="{% static 'img/elementos_heiwa/Logo final_Heiwa_Figura de Logo (1).png' %}"
+            class="bg-element bg-element-5" alt="">
+        <img src="{% static 'img/elementos_heiwa/Logo final_Heiwa_Honguito (1).png' %}" class="bg-element bg-element-6"
+            alt="">
+        <img src="{% static 'img/elementos_heiwa/Logo final_Heiwa_Ondas (1).png' %}" class="bg-element bg-element-4"
+            alt="">
+        <img src="{% static 'img/elementos_heiwa/Logo final_Heiwa_Raiz (1).png' %}" class="bg-element bg-element-7"
+            alt="">
+        <!-- Bloque 2 (Medio/Abajo) - Repetimos y esparcimos -->
+        <img src="{% static 'img/elementos_heiwa/Logo final_Heiwa_Enso (1).png' %}" class="bg-element bg-element-8"
+            alt="">
+        <img src="{% static 'img/elementos_heiwa/Logo final_Heiwa_Raiz (1).png' %}" class="bg-element bg-element-9"
+            alt="">
+        <img src="{% static 'img/elementos_heiwa/Logo final_Heiwa_Brote (1).png' %}" class="bg-element bg-element-10"
+            alt="">
+        <img src="{% static 'img/elementos_heiwa/Logo final_Heiwa_Espiral (1).png' %}" class="bg-element bg-element-11"
+            alt="">
+        <img src="{% static 'img/elementos_heiwa/Logo final_Heiwa_Honguito (1).png' %}" class="bg-element bg-element-12"
+            alt="">
+        {% endif %}
         <img src="{% static 'img/elementos_heiwa/Logo final_Heiwa_Brote (1).png' %}" class="bg-element bg-element-1"
             alt="">
         <img src="{% static 'img/elementos_heiwa/Logo final_Heiwa_Enso (1).png' %}" class="bg-element bg-element-2"
