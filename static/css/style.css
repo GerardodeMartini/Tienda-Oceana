@@ -704,6 +704,37 @@ textarea:focus,
     opacity: 0.10;
 }
 
+/* --- Densidad Extra --- */
+.bg-element-13 {
+    top: 115vh;
+    left: 20vw;
+    transform: rotate(135deg);
+    max-width: 140px;
+    opacity: 0.12;
+}
+
+.bg-element-14 {
+    top: 180vh;
+    right: 15vw;
+    transform: rotate(-100deg);
+    max-width: 190px;
+}
+
+.bg-element-15 {
+    top: 260vh;
+    left: 25vw;
+    transform: rotate(75deg);
+    max-width: 160px;
+}
+
+.bg-element-16 {
+    top: 360vh;
+    right: 25vw;
+    transform: rotate(-10deg);
+    max-width: 200px;
+    opacity: 0.15;
+}
+
 
 /* --- Footer & Circulating Widget --- */
 .site-footer {
