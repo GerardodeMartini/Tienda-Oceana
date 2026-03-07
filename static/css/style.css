@@ -599,6 +599,10 @@ textarea:focus,
     top: 0;
     left: 0;
     width: 100%;
+    height: 100%;
+    /* Toma solo el alto estricto del contenido del body */
+    overflow: hidden;
+    /* Corta de un tijeretazo todo lo que exceda el pie de página */
     pointer-events: none;
     z-index: -1;
     /* El fondo y ruido están en -2, el contenido normal en 0+ */
