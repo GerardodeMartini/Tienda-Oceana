@@ -41,6 +41,39 @@
 </head>
 
 <body data-theme="{{ request.session.theme|default:'ecosystem' }}">
+
+    <!-- Background Elements -->
+    <div class="bg-elements-container">
+        {% if request.session.theme == 'oceana' %}
+        <img src="{% static 'img/elementos_oceana/Elementos graficos_oceana_Oceana_caracol.png' %}"
+            class="bg-element bg-element-1" alt="">
+        <img src="{% static 'img/elementos_oceana/Elementos graficos_oceana_Oceana_flor.png' %}"
+            class="bg-element bg-element-2" alt="">
+        <img src="{% static 'img/elementos_oceana/Elementos graficos_oceana_Oceana_ondas.png' %}"
+            class="bg-element bg-element-3" alt="">
+        <img src="{% static 'img/elementos_oceana/Elementos graficos_oceana_Oceana_redondita.png' %}"
+            class="bg-element bg-element-4" alt="">
+        <img src="{% static 'img/elementos_oceana/Elementos graficos_oceana_Oceana_romero.png' %}"
+            class="bg-element bg-element-6" alt="">
+        <img src="{% static 'img/elementos_oceana/Elementos graficos_oceana_Oceana_stingray.png' %}"
+            class="bg-element bg-element-7" alt="">
+        {% elif request.session.theme == 'heiwa' %}
+        <img src="{% static 'img/elementos_heiwa/Logo final_Heiwa_Brote (1).png' %}" class="bg-element bg-element-1"
+            alt="">
+        <img src="{% static 'img/elementos_heiwa/Logo final_Heiwa_Enso (1).png' %}" class="bg-element bg-element-2"
+            alt="">
+        <img src="{% static 'img/elementos_heiwa/Logo final_Heiwa_Espiral (1).png' %}" class="bg-element bg-element-3"
+            alt="">
+        <img src="{% static 'img/elementos_heiwa/Logo final_Heiwa_Figura de Logo (1).png' %}"
+            class="bg-element bg-element-5" alt="">
+        <img src="{% static 'img/elementos_heiwa/Logo final_Heiwa_Honguito (1).png' %}" class="bg-element bg-element-6"
+            alt="">
+        <img src="{% static 'img/elementos_heiwa/Logo final_Heiwa_Ondas (1).png' %}" class="bg-element bg-element-4"
+            alt="">
+        <img src="{% static 'img/elementos_heiwa/Logo final_Heiwa_Raiz (1).png' %}" class="bg-element bg-element-7"
+            alt="">
+        {% endif %}
+    </div>
     <nav class="navbar" style="padding: 0.8rem 0;">
         <div class="container header-content"
             style="display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; width: 100%; gap: 1rem;">
