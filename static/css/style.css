@@ -601,8 +601,7 @@ textarea:focus,
     width: 100%;
     pointer-events: none;
     z-index: -1;
-    /* Cambio crítico: lo devolvemos a -1 para que no superponga a otros pseudo-elemenentos. Textura en -2 */
-    overflow-x: hidden;
+    /* El fondo y ruido están en -2, el contenido normal en 0+ */
 }
 
 .bg-element {
