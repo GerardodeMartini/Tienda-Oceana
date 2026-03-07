@@ -615,140 +615,102 @@ textarea:focus,
     filter: grayscale(10%);
 }
 
-/* Esparcirlas usando vh para que superen el límite de una ventana normal */
-.bg-element-1 {
-    top: 5vh;
+/* --- Background Decorators - Dynamic System --- */
+.bg-elements-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Toma todo el alto dinámico del body */
+    overflow: hidden;
+    /* Corta si se pasa del body */
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* Creamos "bloques" virtuales que miden por ejemplo 1500px de alto, 
+   y repetimos este bloque en el HTML tantas veces como queramos 
+   para llenar el scroll sin importar qué tan largo sea el documento */
+.bg-block {
+    position: relative;
+    width: 100%;
+    height: 1500px;
+    /* Altura fija por bloque repetitivo */
+}
+
+/* En lugar de usar vh absolutas al documento, usamos % relativos al bloque de 1500px */
+.bg-element {
+    position: absolute;
+    opacity: 0.18;
+    max-width: 180px;
+    filter: grayscale(10%);
+}
+
+.bg-pos-1 {
+    top: 5%;
     left: 5vw;
     transform: rotate(15deg);
     max-width: 150px;
 }
 
-.bg-element-2 {
-    top: 35vh;
-    right: 5vw;
+.bg-pos-2 {
+    top: 15%;
+    right: 8vw;
     transform: rotate(-25deg);
     max-width: 200px;
 }
 
-.bg-element-3 {
-    top: 65vh;
-    left: 8vw;
+.bg-pos-3 {
+    top: 25%;
+    left: 15vw;
     transform: rotate(45deg);
     max-width: 180px;
 }
 
-.bg-element-4 {
-    top: 100vh;
-    right: 12vw;
+.bg-pos-4 {
+    top: 35%;
+    right: 15vw;
     transform: rotate(-10deg);
-    max-width: 130px;
+    max-width: 140px;
 }
 
-.bg-element-5 {
-    top: 130vh;
+/* Centro Gigante */
+.bg-pos-5 {
+    top: 50%;
     left: 50vw;
     transform: translate(-50%, -50%) rotate(30deg);
-    opacity: 0.08;
     max-width: 400px;
+    opacity: 0.08;
 }
 
-/* Gigante centro */
-.bg-element-6 {
-    top: 160vh;
-    left: -5vw;
+.bg-pos-6 {
+    top: 65%;
+    left: 8vw;
     transform: rotate(90deg);
     max-width: 250px;
     opacity: 0.12;
 }
 
-.bg-element-7 {
-    top: 200vh;
-    right: 3vw;
+.bg-pos-7 {
+    top: 75%;
+    right: 5vw;
     transform: rotate(-45deg);
     max-width: 160px;
 }
 
-.bg-element-8 {
-    top: 240vh;
-    left: 15vw;
+.bg-pos-8 {
+    top: 85%;
+    left: 20vw;
     transform: rotate(35deg);
-    max-width: 140px;
+    max-width: 170px;
 }
 
-.bg-element-9 {
-    top: 280vh;
+.bg-pos-9 {
+    top: 95%;
     right: 20vw;
     transform: rotate(-15deg);
     max-width: 190px;
-}
-
-.bg-element-10 {
-    top: 330vh;
-    left: 5vw;
-    transform: rotate(80deg);
-    max-width: 220px;
-}
-
-.bg-element-11 {
-    top: 380vh;
-    right: 8vw;
-    transform: rotate(-60deg);
-    max-width: 170px;
-}
-
-.bg-element-12 {
-    top: 430vh;
-    left: 40vw;
-    transform: rotate(10deg);
-    max-width: 250px;
-    opacity: 0.10;
-}
-
-/* --- Densidad Extra --- */
-.bg-element-13 {
-    top: 115vh;
-    left: 20vw;
-    transform: rotate(135deg);
-    max-width: 140px;
-    opacity: 0.12;
-}
-
-.bg-element-14 {
-    top: 180vh;
-    right: 15vw;
-    transform: rotate(-100deg);
-    max-width: 190px;
-}
-
-.bg-element-15 {
-    top: 260vh;
-    left: 25vw;
-    transform: rotate(75deg);
-    max-width: 160px;
-}
-
-.bg-element-16 {
-    top: 360vh;
-    right: 25vw;
-    transform: rotate(-10deg);
-    max-width: 200px;
-    opacity: 0.15;
-}
-
-.bg-element-17 {
-    top: 90vh;
-    right: 5vw;
-    transform: rotate(45deg);
-    max-width: 170px;
-    opacity: 0.15;
-}
-
-.bg-element-18 {
-    top: 300vh;
-    left: 10vw;
-    transform: rotate(-120deg);
-    max-width: 210px;
-    opacity: 0.10;
 }
 
 
