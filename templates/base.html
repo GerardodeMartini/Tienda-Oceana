@@ -124,22 +124,6 @@
 
         </div>
     </nav>
-    {% else %}
-    <a href="{% url 'store:product_list' %}">Productos</a>
-    {% endif %}
-
-    <a href="{% url 'cart:cart_detail' %}"
-        style="display: flex; align-items: center; background: var(--bg-soft); padding: 0.5rem 1rem; border-radius: 20px; font-weight: 600;">
-        🛒 Carrito
-        {% if cart|length > 0 %}
-        <span class="badge" style="margin-left: 0.5rem;">{{ cart|length }}</span>
-        {% endif %}
-    </a>
-    </div>
-
-    </div>
-    </div>
-    </nav>
 
     <div class="container">
         {% if messages %}
