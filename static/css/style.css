@@ -735,6 +735,22 @@ textarea:focus,
     opacity: 0.15;
 }
 
+.bg-element-17 {
+    top: 90vh;
+    right: 5vw;
+    transform: rotate(45deg);
+    max-width: 170px;
+    opacity: 0.15;
+}
+
+.bg-element-18 {
+    top: 300vh;
+    left: 10vw;
+    transform: rotate(-120deg);
+    max-width: 210px;
+    opacity: 0.10;
+}
+
 
 /* --- Footer & Circulating Widget --- */
 .site-footer {

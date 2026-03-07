@@ -37,7 +37,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Quicksand:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=11">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=12">
 </head>
 
 <body data-theme="{{ request.session.theme|default:'ecosystem' }}">
@@ -54,6 +54,9 @@
             class="bg-element bg-element-3" alt="">
         <img src="{% static 'img/elementos_oceana/Elementos graficos_oceana_Oceana_redondita.png' %}"
             class="bg-element bg-element-4" alt="">
+        <!-- El 5 gigante que le faltaba a Oceana -->
+        <img src="{% static 'img/elementos_oceana/Elementos graficos_oceana_Oceana_romero.png' %}"
+            class="bg-element bg-element-5" alt="">
         <img src="{% static 'img/elementos_oceana/Elementos graficos_oceana_Oceana_romero.png' %}"
             class="bg-element bg-element-6" alt="">
         <img src="{% static 'img/elementos_oceana/Elementos graficos_oceana_Oceana_stingray.png' %}"
@@ -67,6 +70,11 @@
             class="bg-element bg-element-15" alt="">
         <img src="{% static 'img/elementos_oceana/Elementos graficos_oceana_Oceana_ondas.png' %}"
             class="bg-element bg-element-16" alt="">
+        <!-- Figuras compensatorias exclusivas de Océana por tener 1 nativa menos -->
+        <img src="{% static 'img/elementos_oceana/Elementos graficos_oceana_Oceana_caracol.png' %}"
+            class="bg-element bg-element-17" alt="">
+        <img src="{% static 'img/elementos_oceana/Elementos graficos_oceana_Oceana_stingray.png' %}"
+            class="bg-element bg-element-18" alt="">
         <!-- Bloque 2 (Medio/Abajo) - Repetimos y esparcimos -->
         <img src="{% static 'img/elementos_oceana/Elementos graficos_oceana_Oceana_flor.png' %}"
             class="bg-element bg-element-8" alt="">
