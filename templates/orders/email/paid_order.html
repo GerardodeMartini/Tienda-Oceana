@@ -1,85 +1,185 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 
 <head>
-    <style>
-        body {
-            font-family: sans-serif;
-            color: #333;
-        }
-
-        h1 {
-            color: #2c3e50;
-        }
-
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        li {
-            background: #f9f9f9;
-            margin: 5px 0;
-            padding: 10px;
-            border-radius: 5px;
-        }
-
-        .total {
-            font-weight: bold;
-            font-size: 1.2em;
-            margin-top: 20px;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <title>Confirmación de Pedido</title>
 </head>
 
-<body>
-    <h1>¡Gracias por tu compra, {{ order.first_name }}!</h1>
-    <p>Hemos recibido tu pago correctamente. Aquí tienes el resumen de tu pedido #{{ order.id }}:</p>
+<body
+    style="margin: 0; padding: 0; background-color: #F4F1EC; font-family: 'Quicksand', Helvetica, Arial, sans-serif; color: #262626; -webkit-font-smoothing: antialiased;">
 
-    <ul>
-        {% for item in order.items.all %}
-        <li>
-            {{ item.quantity }}x {{ item.product.title }}
-            - ${{ item.get_cost }}
-        </li>
-        {% endfor %}
-    </ul>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0"
+        style="background-color: #F4F1EC; padding: 40px 20px;">
+        <tr>
+            <td align="center">
+                <!-- Tarjeta Principal -->
+                <table width="100%" max-width="600" border="0" cellspacing="0" cellpadding="0"
+                    style="background-color: #FFFFFF; border-radius: 16px; overflow: hidden; max-width: 600px; box-shadow: 0 4px 20px rgba(38, 38, 38, 0.05);">
 
-    <p class="total">Total del Pedido: ${{ order.get_total_cost|add:order.shipping_cost }}</p>
+                    <!-- Header -->
+                    <tr>
+                        <td align="center" style="background-color: #3D5339; padding: 40px 20px;">
+                            <h1
+                                style="margin: 0; font-family: 'Playfair Display', Georgia, serif; font-size: 28px; color: #FFFFFF; font-weight: 600; letter-spacing: -0.02em;">
+                                ¡Gracias por tu compra! 🌿
+                            </h1>
+                        </td>
+                    </tr>
 
-    <p><strong>Método de pago:</strong> {{ order.get_payment_method_display }}</p>
+                    <!-- Cuerpo del Correo -->
+                    <tr>
+                        <td style="padding: 40px 30px;">
+                            <p style="margin: 0 0 20px 0; font-size: 16px; line-height: 1.6; color: #595959;">
+                                Hola <strong>{{ order.first_name }}</strong>,
+                            </p>
+                            <p style="margin: 0 0 30px 0; font-size: 16px; line-height: 1.6; color: #595959;">
+                                Hemos recibido tu pago correctamente. Aquí tienes el resumen de tu pedido <strong>#{{
+                                    order.id }}</strong>:
+                            </p>
 
-    {% if order.payment_method == 'transferencia' %}
-    <div style="background: #eef2f3; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
-        <h3 style="margin-top: 0; color: #333;">Datos de la Cuenta</h3>
-        <p style="margin: 5px 0;"><strong>Titular:</strong> Carla Antonella Bianciotti</p>
-        <p style="margin: 5px 0;"><strong>CUIT/CUIL:</strong> 27-40402719-6</p>
-        <p style="margin: 5px 0;"><strong>Alias:</strong> tienda.oceana.heiwa</p>
-        <p style="margin: 5px 0;"><strong>Banco/Entidad:</strong> Uala Bank S.A.U</p>
-    </div>
+                            <!-- Lista de Productos -->
+                            <div
+                                style="background-color: #F0EEEC; border-radius: 8px; padding: 20px; margin-bottom: 25px;">
+                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                    {% for item in order.items.all %}
+                                    <tr>
+                                        <td
+                                            style="padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.05); font-size: 15px; color: #262626;">
+                                            <strong>{{ item.quantity }}x</strong> {{ item.product.title }}
+                                        </td>
+                                        <td align="right"
+                                            style="padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.05); font-size: 15px; font-weight: 600; color: #3D5339;">
+                                            ${{ item.get_cost }}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                    <tr>
+                                        <td style="padding: 15px 0 5px 0; font-size: 15px; color: #595959;">
+                                            Costo de envío
+                                        </td>
+                                        <td align="right"
+                                            style="padding: 15px 0 5px 0; font-size: 15px; color: #595959;">
+                                            ${{ order.shipping_cost }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td
+                                            style="padding: 15px 0 0 0; font-size: 18px; font-family: 'Playfair Display', Georgia, serif; font-weight: 600; color: #262626;">
+                                            Total
+                                        </td>
+                                        <td align="right"
+                                            style="padding: 15px 0 0 0; font-size: 18px; font-weight: 700; color: #3D5339;">
+                                            ${{ order.get_total_cost|add:order.shipping_cost }}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
 
-    <div
-        style="background-color: #fff3cd; color: #856404; padding: 10px 15px; border-left: 4px solid #ffeeba; margin-bottom: 20px;">
-        <strong>Sugerencia de seguridad:</strong> Al momento de ingresar el Alias en tu aplicación bancaria, asegúrate
-        de que el nombre que aparezca como receptor coincida exactamente con <strong>Carla Antonella Bianciotti</strong>
-        antes de confirmar el envío de dinero.
-    </div>
-    {% else %}
-    <p>Para coordinar el envío de tus productos, por favor contáctanos por WhatsApp enviándonos tu número de pedido.</p>
-    {% endif %}
+                            <p style="margin: 0 0 25px 0; font-size: 15px; color: #595959;">
+                                <strong>Método de pago:</strong> {{ order.get_payment_method_display }}
+                            </p>
 
-    <div style="margin-top: 30px;">
-        <p><strong>Datos de contacto de la vendedora:</strong><br>
-            Oceana Heiwa Tienda</p>
-        <a href="https://wa.me/5493512160900?text={{ 'Hola! Vengo de la tienda web. Mi número de pedido es #'|urlencode }}{{ order.id }}"
-            style="display: inline-block; background-color: #25D366; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">
-            📱 Contactar por WhatsApp
-        </a>
-    </div>
+                            {% if order.payment_method == 'transferencia' %}
+                            <!-- Datos de Transferencia -->
+                            <div
+                                style="background-color: #FAFAFA; border: 1px solid #EAE7E2; border-radius: 8px; padding: 20px; margin-bottom: 20px;">
+                                <h3
+                                    style="margin: 0 0 15px 0; font-family: 'Playfair Display', Georgia, serif; font-size: 18px; color: #262626;">
+                                    🏦 Datos de la Cuenta
+                                </h3>
+                                <table width="100%" border="0" cellspacing="0" cellpadding="0"
+                                    style="font-size: 14px; color: #595959; line-height: 1.8;">
+                                    <tr>
+                                        <td width="100"><strong>Titular:</strong></td>
+                                        <td>Carla Antonella Bianciotti</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>CUIT/CUIL:</strong></td>
+                                        <td>27-40402719-6</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Alias:</strong></td>
+                                        <td style="color: #3D5339; font-weight: 600;">tienda.oceana.heiwa</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Banco/Entidad:</strong></td>
+                                        <td>Uala Bank S.A.U</td>
+                                    </tr>
+                                </table>
+                            </div>
 
-    <p>Te avisaremos cuando tu pedido sea enviado.</p>
+                            <div
+                                style="background-color: #FAFAFA; border: 1px solid #EAE7E2; border-radius: 8px; padding: 20px; margin-bottom: 20px;">
+                                <h3
+                                    style="margin: 0 0 15px 0; font-family: 'Playfair Display', Georgia, serif; font-size: 16px; color: #262626;">
+                                    📝 ¿Cómo continuar?
+                                </h3>
+                                <ol
+                                    style="margin: 0; padding-left: 20px; font-size: 14px; color: #595959; line-height: 1.6;">
+                                    <li style="margin-bottom: 10px;"><strong>Realizá la transferencia</strong> por el
+                                        total del pedido usando los datos bancarios de arriba.</li>
+                                    <li style="margin-bottom: 10px;"><strong>Envianos el comprobante</strong> por
+                                        WhatsApp haciendo clic en el botón de contacto que está más abajo, junto con tu
+                                        número de pedido (#{{ order.id }}).</li>
+                                    <li><strong>¡Listo!</strong> Una vez que corroboremos la transferencia, procederemos
+                                        al armado y envío de tu pedido.</li>
+                                </ol>
+                            </div>
 
-    <p>Atentamente,<br>El equipo de Tienda Virtual</p>
+                            <div
+                                style="background-color: rgba(212, 175, 55, 0.1); border-left: 4px solid #D4AF37; padding: 15px; margin-bottom: 30px; border-radius: 0 8px 8px 0;">
+                                <p style="margin: 0; font-size: 13px; color: #8A6D3B; line-height: 1.5;">
+                                    <strong>🔒 Sugerencia de seguridad:</strong> Al momento de ingresar el Alias en tu
+                                    aplicación bancaria, asegúrate de que el nombre que aparezca como receptor coincida
+                                    exactamente con <strong>Carla Antonella Bianciotti</strong> antes de confirmar el
+                                    envío de dinero.
+                                </p>
+                            </div>
+                            {% else %}
+                            <div
+                                style="background-color: #FAFAFA; border: 1px solid #EAE7E2; border-radius: 8px; padding: 20px; margin-bottom: 30px; text-align: center;">
+                                <p style="margin: 0; font-size: 15px; color: #595959; line-height: 1.6;">
+                                    Para coordinar el envío de tus productos, por favor contáctanos por WhatsApp
+                                    enviándonos tu número de pedido. 📦
+                                </p>
+                            </div>
+                            {% endif %}
+
+                            <!-- Contacto -->
+                            <div
+                                style="text-align: center; border-top: 1px solid #EAE7E2; padding-top: 30px; margin-top: 10px;">
+                                <p style="margin: 0 0 15px 0; font-size: 14px; color: #8C8C8C;">
+                                    ¿Tienes dudas o necesitas coordinar el envío?
+                                </p>
+                                <a href="https://wa.me/5493512160900?text={{ 'Hola! Vengo de la tienda web. Mi número de pedido es #'|urlencode }}{{ order.id }}"
+                                    style="display: inline-block; background-color: #25D366; color: #FFFFFF; padding: 12px 24px; text-decoration: none; border-radius: 50px; font-weight: 600; font-size: 15px; box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);">
+                                    📱 Contactar por WhatsApp
+                                </a>
+                            </div>
+
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td align="center"
+                            style="background-color: #FAFAFA; padding: 20px; border-top: 1px solid #EAE7E2;">
+                            <p
+                                style="margin: 0 0 5px 0; font-size: 13px; color: #8C8C8C; font-family: 'Playfair Display', Georgia, serif; font-style: italic;">
+                                Te avisaremos cuando tu pedido esté en camino. 🌊
+                            </p>
+                            <p style="margin: 0; font-size: 12px; color: #C9CED2;">
+                                El equipo de Océana & Heiwa
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+                <!-- Fin Tarjeta -->
+            </td>
+        </tr>
+    </table>
+
 </body>
 
 </html>
