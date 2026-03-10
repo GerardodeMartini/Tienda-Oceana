@@ -9,6 +9,7 @@ class ProductForm(forms.ModelForm):
         widgets = {
             'description': forms.Textarea(attrs={'rows': 4}),
             'price': forms.NumberInput(attrs={'step': '0.01', 'id': 'id_price'}),
+            'original_price': forms.HiddenInput(attrs={'id': 'id_original_price'}),
             'components': forms.SelectMultiple(attrs={'class': 'component-selector', 'style': 'height: 200px;'}),
         }
 

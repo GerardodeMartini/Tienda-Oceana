@@ -21,7 +21,8 @@
         {% endif %}
 
         {% for field in form %}
-        <div style="margin-bottom: 1.5rem;" id="field-{{ field.name }}" class="form-field-wrapper">
+        <div style="margin-bottom: 1.5rem; {% if field.is_hidden %}display: none;{% endif %}"
+            id="field-{{ field.name }}" class="form-field-wrapper">
             <label style="display: block; margin-bottom: 0.5rem; color: var(--text-muted);">
                 {{ field.label }}
                 <!-- Helper link to create category inline -->
@@ -86,9 +87,8 @@
                 style="margin-top: 1rem; padding: 1.5rem; background: var(--bg-soft); border-radius: var(--radius-sm); border: 1px solid rgba(212, 175, 55, 0.4); display: none;">
                 <h4 style="margin-top: 0; color: var(--accent-color); margin-bottom: 1rem; font-size: 1.1rem;">✨
                     Calculadora de Oferta</h4>
-                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Primero asegurate de
-                    rellenar el campo "Precio Original". Luego ingresá el descuento aquí y aplicalo al "Precio" de venta
-                    actual.</p>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Ingresa el porcentaje de
+                    descuento y aplícalo para calcular el monto final de oferta.</p>
 
                 <label style="display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Porcentaje de Descuento
                     (%)</label>
@@ -103,8 +103,8 @@
                 </div>
 
                 <button type="button" id="apply-sale-discount" class="btn btn-secondary"
-                    style="font-size: 0.9rem; padding: 0.6rem 1rem; width: 100%; transition: all 0.3s ease;">Aplicar al
-                    Precio FInal</button>
+                    style="font-size: 0.9rem; padding: 0.6rem 1rem; width: 100%; transition: all 0.3s ease;">Aplicar
+                    Precio de Descuento</button>
             </div>
             {% endif %}
 
@@ -295,12 +295,12 @@
                 }
 
                 function calculateSalePrice() {
-                    if (!originalPriceInput || !saleDiscountInput || !saleFinalDisplay) return 0;
-                    const originalPrice = parseFloat(originalPriceInput.value) || 0;
+                    if (!priceInput || !saleDiscountInput || !saleFinalDisplay) return { finalPrice: 0, originalPrice: 0 };
+                    const originalPrice = parseFloat(originalPriceInput.value) || parseFloat(priceInput.value) || 0;
                     const discount = parseFloat(saleDiscountInput.value) || 0;
                     const finalPrice = originalPrice * (1 - discount / 100);
                     saleFinalDisplay.textContent = '$' + finalPrice.toFixed(2);
-                    return finalPrice;
+                    return { finalPrice, originalPrice };
                 }
 
                 if (isOnSaleCheckbox) {
@@ -310,9 +310,12 @@
 
                 if (applySaleBtn) {
                     applySaleBtn.addEventListener('click', function () {
-                        const price = calculateSalePrice();
+                        const prices = calculateSalePrice();
                         if (priceInput) {
-                            priceInput.value = price.toFixed(2);
+                            if (!originalPriceInput.value) {
+                                originalPriceInput.value = prices.originalPrice.toFixed(2);
+                            }
+                            priceInput.value = prices.finalPrice.toFixed(2);
 
                             // Visual feedback
                             const originalText = this.textContent;
@@ -334,7 +337,19 @@
                 }
 
                 if (originalPriceInput) {
-                    originalPriceInput.addEventListener('input', calculateSalePrice);
+                    // We don't need this to trigger calculation directly anymore since it's hidden.
+                    // But we will use the priceInput instead.
+                }
+
+                if (priceInput) {
+                    priceInput.addEventListener('input', function () {
+                        // If they manually change the main price field, clear the hidden original price 
+                        // so calculations restart from this new base.
+                        if (originalPriceInput) {
+                            originalPriceInput.value = '';
+                        }
+                        calculateSalePrice();
+                    });
                 }
             });
         </script>
