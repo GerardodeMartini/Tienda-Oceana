@@ -17,8 +17,15 @@ def product_list(request, category_slug=None):
         products = products.filter(Q(brand=current_theme) | Q(brand='both'))
     
     if category_slug:
-        category = get_object_or_404(Category, slug=category_slug)
-        products = products.filter(category=category)
+        if category_slug == 'off':
+            class MockCategory:
+                name = "Tesoros en Oferta"
+                slug = "off"
+            category = MockCategory()
+            products = products.filter(is_on_sale=True)
+        else:
+            category = get_object_or_404(Category, slug=category_slug)
+            products = products.filter(category=category)
         
     return render(request, 'store/product/list.html', {
         'category': category,

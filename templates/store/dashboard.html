@@ -87,7 +87,7 @@
                         {% endif %}
                     </td>
                     <td style="padding: 1rem;">
-                        {% if product.is_active %}Active{% else %}Hidden{% endif %}
+                        {% if product.is_active %}Activo{% else %}Inactivo{% endif %}
                     </td>
                     <td style="padding: 1rem;">
                         <a href="{% url 'store:product_edit' product.id %}" class="btn btn-secondary"

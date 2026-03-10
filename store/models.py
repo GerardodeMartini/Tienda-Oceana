@@ -25,6 +25,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Precio')
     stock = models.IntegerField(default=0, verbose_name='Stock')
     is_active = models.BooleanField(default=True, verbose_name='Activo')
+    is_on_sale = models.BooleanField(default=False, verbose_name='En Oferta')
     created = models.DateTimeField(auto_now_add=True, verbose_name='Creado')
     updated = models.DateTimeField(auto_now=True, verbose_name='Actualizado')
     

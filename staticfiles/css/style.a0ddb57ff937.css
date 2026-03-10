@@ -1,0 +1,787 @@
+:root {
+    /* --- Paleta Base del Ecosistema (Por defecto) --- */
+    --bg-body: #F4F1EC;
+    --bg-surface: #FFFFFF;
+    --bg-soft: #EAE7E2;
+    --bg-gradient: none;
+    /* Sin gradiente por defecto */
+
+    --text-main: #262626;
+    --text-muted: #595959;
+    --text-light: #8C8C8C;
+
+    --border-color: #C9CED2;
+
+    /* Accents */
+    --primary: #262626;
+    --primary-dark: #000000;
+    --secondary: #9E9E9E;
+
+    /* Forms & Shapes Default */
+    --radius-soft: 8px;
+    --radius-card: 16px;
+    --radius-pill: 50px;
+    --radius-btn: 50px;
+    /* Ecosistema usa pill buttons */
+
+    /* Shadows */
+    --shadow-color: rgba(38, 38, 38, 0.1);
+    --shadow-soft: 0 4px 20px -2px var(--shadow-color);
+    --shadow-hover: 0 10px 25px -5px var(--shadow-color);
+
+    /* Funcional */
+    --success: #5F8D4E;
+    --danger: #B94E48;
+
+    /* Tipografía */
+    --font-heading: 'Playfair Display', serif;
+    --font-body: 'Quicksand', sans-serif;
+
+    --transition: cubic-bezier(0.4, 0, 0.2, 1) 0.4s;
+}
+
+/* --- Tema Océana: Agua / Mineral / Piel --- */
+[data-theme="oceana"] {
+    /* Paleta: Azul Profundo & Mineral */
+    --primary: #122033;
+    --primary-dark: #0D1624;
+    --secondary: #1F3A5A;
+    --accent-teal: #2E8A9E;
+    --accent-clay: #C48F76;
+
+    /* Fondo: Atmósfera Marina */
+    --bg-body: #F0F4F8;
+    /* Azul muy pálido/gris */
+    --bg-surface: #FFFFFF;
+    --bg-soft: #E1E8EE;
+    /* Gradiente sutil superior para dar atmósfera */
+    --bg-gradient: linear-gradient(180deg, rgba(18, 32, 51, 0.08) 0%, rgba(240, 244, 248, 0) 400px);
+
+    /* Formas: Orgánicas / Fluidas */
+    --radius-card: 24px;
+    /* Más redondeado, como piedras de río */
+    --radius-btn: 16px 24px 16px 24px;
+    /* Forma orgánica asimétrica */
+    --radius-soft: 12px;
+
+    /* Sombras: Tintadas de azul */
+    --shadow-color: rgba(18, 32, 51, 0.12);
+}
+
+/* --- Tema Heiwa: Raíz / Neurobotánica --- */
+[data-theme="heiwa"] {
+    /* Paleta: Verde Raíz & Tierra */
+    --primary: #3D5339;
+    --primary-dark: #2A3C28;
+    --secondary: #946F52;
+    --text-tech: #374E5F;
+
+    /* Fondo: Cálido / Terroso */
+    --bg-body: #F0EEEC;
+    /* Piedra cálida */
+    --bg-surface: #FCFAF8;
+    --bg-soft: #E6E2D8;
+    /* Textura o gradiente más sólido/mate */
+    --bg-gradient: linear-gradient(135deg, rgba(61, 83, 57, 0.05) 0%, rgba(148, 111, 82, 0.05) 100%);
+
+    /* Formas: Estables / Raíz / Técnicas */
+    --radius-card: 4px;
+    /* Casi cuadrado, sólido */
+    --radius-btn: 6px;
+    /* Botones estables */
+    --radius-pill: 8px;
+    /* Tags menos redondeados */
+    --radius-soft: 4px;
+
+    /* Sombras: Tintadas de tierra */
+    --shadow-color: rgba(61, 83, 57, 0.15);
+}
+
+/* Base Reset */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: var(--font-body);
+    /* FIX: Removemos background-color de aquí para evitar que el body tape con color a sus hijos z-index negativos */
+    background-color: transparent;
+    color: var(--text-main);
+    line-height: 1.6;
+    overflow-x: hidden;
+    position: relative;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Pseudo-elemento para aplicar la textura y tener control exacto del z-index del fondo */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    /* FIX: Aplicamos el color aquí abajo en el sótano */
+    background-color: var(--bg-body);
+    background-image: var(--bg-gradient), url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
+    background-repeat: no-repeat, repeat;
+    background-size: cover, auto;
+    background-attachment: scroll, scroll;
+    z-index: -2;
+    /* El fondo y textura están abajo del todo */
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    margin-top: 0;
+    color: var(--primary-dark);
+    letter-spacing: -0.02em;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: var(--transition);
+}
+
+/* Navbar - Floating Glass Effect */
+.navbar {
+    padding: 1rem 0;
+    /* Reduced vertical padding since we have 2 rows now */
+    background: var(--bg-surface);
+    opacity: 0.95;
+    backdrop-filter: blur(12px);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+    transition: all 0.3s ease;
+}
+
+.navbar .brand {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    /* Large and prominent */
+    color: var(--primary);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    line-height: 1;
+}
+
+.nav-links {
+    display: flex;
+    gap: 3rem;
+    align-items: center;
+}
+
+.nav-links a {
+    font-weight: 600;
+    color: var(--text-muted);
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.5rem 0;
+    position: relative;
+    border-bottom: 2px solid transparent;
+    /* For hover effect */
+}
+
+.nav-links a:hover {
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+}
+
+.nav-links a {
+    font-weight: 600;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+}
+
+.nav-links a:hover {
+    color: var(--primary);
+}
+
+.badge {
+    background: var(--secondary);
+    color: white;
+    padding: 0.2rem 0.6rem;
+    border-radius: var(--radius-pill);
+    font-size: 0.75rem;
+    font-weight: 700;
+    vertical-align: middle;
+}
+
+/* Layout */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+/* Buttons */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.8rem 1.8rem;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: var(--radius-btn);
+    /* Fully rounded for ecosystem, adaptive for brands */
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: var(--shadow-soft);
+}
+
+.btn:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    border: 1px solid var(--text-light);
+    color: var(--text-muted);
+}
+
+.btn-secondary:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    background-color: rgba(74, 103, 65, 0.05);
+    /* Soft green tint */
+}
+
+/* Hero Section */
+.hero {
+    text-align: center;
+    padding: 6rem 1rem;
+    background: linear-gradient(180deg, var(--bg-soft) 0%, rgba(250, 250, 249, 0) 100%);
+    margin-bottom: 3rem;
+}
+
+.hero h1 {
+    font-size: 3.5rem;
+    /* Large serif title */
+    margin-bottom: 1rem;
+    color: var(--primary-dark);
+}
+
+.hero p {
+    font-size: 1.25rem;
+    color: var(--text-muted);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Cards (Products) */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 3rem;
+    /* More breathing room */
+}
+
+.card {
+    background: var(--bg-surface);
+    border-radius: var(--radius-card);
+    transition: var(--transition);
+    border: none;
+    /* No border for cleaner look */
+    /* overflow: hidden; Removed overflow hidden to allow shadow to breathe, handled on image */
+    display: flex;
+    flex-direction: column;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-hover);
+}
+
+.card-image-wrapper {
+    position: relative;
+    padding-top: 120%;
+    /* Taller aspect ratio for elegance */
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    background-color: var(--bg-soft);
+}
+
+.card-image-wrapper img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s ease;
+    /* Slower, smoother zoom */
+}
+
+.card:hover .card-image-wrapper img {
+    transform: scale(1.03);
+}
+
+.card-body {
+    padding: 1.5rem 0.5rem;
+    /* Less horizontal padding since no borders */
+    text-align: center;
+    /* Centered info for premium feel */
+}
+
+.card-title {
+    font-family: var(--font-heading);
+    /* Serif for product names */
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-main);
+}
+
+.card-price {
+    font-weight: 700;
+    color: var(--secondary);
+    /* Gold accent for price */
+    font-size: 1.1rem;
+    display: block;
+    margin-bottom: 1rem;
+}
+
+/* Forms */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="number"],
+select,
+textarea {
+    width: 100%;
+    padding: 1rem;
+    background: var(--bg-soft);
+    border: 1px solid transparent;
+    border-radius: var(--radius-soft);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    color: var(--text-main);
+    transition: var(--transition);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    background: white;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(74, 103, 65, 0.1);
+}
+
+/* Sidebar / Categories */
+.sidebar h3 {
+    font-size: 1.5rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.cat-link {
+    display: block;
+    padding: 0.8rem 1rem;
+    color: var(--text-muted);
+    border-radius: var(--radius-soft);
+    margin-bottom: 0.25rem;
+    transition: var(--transition);
+}
+
+.cat-link:hover,
+.cat-link.active {
+    background-color: var(--bg-soft);
+    color: var(--primary);
+    font-weight: 600;
+}
+
+/* Specific Page Styles */
+.detail-gallery {
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+}
+
+.checkout-card {
+    background: var(--bg-surface);
+    padding: 3rem;
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-soft);
+}
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 1rem;
+    /* Separate rows visually */
+}
+
+th {
+    text-align: left;
+    color: var(--text-muted);
+    font-weight: 600;
+    padding: 1rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+td {
+    padding: 1rem;
+    background: var(--bg-soft);
+}
+
+tr td:first-child {
+    border-top-left-radius: var(--radius-soft);
+    border-bottom-left-radius: var(--radius-soft);
+}
+
+tr td:last-child {
+    border-top-right-radius: var(--radius-soft);
+    border-bottom-right-radius: var(--radius-soft);
+}
+
+/* Special Offers Banner */
+.banner-off {
+    background: linear-gradient(135deg, #D4AF37 0%, #B08D55 100%);
+    /* Gold/Earth Gradient */
+    color: white;
+    padding: 4rem 2rem;
+    border-radius: var(--radius-card);
+    text-align: center;
+    margin-bottom: 4rem;
+    box-shadow: 0 10px 30px -5px rgba(212, 175, 55, 0.4);
+    /* Golden glow */
+    position: relative;
+    overflow: hidden;
+}
+
+.banner-off::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 60%);
+    animation: shine 12s infinite linear;
+}
+
+@keyframes shine {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.banner-off h1 {
+    font-size: 3rem;
+    color: white;
+    margin-bottom: 0.5rem;
+    position: relative;
+    z-index: 1;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.banner-off p {
+    font-size: 1.25rem;
+    color: rgba(255, 255, 255, 0.9);
+    position: relative;
+    z-index: 1;
+    font-weight: 500;
+}
+
+/* Forms & Inputs - Enforce Visibility Globally */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="file"],
+select,
+textarea,
+.form-control {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--border-color) !important;
+    /* Force visual border (Slate-400) */
+    border-radius: var(--radius-pill);
+    background-color: var(--bg-surface);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    color: var(--text-main) !important;
+    /* Force Dark Text */
+    transition: all 0.2s ease;
+    outline: none;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* Specific override for dashboard standard inputs if they lack classes */
+form input:not([type="submit"]):not([type="hidden"]),
+form textarea,
+form select {
+    border: 1px solid var(--border-color) !important;
+    background-color: var(--bg-surface) !important;
+    color: var(--text-main) !important;
+    /* Force Dark Text */
+}
+
+/* Textarea Specifics: Fixed size + Scroll */
+textarea,
+form textarea {
+    resize: none !important;
+    /* Prevent manual resize */
+    height: 150px !important;
+    /* Fixed window height */
+    overflow-y: auto !important;
+    /* Scroll if content exceeds height */
+    border-radius: var(--radius-soft) !important;
+    /* Less rounded for text blocks */
+    line-height: 1.5;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+.form-control:focus {
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 3px var(--bg-soft) !important;
+}
+
+/* Form Groups spacing */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--text-main);
+    font-size: 0.95rem;
+}
+
+/* --- Background Decorators --- */
+.bg-elements-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Toma solo el alto estricto del contenido del body */
+    overflow: hidden;
+    /* Corta de un tijeretazo todo lo que exceda el pie de página */
+    pointer-events: none;
+    z-index: -1;
+    /* El fondo y ruido están en -2, el contenido normal en 0+ */
+}
+
+.bg-element {
+    position: absolute;
+    opacity: 0.20;
+    max-width: 180px;
+    filter: grayscale(10%);
+}
+
+/* --- Background Decorators - Dynamic System --- */
+.bg-elements-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Toma todo el alto dinámico del body */
+    overflow: hidden;
+    /* Corta si se pasa del body */
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* Creamos "bloques" virtuales que miden por ejemplo 1500px de alto, 
+   y repetimos este bloque en el HTML tantas veces como queramos 
+   para llenar el scroll sin importar qué tan largo sea el documento */
+.bg-block {
+    position: relative;
+    width: 100%;
+    height: 1500px;
+    /* Altura fija por bloque repetitivo */
+}
+
+/* En lugar de usar vh absolutas al documento, usamos % relativos al bloque de 1500px */
+.bg-element {
+    position: absolute;
+    opacity: 0.18;
+    max-width: 180px;
+    filter: grayscale(10%);
+}
+
+.bg-pos-1 {
+    top: 5%;
+    left: 5vw;
+    transform: rotate(15deg);
+    max-width: 150px;
+}
+
+.bg-pos-2 {
+    top: 15%;
+    right: 8vw;
+    transform: rotate(-25deg);
+    max-width: 200px;
+}
+
+.bg-pos-3 {
+    top: 25%;
+    left: 15vw;
+    transform: rotate(45deg);
+    max-width: 180px;
+}
+
+.bg-pos-4 {
+    top: 35%;
+    right: 15vw;
+    transform: rotate(-10deg);
+    max-width: 140px;
+}
+
+/* Centro Gigante */
+.bg-pos-5 {
+    top: 50%;
+    left: 50vw;
+    transform: translate(-50%, -50%) rotate(30deg);
+    max-width: 400px;
+    opacity: 0.08;
+}
+
+.bg-pos-6 {
+    top: 65%;
+    left: 8vw;
+    transform: rotate(90deg);
+    max-width: 250px;
+    opacity: 0.12;
+}
+
+.bg-pos-7 {
+    top: 75%;
+    right: 5vw;
+    transform: rotate(-45deg);
+    max-width: 160px;
+}
+
+.bg-pos-8 {
+    top: 85%;
+    left: 20vw;
+    transform: rotate(35deg);
+    max-width: 170px;
+}
+
+.bg-pos-9 {
+    top: 95%;
+    right: 20vw;
+    transform: rotate(-15deg);
+    max-width: 190px;
+}
+
+
+/* --- Footer & Circulating Widget --- */
+.site-footer {
+    background-color: transparent;
+    color: var(--text-main);
+    padding: 0;
+    margin-top: 4rem;
+    overflow: hidden;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.text-rotator-container {
+    padding: 2.5rem 1rem;
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 120px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+    perspective: 1000px;
+    width: 100%;
+}
+
+.rotator-text {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: var(--primary);
+    text-align: center;
+    margin: 0 auto;
+    max-width: 900px;
+    opacity: 1;
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+    transition: transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1), opacity 0.6s;
+    transform: rotateX(0deg);
+}
+
+/* Animation Classes */
+.rotator-text.rotate-out {
+    transform: rotateX(90deg);
+    opacity: 0;
+}
+
+.rotator-text.rotate-in-start {
+    transform: rotateX(-90deg);
+    opacity: 0;
+}
+
+.rotator-text.rotate-in-end {
+    transform: rotateX(0deg);
+    opacity: 1;
+}
+
+.footer-copyright {
+    text-align: center;
+    padding: 2rem;
+    font-size: 0.85rem;
+    opacity: 0.8;
+    background-color: transparent;
+    color: var(--text-muted);
+    font-family: var(--font-body);
+}
+
+/* Responsive adjustment */
+@media (max-width: 768px) {
+    .rotator-text {
+        font-size: 1.1rem;
+        padding: 0 1rem;
+    }
+}

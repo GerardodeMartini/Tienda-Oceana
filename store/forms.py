@@ -5,7 +5,7 @@ from .models import Product, Category
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ['category', 'title', 'description', 'price', 'stock', 'brand', 'is_combo', 'components', 'image', 'is_active']
+        fields = ['category', 'title', 'description', 'price', 'stock', 'brand', 'is_combo', 'components', 'image', 'is_active', 'is_on_sale']
         widgets = {
             'description': forms.Textarea(attrs={'rows': 4}),
             'price': forms.NumberInput(attrs={'step': '0.01', 'id': 'id_price'}),

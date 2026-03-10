@@ -105,21 +105,32 @@
 body {
     margin: 0;
     font-family: var(--font-body);
-    /* Soft Sage/Stone Mist - Clearly distinct from white */
-    background-color: var(--bg-body);
-    /* Combine gradient concept with existing noise texture */
-    background-image: var(--bg-gradient), url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
-    background-repeat: no-repeat, repeat;
-    /* Gradient no-repeat, Texture repeat */
-    background-size: cover, auto;
-    /* Gradient covers viewport, Texture auto */
-    background-attachment: scroll, scroll;
-
+    /* FIX: Removemos background-color de aquí para evitar que el body tape con color a sus hijos z-index negativos */
+    background-color: transparent;
     color: var(--text-main);
     line-height: 1.6;
     overflow-x: hidden;
     position: relative;
     -webkit-font-smoothing: antialiased;
+}
+
+/* Pseudo-elemento para aplicar la textura y tener control exacto del z-index del fondo */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    /* FIX: Aplicamos el color aquí abajo en el sótano */
+    background-color: var(--bg-body);
+    background-image: var(--bg-gradient), url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
+    background-repeat: no-repeat, repeat;
+    background-size: cover, auto;
+    background-attachment: scroll, scroll;
+    z-index: -2;
+    /* El fondo y textura están abajo del todo */
 }
 
 h1,
@@ -580,6 +591,126 @@ textarea:focus,
     font-weight: 600;
     color: var(--text-main);
     font-size: 0.95rem;
+}
+
+/* --- Background Decorators --- */
+.bg-elements-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Toma solo el alto estricto del contenido del body */
+    overflow: hidden;
+    /* Corta de un tijeretazo todo lo que exceda el pie de página */
+    pointer-events: none;
+    z-index: -1;
+    /* El fondo y ruido están en -2, el contenido normal en 0+ */
+}
+
+.bg-element {
+    position: absolute;
+    opacity: 0.20;
+    max-width: 180px;
+    filter: grayscale(10%);
+}
+
+/* --- Background Decorators - Dynamic System --- */
+.bg-elements-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Toma todo el alto dinámico del body */
+    overflow: hidden;
+    /* Corta si se pasa del body */
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* Creamos "bloques" virtuales que miden por ejemplo 1500px de alto, 
+   y repetimos este bloque en el HTML tantas veces como queramos 
+   para llenar el scroll sin importar qué tan largo sea el documento */
+.bg-block {
+    position: relative;
+    width: 100%;
+    height: 1500px;
+    /* Altura fija por bloque repetitivo */
+}
+
+/* En lugar de usar vh absolutas al documento, usamos % relativos al bloque de 1500px */
+.bg-element {
+    position: absolute;
+    opacity: 0.18;
+    max-width: 180px;
+    filter: grayscale(10%);
+}
+
+.bg-pos-1 {
+    top: 5%;
+    left: 5vw;
+    transform: rotate(15deg);
+    max-width: 150px;
+}
+
+.bg-pos-2 {
+    top: 15%;
+    right: 8vw;
+    transform: rotate(-25deg);
+    max-width: 200px;
+}
+
+.bg-pos-3 {
+    top: 25%;
+    left: 15vw;
+    transform: rotate(45deg);
+    max-width: 180px;
+}
+
+.bg-pos-4 {
+    top: 35%;
+    right: 15vw;
+    transform: rotate(-10deg);
+    max-width: 140px;
+}
+
+/* Centro Gigante */
+.bg-pos-5 {
+    top: 50%;
+    left: 50vw;
+    transform: translate(-50%, -50%) rotate(30deg);
+    max-width: 400px;
+    opacity: 0.08;
+}
+
+.bg-pos-6 {
+    top: 65%;
+    left: 8vw;
+    transform: rotate(90deg);
+    max-width: 250px;
+    opacity: 0.12;
+}
+
+.bg-pos-7 {
+    top: 75%;
+    right: 5vw;
+    transform: rotate(-45deg);
+    max-width: 160px;
+}
+
+.bg-pos-8 {
+    top: 85%;
+    left: 20vw;
+    transform: rotate(35deg);
+    max-width: 170px;
+}
+
+.bg-pos-9 {
+    top: 95%;
+    right: 20vw;
+    transform: rotate(-15deg);
+    max-width: 190px;
 }
 
 
