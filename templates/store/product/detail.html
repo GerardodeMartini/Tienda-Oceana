@@ -125,6 +125,10 @@
 
             <div
                 style="font-size: 2.25rem; font-weight: 700; color: var(--secondary); margin-bottom: 2rem; font-family: var(--font-heading);">
+                {% if product.is_on_sale and product.original_price %}
+                <del style="color: var(--text-muted); font-size: 0.6em; margin-right: 0.5rem; vertical-align: middle;">${{
+                    product.original_price }}</del>
+                {% endif %}
                 ${{ product.price }}
             </div>
 

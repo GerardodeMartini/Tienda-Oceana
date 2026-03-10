@@ -80,6 +80,34 @@
             </div>
             {% endif %}
 
+            {% if field.name == 'is_on_sale' %}
+            <!-- Discount Calculator for Sales -->
+            <div id="sale-calculator"
+                style="margin-top: 1rem; padding: 1.5rem; background: var(--bg-soft); border-radius: var(--radius-sm); border: 1px solid rgba(212, 175, 55, 0.4); display: none;">
+                <h4 style="margin-top: 0; color: var(--accent-color); margin-bottom: 1rem; font-size: 1.1rem;">✨
+                    Calculadora de Oferta</h4>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Primero asegurate de
+                    rellenar el campo "Precio Original". Luego ingresá el descuento aquí y aplicalo al "Precio" de venta
+                    actual.</p>
+
+                <label style="display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Porcentaje de Descuento
+                    (%)</label>
+                <input type="number" id="sale-discount-percent" placeholder="Ej: 20" min="0" max="100"
+                    style="margin-bottom: 1rem;">
+
+                <div
+                    style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 4px; text-align: center; margin-bottom: 1rem;">
+                    <span style="font-size: 0.9rem; color: var(--text-muted);">Precio de Oferta Calculado:</span>
+                    <strong id="sale-final-price"
+                        style="display: block; color: var(--success); font-size: 2rem; margin-top: 0.2rem;">$0.00</strong>
+                </div>
+
+                <button type="button" id="apply-sale-discount" class="btn btn-secondary"
+                    style="font-size: 0.9rem; padding: 0.6rem 1rem; width: 100%; transition: all 0.3s ease;">Aplicar al
+                    Precio FInal</button>
+            </div>
+            {% endif %}
+
             <style>
                 input[type="text"],
                 input[type="number"],
@@ -245,6 +273,68 @@
 
                 if (discountInput) {
                     discountInput.addEventListener('input', calculatePrice);
+                }
+
+                // --- Sale Calculator Logic ---
+                const isOnSaleCheckbox = document.querySelector('input[name="is_on_sale"]');
+                const saleCalculator = document.getElementById('sale-calculator');
+                const saleDiscountInput = document.getElementById('sale-discount-percent');
+                const originalPriceInput = document.querySelector('input[name="original_price"]');
+                const applySaleBtn = document.getElementById('apply-sale-discount');
+                const saleFinalDisplay = document.getElementById('sale-final-price');
+
+                function toggleSaleFields() {
+                    if (isOnSaleCheckbox && saleCalculator) {
+                        if (isOnSaleCheckbox.checked) {
+                            saleCalculator.style.display = 'block';
+                            calculateSalePrice(); // Calculate right away if showing
+                        } else {
+                            saleCalculator.style.display = 'none';
+                        }
+                    }
+                }
+
+                function calculateSalePrice() {
+                    if (!originalPriceInput || !saleDiscountInput || !saleFinalDisplay) return 0;
+                    const originalPrice = parseFloat(originalPriceInput.value) || 0;
+                    const discount = parseFloat(saleDiscountInput.value) || 0;
+                    const finalPrice = originalPrice * (1 - discount / 100);
+                    saleFinalDisplay.textContent = '$' + finalPrice.toFixed(2);
+                    return finalPrice;
+                }
+
+                if (isOnSaleCheckbox) {
+                    isOnSaleCheckbox.addEventListener('change', toggleSaleFields);
+                    toggleSaleFields(); // Init
+                }
+
+                if (applySaleBtn) {
+                    applySaleBtn.addEventListener('click', function () {
+                        const price = calculateSalePrice();
+                        if (priceInput) {
+                            priceInput.value = price.toFixed(2);
+
+                            // Visual feedback
+                            const originalText = this.textContent;
+                            this.textContent = "✔ ¡Aplicado al Precio!";
+                            this.style.backgroundColor = "var(--success)";
+                            this.style.color = "white";
+
+                            setTimeout(() => {
+                                this.textContent = originalText;
+                                this.style.backgroundColor = "";
+                                this.style.color = "";
+                            }, 2000);
+                        }
+                    });
+                }
+
+                if (saleDiscountInput) {
+                    saleDiscountInput.addEventListener('input', calculateSalePrice);
+                }
+
+                if (originalPriceInput) {
+                    originalPriceInput.addEventListener('input', calculateSalePrice);
                 }
             });
         </script>

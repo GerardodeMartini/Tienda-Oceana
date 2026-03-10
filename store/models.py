@@ -23,6 +23,7 @@ class Product(models.Model):
     image = models.ImageField(upload_to='products/', default='products/default.png', verbose_name='Imagen', blank=True)
     slug = models.SlugField(max_length=255, unique=True, verbose_name='Slug / URL') # Adding unique limit for better urls
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Precio')
+    original_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, verbose_name='Precio Original')
     stock = models.IntegerField(default=0, verbose_name='Stock')
     is_active = models.BooleanField(default=True, verbose_name='Activo')
     is_on_sale = models.BooleanField(default=False, verbose_name='En Oferta')
