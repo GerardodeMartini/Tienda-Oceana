@@ -152,7 +152,7 @@ neurobotánica y adaptógenos.{% endif %}
             </a>
             {% endif %}
             {% for c in categories %}
-            <a href="{{ c.get_absolute_url }}" class="cat-link {% if category.slug == c.slug %}active{% endif %}">
+            <a href="{{ c.get_absolute_url }}" class="cat-link {% if category and category.slug == c.slug %}active{% endif %}">
                 {{ c.name }}
             </a>
             {% endfor %}
