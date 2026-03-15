@@ -147,7 +147,7 @@ neurobotánica y adaptógenos.{% endif %}
                 Todas las Colecciones
             </a>
             {% if has_offers %}
-            <a href="{% url 'store:product_list_by_category' 'off' %}" class="cat-link {% if category.slug == 'off' %}active{% endif %}" style="color: var(--primary);">
+            <a href="{% url 'store:product_list_by_category' 'off' %}" class="cat-link {% if category and category.slug == 'off' %}active{% endif %}" style="color: var(--primary);">
                 ⭐ Tesoros en Oferta
             </a>
             {% endif %}
