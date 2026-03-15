@@ -192,8 +192,7 @@ neurobotánica y adaptógenos.{% endif %}
                     </a>
                     {% if product.is_on_sale and product.original_price %}
                     <span class="card-price">
-                        <del style="color: var(--text-muted); font-size: 0.9em; margin-right: 0.5rem;">${{
-                            product.original_price }}</del>
+                        <del style="color: var(--text-muted); font-size: 0.9em; margin-right: 0.5rem;">${{ product.original_price }}</del>
                         ${{ product.price }}
                     </span>
                     {% else %}
