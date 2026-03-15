@@ -3,7 +3,7 @@ from .models import Category, Product
 from cart.forms import CartAddProductForm
 from django.contrib.admin.views.decorators import staff_member_required
 from .forms import ProductForm, CategoryForm
-from django.db.models import Sum, F, Q, Count
+from django.db.models import Q
 
 def product_list(request, category_slug=None):
     category = None
@@ -11,29 +11,33 @@ def product_list(request, category_slug=None):
     
     # Filter by Brand based on Session Theme
     current_theme = request.session.get('theme', 'ecosystem')
-    # Filter categories that have active products matching the current theme
-    category_filter = Q(products__is_active=True)
     if current_theme in ['oceana', 'heiwa']:
-        category_filter &= (Q(products__brand=current_theme) | Q(products__brand='both'))
+        # Filter for the specific brand OR products marked as 'both'
         products = products.filter(Q(brand=current_theme) | Q(brand='both'))
     
-    categories = Category.objects.filter(category_filter).distinct()
+    # Calculate categories that have active products matching the brand filter
+    # This is more robust than complex annotations
+    active_category_ids = products.values_list('category_id', flat=True).distinct()
+    categories = Category.objects.filter(id__in=active_category_ids)
         
     has_offers = products.filter(is_on_sale=True).exists()
     
     if category_slug:
         if category_slug == 'off':
+            from django.urls import reverse
             class MockCategory:
-                name = "Tesoros en Oferta"
-                slug = "off"
-                
+                def __init__(self, name, slug, url):
+                    self.name = name
+                    self.slug = slug
+                    self.url = url
                 def get_absolute_url(self):
-                    from django.urls import reverse
-                    return reverse('store:product_list_by_category', args=['off'])
+                    return self.url
                     
-            category = MockCategory()
-            # The brand filter is already applied above to the 'products' queryset!
-            # We just need to add the sale filter on top of the already filtered brand products.
+            category = MockCategory(
+                name="Tesoros en Oferta", 
+                slug="off", 
+                url=reverse('store:product_list_by_category', args=['off'])
+            )
             products = products.filter(is_on_sale=True)
         else:
             category = get_object_or_404(Category, slug=category_slug)

@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-{% if category %}{{ category.name }} - Océana{% else %}Catálogo - Océana{% endif %}
+{% if category and category.name %}{{ category.name }}{% else %}Catálogo{% endif %} - Océana
 {% endblock %}
 
 {% block meta_description %}
@@ -164,7 +164,7 @@ neurobotánica y adaptógenos.{% endif %}
         <div
             style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 3rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem;">
             <h2 style="margin: 0; font-size: 2rem; color: var(--primary-dark);">
-                {% if category %}{{ category.name }}{% else %}Destacados{% endif %}
+                {% if category and category.name %}{{ category.name }}{% else %}Destacados{% endif %}
             </h2>
             <span
                 style="color: var(--text-light); font-size: 0.9rem; font-weight: 500; letter-spacing: 1px; text-transform: uppercase;">
