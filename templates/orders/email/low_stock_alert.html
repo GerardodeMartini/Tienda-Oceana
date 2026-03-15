@@ -31,10 +31,11 @@
     <h1>⚠️ Alerta de Stock Bajo</h1>
     <p>Los siguientes productos han alcanzado un stock de 10 unidades o menos y requieren reposición:</p>
     <ul>
+        {% load brand_tags %}
         {% for product in products %}
         <li>
             <strong>{{ product.title }}</strong> - Quedan {{ product.stock }} unidades
-            ({% if product.brand == 'oceana' %}Océana{% elif product.brand == 'heiwa' %}Heiwa{% else %}Ambos{% endif %})
+            ({% brand_name_from_value product.brand %})
         </li>
         {% endfor %}
     </ul>

@@ -21,16 +21,20 @@ class ProductForm(forms.ModelForm):
             # Filter brand choices based on group
             if self.user.groups.filter(name='Oceana Managers').exists():
                 self.fields['brand'].choices = [
-                    ('oceana', 'Océana'),
-                    ('both', 'Ambos (Ecosistema)'),
+                    (Product.BRAND_OCEANA, 'Océana'),
+                    (Product.BRAND_BOTH, 'Ambos (Ecosistema)'),
                 ]
-                self.fields['components'].queryset = Product.objects.filter(models.Q(brand='oceana') | models.Q(brand='both'))
+                self.fields['components'].queryset = Product.objects.filter(
+                    models.Q(brand=Product.BRAND_OCEANA) | models.Q(brand=Product.BRAND_BOTH)
+                )
             elif self.user.groups.filter(name='Heiwa Managers').exists():
                 self.fields['brand'].choices = [
-                    ('heiwa', 'Heiwa'),
-                    ('both', 'Ambos (Ecosistema)'),
+                    (Product.BRAND_HEIWA, 'Heiwa'),
+                    (Product.BRAND_BOTH, 'Ambos (Ecosistema)'),
                 ]
-                self.fields['components'].queryset = Product.objects.filter(models.Q(brand='heiwa') | models.Q(brand='both'))
+                self.fields['components'].queryset = Product.objects.filter(
+                    models.Q(brand=Product.BRAND_HEIWA) | models.Q(brand=Product.BRAND_BOTH)
+                )
 
 class CategoryForm(forms.ModelForm):
     class Meta:

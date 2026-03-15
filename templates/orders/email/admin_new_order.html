@@ -64,10 +64,11 @@
 
     <p>Detalle de la compra:</p>
     <ul>
+        {% load brand_tags %}
         {% for item in order.items.all %}
         <li>
             {{ item.quantity }}x {{ item.product.title }}
-            {% if item.product.brand == 'oceana' %}(Océana){% elif item.product.brand == 'heiwa' %}(Heiwa){% endif %}
+            ({% brand_name_from_value item.product.brand %})
             - ${{ item.get_cost }}
         </li>
         {% endfor %}

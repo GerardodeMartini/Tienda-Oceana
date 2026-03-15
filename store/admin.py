@@ -21,10 +21,14 @@ class ProductAdmin(admin.ModelAdmin):
         
         # Filter by group membership
         if request.user.groups.filter(name='Oceana Managers').exists():
-            return qs.filter(models.Q(brand='oceana') | models.Q(brand='both'))
+            return qs.filter(
+                models.Q(brand=Product.BRAND_OCEANA) | models.Q(brand=Product.BRAND_BOTH)
+            )
         
         if request.user.groups.filter(name='Heiwa Managers').exists():
-            return qs.filter(models.Q(brand='heiwa') | models.Q(brand='both'))
+            return qs.filter(
+                models.Q(brand=Product.BRAND_HEIWA) | models.Q(brand=Product.BRAND_BOTH)
+            )
             
         return qs
 
@@ -40,13 +44,13 @@ class ProductAdmin(admin.ModelAdmin):
         if db_field.name == "brand" and not request.user.is_superuser:
             if request.user.groups.filter(name='Oceana Managers').exists():
                 kwargs['choices'] = [
-                    ('oceana', 'Océana'),
-                    ('both', 'Ambos (Ecosistema)'),
+                    (Product.BRAND_OCEANA, 'Océana'),
+                    (Product.BRAND_BOTH, 'Ambos (Ecosistema)'),
                 ]
             elif request.user.groups.filter(name='Heiwa Managers').exists():
                 kwargs['choices'] = [
-                    ('heiwa', 'Heiwa'),
-                    ('both', 'Ambos (Ecosistema)'),
+                    (Product.BRAND_HEIWA, 'Heiwa'),
+                    (Product.BRAND_BOTH, 'Ambos (Ecosistema)'),
                 ]
         return super().formfield_for_choice_field(db_field, request, **kwargs)
 

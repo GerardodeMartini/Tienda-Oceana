@@ -30,10 +30,14 @@ class Product(models.Model):
     created = models.DateTimeField(auto_now_add=True, verbose_name='Creado')
     updated = models.DateTimeField(auto_now=True, verbose_name='Actualizado')
     
+    BRAND_OCEANA = 'oceana'
+    BRAND_HEIWA = 'heiwa'
+    BRAND_BOTH = 'both'
+
     BRAND_CHOICES = (
-        ('oceana', 'Océana'),
-        ('heiwa', 'Heiwa'),
-        ('both', 'Ambos (Ecosistema)'),
+        (BRAND_OCEANA, 'Océana'),
+        (BRAND_HEIWA, 'Heiwa'),
+        (BRAND_BOTH, 'Ambos (Ecosistema)'),
     )
     brand = models.CharField(max_length=20, choices=BRAND_CHOICES, default='both', verbose_name='Marca del Producto')
     
