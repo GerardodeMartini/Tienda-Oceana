@@ -24,6 +24,8 @@ def product_list(request, category_slug=None):
         categories = Category.objects.annotate(
             active_product_count=Count('products', filter=Q(products__is_active=True))
         ).filter(active_product_count__gt=0)
+        
+    has_offers = products.filter(is_on_sale=True).exists()
     
     if category_slug:
         if category_slug == 'off':
@@ -32,8 +34,8 @@ def product_list(request, category_slug=None):
                 slug = "off"
                 
                 def get_absolute_url(self):
-                    # Return hardcoded path so template links back to itself without error
-                    return "/catalog/category/off/"
+                    from django.urls import reverse
+                    return reverse('store:product_list_by_category', args=['off'])
                     
             category = MockCategory()
             # The brand filter is already applied above to the 'products' queryset!
@@ -46,7 +48,8 @@ def product_list(request, category_slug=None):
     return render(request, 'store/product/list.html', {
         'category': category,
         'categories': categories,
-        'products': products
+        'products': products,
+        'has_offers': has_offers
     })
 
 def product_detail(request, slug):

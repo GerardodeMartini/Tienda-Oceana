@@ -119,6 +119,7 @@ neurobotánica y adaptógenos.{% endif %}
 </div>
 {% endif %}
 
+{% if has_offers and not category %}
 <!-- Banner Link to Offers -->
 <div class="container" style="margin-bottom: 2rem;">
     <a href="{% url 'store:product_list_by_category' 'off' %}" style="text-decoration: none; display: block;">
@@ -137,7 +138,7 @@ neurobotánica y adaptógenos.{% endif %}
 </div>
 {% endif %}
 
-<div class="catalog-layout" style="margin-top: {% if category %}4rem{% else %}0px{% endif %};">
+<div class="catalog-layout" style="margin-top: {% if category %}4rem{% else %}0{% endif %};">
     <!-- Sidebar -->
     <aside class="sidebar">
         <h3>Categorías</h3>
@@ -145,6 +146,11 @@ neurobotánica y adaptógenos.{% endif %}
             <a href="{% url 'store:product_list' %}" class="cat-link {% if not category %}active{% endif %}">
                 Todas las Colecciones
             </a>
+            {% if has_offers %}
+            <a href="{% url 'store:product_list_by_category' 'off' %}" class="cat-link {% if category.slug == 'off' %}active{% endif %}" style="color: var(--primary);">
+                ⭐ Tesoros en Oferta
+            </a>
+            {% endif %}
             {% for c in categories %}
             <a href="{{ c.get_absolute_url }}" class="cat-link {% if category.slug == c.slug %}active{% endif %}">
                 {{ c.name }}
