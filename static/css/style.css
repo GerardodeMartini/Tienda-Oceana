@@ -827,14 +827,14 @@ textarea:focus,
         margin-bottom: 0.5rem;
     }
 
-    /* Shrink the logos dramatically */
+    /* Shrink the logos dramatically but keep them visible */
     .brand img {
-        height: 60px !important;
+        height: 80px !important;
     }
 
     /* Special case for the combined logos layout */
     .brand div img {
-        height: 60px !important;
+        height: 80px !important;
     }
     
     .brand div {
@@ -846,11 +846,13 @@ textarea:focus,
         font-size: 1.5rem !important;
     }
 
-    /* Center Account and Cart buttons */
+    /* Center Account and Cart buttons on the same line */
     .header-content > div:last-child {
         align-items: center !important;
         justify-self: center !important;
-        flex-direction: column;
+        flex-direction: row;
+        justify-content: center;
+        flex-wrap: wrap;
         gap: 1rem;
     }
 
@@ -898,6 +900,51 @@ textarea:focus,
     }
 
     /* Checkout spacing */
+    .checkout-card {
+        padding: 1.5rem;
+    }
+
+    /* Make Tables Responsive (Cart) */
+    table, thead, tbody, th, td, tr {
+        display: block;
+    }
+
+    thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px; /* Hide headers visually but keep for screen readers if needed */
+    }
+
+    tr {
+        border-bottom: 2px solid var(--bg-soft);
+        margin-bottom: 1rem;
+        background: transparent !important;
+    }
+
+    td {
+        border: none !important;
+        position: relative;
+        padding-left: 50% !important; 
+        text-align: right !important;
+        min-height: 50px;
+    }
+
+    td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 1rem;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        text-align: left;
+        font-weight: 600;
+        color: var(--text-muted);
+    }
+    
+    /* Specific table cells fix */
+    td > div {
+        justify-content: flex-end;
+    }
     .checkout-card {
         padding: 1.5rem;
     }

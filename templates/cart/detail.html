@@ -23,18 +23,18 @@
                 {% for item in cart %}
                 {% with product=item.product %}
                 <tr style="background: var(--bg-soft); border-radius: var(--radius-soft);">
-                    <td
+                    <td data-label="Producto"
                         style="padding: 1rem; border-top-left-radius: var(--radius-soft); border-bottom-left-radius: var(--radius-soft);">
                         <div style="display: flex; align-items: center; gap: 1rem;">
                             <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}"
                                 alt="{{ product.title }}"
                                 style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px;">
-                            <span style="font-weight: 600; color: var(--text-main);">{{ product.title }}</span>
+                            <span style="font-weight: 600; color: var(--text-main); text-align: left;">{{ product.title }}</span>
                         </div>
                     </td>
-                    <td style="padding: 1rem;">
+                    <td data-label="Cantidad" style="padding: 1rem;">
                         <form action="{% url 'cart:cart_add' product.id %}" method="post"
-                            style="display: flex; align-items: center; gap: 0.5rem;">
+                            style="display: flex; align-items: center; justify-content: flex-end; gap: 0.5rem;">
                             {% csrf_token %}
                             {{ item.update_quantity_form.quantity }}
                             {{ item.update_quantity_form.override }}
@@ -50,12 +50,12 @@
                             </style>
                         </form>
                     </td>
-                    <td style="padding: 1rem; color: var(--text-muted);">${{ item.price }}</td>
-                    <td style="padding: 1rem; font-weight: 700; color: var(--primary-dark);">${{ item.total_price }}
+                    <td data-label="Precio" style="padding: 1rem; color: var(--text-muted);">${{ item.price }}</td>
+                    <td data-label="Total" style="padding: 1rem; font-weight: 700; color: var(--primary-dark);">${{ item.total_price }}
                     </td>
-                    <td
+                    <td data-label=""
                         style="padding: 1rem; text-align: right; border-top-right-radius: var(--radius-soft); border-bottom-right-radius: var(--radius-soft);">
-                        <form action="{% url 'cart:cart_remove' product.id %}" method="post">
+                        <form action="{% url 'cart:cart_remove' product.id %}" method="post" style="display: inline-block;">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-danger"
                                 style="border: none; color: var(--text-light); font-size: 1.2rem; cursor: pointer; padding: 0;">×</button>
