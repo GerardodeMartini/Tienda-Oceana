@@ -33,7 +33,7 @@ neurobotánica y adaptógenos.{% endif %}
 
 {% block content %}
 
-{% if category.slug == "off" %}
+{% if category and category.slug == "off" %}
 <div class="banner-off">
     <h1>Tesoro Natural: Oportunidades Únicas</h1>
     <p>Descubre productos seleccionados con precios especiales por tiempo limitado.</p>

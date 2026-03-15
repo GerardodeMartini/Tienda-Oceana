@@ -11,19 +11,13 @@ def product_list(request, category_slug=None):
     
     # Filter by Brand based on Session Theme
     current_theme = request.session.get('theme', 'ecosystem')
+    # Filter categories that have active products matching the current theme
+    category_filter = Q(products__is_active=True)
     if current_theme in ['oceana', 'heiwa']:
-        # Filter for the specific brand OR products marked as 'both'
+        category_filter &= (Q(products__brand=current_theme) | Q(products__brand='both'))
         products = products.filter(Q(brand=current_theme) | Q(brand='both'))
-        
-        # Only get categories that have active products for THIS specific brand
-        categories = Category.objects.annotate(
-            active_product_count=Count('products', filter=Q(products__is_active=True) & (Q(products__brand=current_theme) | Q(products__brand='both')))
-        ).filter(active_product_count__gt=0)
-    else:
-        # If no specific theme, show all categories with any active product
-        categories = Category.objects.annotate(
-            active_product_count=Count('products', filter=Q(products__is_active=True))
-        ).filter(active_product_count__gt=0)
+    
+    categories = Category.objects.filter(category_filter).distinct()
         
     has_offers = products.filter(is_on_sale=True).exists()
     
