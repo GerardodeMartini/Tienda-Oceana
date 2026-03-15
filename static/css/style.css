@@ -827,6 +827,12 @@ textarea:focus,
         margin-bottom: 0.5rem;
     }
 
+    /* Make the logo container act bigger visually without taking more space */
+    .brand {
+        transform: scale(1.35);
+        margin: 0.5rem 0 !important;
+    }
+
     /* Shrink the logos dramatically but keep them visible */
     .brand img {
         height: 80px !important;
