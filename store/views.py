@@ -3,11 +3,10 @@ from .models import Category, Product
 from cart.forms import CartAddProductForm
 from django.contrib.admin.views.decorators import staff_member_required
 from .forms import ProductForm, CategoryForm
-from django.db.models import Sum, F, Q
+from django.db.models import Sum, F, Q, Count
 
 def product_list(request, category_slug=None):
     category = None
-    categories = Category.objects.all()
     products = Product.objects.filter(is_active=True)
     
     # Filter by Brand based on Session Theme
@@ -15,13 +14,30 @@ def product_list(request, category_slug=None):
     if current_theme in ['oceana', 'heiwa']:
         # Filter for the specific brand OR products marked as 'both'
         products = products.filter(Q(brand=current_theme) | Q(brand='both'))
+        
+        # Only get categories that have active products for THIS specific brand
+        categories = Category.objects.annotate(
+            active_product_count=Count('products', filter=Q(products__is_active=True) & (Q(products__brand=current_theme) | Q(products__brand='both')))
+        ).filter(active_product_count__gt=0)
+    else:
+        # If no specific theme, show all categories with any active product
+        categories = Category.objects.annotate(
+            active_product_count=Count('products', filter=Q(products__is_active=True))
+        ).filter(active_product_count__gt=0)
     
     if category_slug:
         if category_slug == 'off':
             class MockCategory:
                 name = "Tesoros en Oferta"
                 slug = "off"
+                
+                def get_absolute_url(self):
+                    # Return hardcoded path so template links back to itself without error
+                    return "/catalog/category/off/"
+                    
             category = MockCategory()
+            # The brand filter is already applied above to the 'products' queryset!
+            # We just need to add the sale filter on top of the already filtered brand products.
             products = products.filter(is_on_sale=True)
         else:
             category = get_object_or_404(Category, slug=category_slug)
