@@ -22,6 +22,6 @@ class BrandMiddleware(MiddlewareMixin):
             
             # Si queremos que volver al root restablezca al ecosistema:
             if path == '/':
-                 request.session['theme'] = 'ecosystem'
+                request.session['theme'] = 'ecosystem'
 
         return None

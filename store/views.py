@@ -11,20 +11,31 @@ def product_list(request, category_slug=None):
     
     # Filter by Brand based on Session Theme
     current_theme = request.session.get('theme', 'ecosystem')
-    if current_theme in ['oceana', 'heiwa']:
-        # Filter for the specific brand OR products marked as 'both'
-        products = products.filter(Q(brand=current_theme) | Q(brand='both'))
     
-    # Calculate categories that have active products matching the brand filter
-    # This is more robust than complex annotations
-    active_category_ids = products.values_list('category_id', flat=True).distinct()
-    categories = Category.objects.filter(id__in=active_category_ids)
-        
+    # Base filter for categories - only show those with at least one active product for this brand
+    category_filter = Q(products__is_active=True)
+    if current_theme in ['oceana', 'heiwa']:
+        brand_q = Q(brand=current_theme) | Q(brand='both')
+        products = products.filter(brand_q)
+        category_filter &= Q(products__brand=current_theme) | Q(products__brand='both')
+    
+    categories = Category.objects.filter(category_filter).distinct()
     has_offers = products.filter(is_on_sale=True).exists()
     
     if category_slug:
         if category_slug == 'off':
-            from django.urls import reverse
+            from django.urls import reverse, NoReverseMatch
+            
+            # Determine the correct URL for offers based on current namespace
+            try:
+                # Try to resolve within current namespace (oceana, heiwa, or default)
+                current_ns = request.resolver_match.namespace if request.resolver_match else 'store'
+                if not current_ns: current_ns = 'store'
+                offer_url = reverse(f'{current_ns}:product_list_by_category', args=['off'])
+            except NoReverseMatch:
+                # Fallback to absolute path or default store namespace
+                offer_url = f"/{current_theme}/category/off/" if current_theme != 'ecosystem' else "/store/category/off/"
+
             class MockCategory:
                 def __init__(self, name, slug, url):
                     self.name = name
@@ -33,11 +44,7 @@ def product_list(request, category_slug=None):
                 def get_absolute_url(self):
                     return self.url
                     
-            category = MockCategory(
-                name="Tesoros en Oferta", 
-                slug="off", 
-                url=reverse('store:product_list_by_category', args=['off'])
-            )
+            category = MockCategory(name="Tesoros en Oferta", slug="off", url=offer_url)
             products = products.filter(is_on_sale=True)
         else:
             category = get_object_or_404(Category, slug=category_slug)
