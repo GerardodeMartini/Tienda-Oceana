@@ -850,10 +850,30 @@ textarea:focus,
     .header-content > div:last-child {
         align-items: center !important;
         justify-self: center !important;
-        flex-direction: row;
+        flex-direction: row !important;
         justify-content: center;
-        flex-wrap: wrap;
-        gap: 1rem;
+        flex-wrap: nowrap !important;
+        gap: 0.5rem !important;
+        width: 100%;
+    }
+
+    /* Shrink the auth links and inner paddings to fit on one line */
+    .auth-links {
+        gap: 0.5rem !important;
+    }
+
+    .auth-links a, .header-content > div:last-child > a {
+        font-size: 0.75rem !important;
+        white-space: nowrap;
+    }
+    
+    .auth-links .btn {
+        padding: 0.2rem 0.5rem !important;
+    }
+
+    /* Shrink Cart Button */
+    .header-content > div:last-child > a {
+        padding: 0.3rem 0.6rem !important;
     }
 
     /* Reset the grid minmax columns so it goes to 1 column */
