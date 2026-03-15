@@ -15,7 +15,7 @@ def main():
 
     # Initialize Gemini
     genai.configure(api_key=api_key)
-    model = genai.GenerativeModel('gemini-1.5-pro')
+    model = genai.GenerativeModel('gemini-flash-latest')
 
     # Parse arguments
     parser = argparse.ArgumentParser(description="Consulta interna a la IA de Google para desarrollo.")

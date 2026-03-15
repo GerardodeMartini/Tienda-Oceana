@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 {% load static %}
+{% load brand_tags %}
 
 {% block title %}
-{% if category and category.name %}{{ category.name }}{% else %}Catálogo{% endif %} - Océana
+{% if category and category.name %}{{ category.name }}{% else %}Catálogo{% endif %} - {% current_theme_brand_name %}
 {% endblock %}
 
 {% block meta_description %}
@@ -12,7 +13,7 @@ Productos y kits de puro bienestar, neurobotánica, adaptógenos y cosmética li
 {% endblock %}
 
 {% block og_title %}
-{% if category %}{{ category.name }} - Océana{% else %}Catálogo - Océana{% endif %}
+{% if category %}{{ category.name }} - {% current_theme_brand_name %}{% else %}Catálogo - {% current_theme_brand_name %}{% endif %}
 {% endblock %}
 
 {% block og_description %}
@@ -22,7 +23,7 @@ neurobotánica y adaptógenos.{% endif %}
 {% endblock %}
 
 {% block twitter_title %}
-{% if category %}{{ category.name }} - Océana{% else %}Catálogo - Océana{% endif %}
+{% if category %}{{ category.name }} - {% current_theme_brand_name %}{% else %}Catálogo - {% current_theme_brand_name %}{% endif %}
 {% endblock %}
 
 {% block twitter_description %}

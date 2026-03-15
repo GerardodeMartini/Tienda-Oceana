@@ -1,11 +1,12 @@
 {% extends "base.html" %}
 {% load static %}
+{% load brand_tags %}
 
-{% block title %}{{ product.title }} - Océana{% endblock %}
+{% block title %}{{ product.title }} - {% brand_name_from_value product.brand %}{% endblock %}
 
 {% block meta_description %}{{ product.description|truncatewords:25 }}{% endblock %}
 
-{% block og_title %}{{ product.title }} - Océana{% endblock %}
+{% block og_title %}{{ product.title }} - {% brand_name_from_value product.brand %}{% endblock %}
 {% block og_description %}{{ product.description|truncatewords:25 }}{% endblock %}
 {% block og_image %}
 {% if product.image %}
@@ -16,7 +17,7 @@
 {% endblock %}
 {% block og_type %}product{% endblock %}
 
-{% block twitter_title %}{{ product.title }} - Océana{% endblock %}
+{% block twitter_title %}{{ product.title }} - {% brand_name_from_value product.brand %}{% endblock %}
 {% block twitter_description %}{{ product.description|truncatewords:25 }}{% endblock %}
 {% block twitter_image %}
 {% if product.image %}

@@ -42,7 +42,7 @@ def register(request):
                     
                     # Generar token y link de activacion
                     current_site = get_current_site(request)
-                    mail_subject = 'Activa tu cuenta en Tienda Océana'
+                    mail_subject = 'Activa tu cuenta en Tienda Océana & Heiwa'
                     uid = urlsafe_base64_encode(force_bytes(new_user.pk))
                     token = default_token_generator.make_token(new_user)
                     activation_link = f"http://{current_site.domain}/accounts/activate/{uid}/{token}/"
