@@ -847,9 +847,11 @@ textarea:focus,
     .nav-links {
         order: 2;
         justify-content: center !important;
+        justify-self: center !important;
         flex-wrap: wrap;
         gap: 1rem !important;
         margin-bottom: 0.5rem;
+        width: 100%;
     }
 
     .header-right-col {
