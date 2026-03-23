@@ -89,7 +89,7 @@
         </div>
         {% endfor %}
     </div>
-    <nav class="navbar" style="padding: 0.4rem 0;">
+    <nav class="navbar" style="padding: {% if request.session.theme == 'oceana' %}0.2rem{% else %}0.4rem{% endif %} 0;">
         <div class="container header-content"
             style="display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; width: 100%; gap: 1rem;">
 
@@ -116,7 +116,7 @@
                     style="height: 220px; width: auto; vertical-align: middle;">
                 {% elif request.session.theme == 'oceana' %}
                 <img src="{% static 'img/logo_oceana.png' %}" alt="Océana"
-                    style="height: 300px; width: auto; vertical-align: middle;">
+                    style="height: 240px; width: auto; vertical-align: middle;">
                 {% else %}
                 <div style="display: flex; gap: 20px; align-items: center;">
                     <img src="{% static 'img/logo_oceana.png' %}" alt="Océana" style="height: 200px; width: auto;">
