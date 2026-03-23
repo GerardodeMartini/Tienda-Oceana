@@ -42,24 +42,66 @@ neurobotánica y adaptógenos.{% endif %}
 {% endif %}
 
 {% if not category %}
-{% if request.session.theme == 'heiwa' %}
+{% if request.session.theme == 'heiwa' or request.session.theme == 'oceana' %}
 <style>
-    .manifesto-text-heiwa {
+    .manifesto-carousel {
+        position: relative;
+        padding: 6rem 2rem;
+        margin-bottom: 3rem;
+        text-align: center;
+        overflow: hidden;
+        /* border-radius: 12px; Optional, can keep it or remove it */
+        transition: background-image 1s ease-in-out;
+        background-size: cover;
+        background-position: center;
+        min-height: 400px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .manifesto-carousel::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.35); /* Capa para legibilidad */
+        z-index: 1;
+    }
+
+    .manifesto-carousel > * {
+        position: relative;
+        z-index: 2;
+    }
+
+    .manifesto-text-carousel {
         font-family: var(--font-body);
-        /* font-style: italic; Removed for cleaner look */
-        line-height: 1.4;
-        font-size: 0.95rem;
+        line-height: 1.6;
+        font-size: 1.1rem;
         white-space: pre-line;
-        max-width: 800px;
+        max-width: 850px;
         margin: 0 auto;
-        color: var(--primary-dark);
+        color: #ffffff;
+        text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    }
+
+    .manifesto-title-carousel {
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        color: #ffffff;
+        text-shadow: 0 2px 10px rgba(0,0,0,0.5);
     }
 </style>
-<div style="padding: 4rem 1rem; text-align: center; margin-bottom: 3rem;">
-    <h1
-        style="font-size: 1.5rem; margin-bottom: 0.5rem; letter-spacing: 2px; text-transform: uppercase; color: var(--primary);">
-        Manifiesto Heiwa</h1>
-    <div class="manifesto-text-heiwa">
+
+<div class="manifesto-carousel" id="manifesto-carousel">
+    {% if request.session.theme == 'heiwa' %}
+    <h1 class="manifesto-title-carousel">Manifiesto Heiwa</h1>
+    <div class="manifesto-text-carousel">
         HEIWA ES UN ESTADO. Una pausa. Una respiración. Un retorno a tu centro.
         Vivimos en un mundo que estimula, exige, acelera.
         Pero nuestros cuerpos, nuestras mentes, nuestras emociones... no evolucionaron para vivir así.
@@ -78,25 +120,9 @@ neurobotánica y adaptógenos.{% endif %}
 
         Heiwa significa paz. Y esa paz, empieza en vos.
     </div>
-</div>
-{% elif request.session.theme == 'oceana' %}
-<style>
-    .manifesto-text {
-        font-family: var(--font-body);
-        /* font-style: italic; Removed for cleaner look */
-        line-height: 1.4;
-        font-size: 0.95rem;
-        white-space: pre-line;
-        max-width: 800px;
-        margin: 0 auto;
-        color: var(--secondary);
-    }
-</style>
-<div style="padding: 4rem 1rem; text-align: center; margin-bottom: 3rem;">
-    <h1
-        style="font-size: 1.5rem; margin-bottom: 0.5rem; letter-spacing: 2px; text-transform: uppercase; color: var(--primary);">
-        Manifiesto Océana</h1>
-    <div class="manifesto-text">
+    {% elif request.session.theme == 'oceana' %}
+    <h1 class="manifesto-title-carousel">Manifiesto Océana</h1>
+    <div class="manifesto-text-carousel">
         OCÉANA NO ES SOLO COSMÉTICA. Es un acto de conciencia.
         Es el encuentro entre naturaleza viva y ciencia sensible.
         Creamos fórmulas que respetan tu piel, tu cuerpo, tu entorno y tus ritmos.
@@ -112,7 +138,44 @@ neurobotánica y adaptógenos.{% endif %}
         Como el océano: profunda, viva, regeneradora.
         Así es tu piel. Así es Océana.
     </div>
+    {% endif %}
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const images = [
+            "{% static 'img/foto portada/5N2A5023-1.jpg' %}",
+            "{% static 'img/foto portada/5N2A5050-1.jpg' %}",
+            "{% static 'img/foto portada/5N2A5186-1.jpg' %}",
+            "{% static 'img/foto portada/5N2A5187-1.jpg' %}",
+            "{% static 'img/foto portada/5N2A5226-1.jpg' %}",
+            "{% static 'img/foto portada/5N2A5525-1.jpg' %}",
+            "{% static 'img/foto portada/5N2A5557-2.jpg' %}"
+        ];
+        
+        const carousel = document.getElementById('manifesto-carousel');
+        if (!carousel) return;
+
+        let currentIndex = 0;
+        
+        // Preload images to avoid flickers
+        images.forEach(src => {
+            const img = new Image();
+            img.src = src;
+        });
+
+        function rotateBackground() {
+            carousel.style.backgroundImage = `url('${images[currentIndex]}')`;
+            currentIndex = (currentIndex + 1) % images.length;
+        }
+
+        // Initial background
+        rotateBackground();
+        
+        // Interval for rotation (4 seconds)
+        setInterval(rotateBackground, 4000);
+    });
+</script>
 {% else %}
 <div class="hero">
     <h1>Lo Mejor de la Naturaleza, para Ti</h1>

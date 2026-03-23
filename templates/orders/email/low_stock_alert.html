@@ -1,45 +1,172 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 
 <head>
+    <meta charset="UTF-8">
+    <title>Alerta de Stock Bajo - Océana &amp; Heiwa</title>
     <style>
         body {
-            font-family: sans-serif;
-            color: #333;
+            margin: 0;
+            padding: 24px;
+            background-color: #F4F1EC;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: #262626;
+            -webkit-font-smoothing: antialiased;
         }
 
-        h1 {
-            color: #e74c3c;
+        .card {
+            max-width: 640px;
+            margin: 0 auto;
+            background-color: #FFFFFF;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
         }
 
-        ul {
+        .card-header {
+            background: linear-gradient(135deg, #3D5339, #8BA89F);
+            padding: 24px 28px;
+            color: #FFFFFF;
+        }
+
+        .card-header h1 {
+            margin: 0;
+            font-size: 22px;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .card-header p {
+            margin: 8px 0 0;
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        .card-body {
+            padding: 24px 28px 20px;
+        }
+
+        .intro {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #555555;
+            margin: 0 0 16px 0;
+        }
+
+        .summary-chip {
+            display: inline-block;
+            margin-bottom: 16px;
+            padding: 6px 10px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            border-radius: 999px;
+            background-color: #F0F5F2;
+            color: #3D5339;
+        }
+
+        .product-list {
             list-style-type: none;
+            margin: 0;
             padding: 0;
         }
 
-        li {
-            background: #fdf2e9;
-            margin: 5px 0;
-            padding: 10px;
-            border-radius: 5px;
-            border-left: 4px solid #e67e22;
+        .product-item {
+            background: #F7F4EF;
+            margin-bottom: 8px;
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: 1px solid #E3DDD2;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+        }
+
+        .product-main {
+            max-width: 75%;
+        }
+
+        .product-title {
+            font-weight: 600;
+            color: #2E3A2E;
+            margin: 0 0 2px 0;
+        }
+
+        .product-meta {
+            font-size: 12px;
+            color: #77736A;
+            margin: 0;
+        }
+
+        .stock-pill {
+            padding: 4px 10px;
+            border-radius: 999px;
+            background-color: #FCE6DB;
+            color: #A4472E;
+            font-size: 11px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .card-footer {
+            padding: 0 28px 22px;
+            font-size: 12px;
+            color: #8A8173;
+            border-top: 1px solid #EEE7DE;
+            margin-top: 18px;
+        }
+
+        .card-footer p {
+            margin: 12px 0 0;
+            line-height: 1.5;
         }
     </style>
 </head>
 
 <body>
-    <h1>⚠️ Alerta de Stock Bajo</h1>
-    <p>Los siguientes productos han alcanzado un stock de 10 unidades o menos y requieren reposición:</p>
-    <ul>
-        {% load brand_tags %}
-        {% for product in products %}
-        <li>
-            <strong>{{ product.title }}</strong> - Quedan {{ product.stock }} unidades
-            ({% brand_name_from_value product.brand %})
-        </li>
-        {% endfor %}
-    </ul>
-    <p>Por favor, considere reponer el inventario pronto.</p>
+    {% load brand_tags %}
+    <div class="card">
+        <div class="card-header">
+            <h1>Alerta de stock bajo</h1>
+            <p>Algunos productos de Océana &amp; Heiwa están por debajo del umbral de seguridad.</p>
+        </div>
+        <div class="card-body">
+            <p class="intro">
+                Los siguientes productos han alcanzado un stock de <strong>10 unidades o menos</strong> y sería ideal
+                planificar su reposición para evitar quiebres de stock.
+            </p>
+
+            <span class="summary-chip">
+                {{ products|length }} productos en nivel crítico
+            </span>
+
+            <ul class="product-list">
+                {% for product in products %}
+                <li class="product-item">
+                    <div class="product-main">
+                        <p class="product-title">{{ product.title }}</p>
+                        <p class="product-meta">
+                            Marca: {% brand_name_from_value product.brand %} · Categoría: {{ product.category.name }}
+                        </p>
+                    </div>
+                    <span class="stock-pill">
+                        {{ product.stock }} en stock
+                    </span>
+                </li>
+                {% endfor %}
+            </ul>
+
+            <div class="card-footer">
+                <p>
+                    Este correo se genera de forma automática a partir del inventario de la tienda online. Si ya
+                    estás gestionando la reposición de alguno de estos productos, podés ignorar ese ítem.
+                </p>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>
