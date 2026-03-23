@@ -113,22 +113,22 @@
                 style="margin: 0; display: flex; align-items: center; justify-self: center;">
                 {% if request.session.theme == 'heiwa' %}
                 <img src="{% static 'img/Logo final_Heiwa_Logo combinado_marron (1).png' %}" alt="Heiwa"
-                    style="height: 220px; width: auto; vertical-align: middle;">
+                    class="header-logo logo-heiwa">
                 {% elif request.session.theme == 'oceana' %}
                 <img src="{% static 'img/logo_oceana.png' %}" alt="Océana"
-                    style="height: 240px; width: auto; vertical-align: middle;">
+                    class="header-logo logo-oceana">
                 {% else %}
-                <div style="display: flex; gap: 20px; align-items: center;">
-                    <img src="{% static 'img/logo_oceana.png' %}" alt="Océana" style="height: 200px; width: auto;">
-                    <span style="font-weight: 300; font-size: 2.2rem; color: var(--text-muted);">&amp;</span>
+                <div style="display: flex; gap: 20px; align-items: center;" class="logo-ecosystem">
+                    <img src="{% static 'img/logo_oceana.png' %}" alt="Océana" class="header-logo logo-oceana-sub">
+                    <span class="ecosystem-ampersand" style="font-weight: 300; color: var(--text-muted);">&amp;</span>
                     <img src="{% static 'img/Logo final_Heiwa_Logo combinado_marron (1).png' %}" alt="Heiwa"
-                        style="height: 160px; width: auto;">
+                        class="header-logo logo-heiwa-sub">
                 </div>
                 {% endif %}
             </a>
 
             <!-- Right side: User & Cart -->
-            <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 0.8rem; justify-self: end;">
+            <div class="header-right-col" style="display: flex; flex-direction: column; align-items: flex-end; gap: 0.8rem; justify-self: end;">
                 
                 <!-- Row 1: Welcome & Cart -->
                 <div style="display: flex; align-items: center; gap: 1.5rem;">

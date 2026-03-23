@@ -202,6 +202,19 @@ a {
     border-bottom-color: var(--primary);
 }
 
+/* Logo Sizing */
+.header-logo {
+    width: auto;
+    vertical-align: middle;
+    transition: all 0.3s ease;
+}
+
+[data-theme="heiwa"] .logo-heiwa { height: 220px; }
+[data-theme="oceana"] .logo-oceana { height: 240px; }
+.logo-oceana-sub { height: 200px; }
+.logo-heiwa-sub { height: 160px; }
+.ecosystem-ampersand { font-size: 2.2rem; }
+
 .nav-links a {
     font-weight: 600;
     color: var(--text-muted);
@@ -812,44 +825,46 @@ textarea:focus,
     }
 
     /* Navbar Redesign for Mobile */
-    /* Break the 3-column grid stack horizontally */
     .navbar .header-content {
         grid-template-columns: 1fr !important;
-        gap: 1.5rem !important;
+        gap: 0.5rem !important;
+        padding: 0.5rem 0;
         text-align: center;
     }
 
-    /* Move nav links to center and wrap */
+    .brand {
+        order: 1;
+        justify-content: center !important;
+        margin-bottom: 0.5rem !important;
+    }
+
+    [data-theme="heiwa"] .logo-heiwa { height: 90px !important; }
+    [data-theme="oceana"] .logo-oceana { height: 110px !important; }
+    .logo-oceana-sub { height: 70px !important; }
+    .logo-heiwa-sub { height: 50px !important; }
+    .ecosystem-ampersand { font-size: 1.5rem !important; }
+
     .nav-links {
-        justify-content: center;
+        order: 2;
+        justify-content: center !important;
         flex-wrap: wrap;
-        gap: 1rem;
+        gap: 1rem !important;
         margin-bottom: 0.5rem;
     }
 
-    /* Make the logo container act bigger visually without taking more space */
-    .brand {
-        transform: scale(1.35);
-        margin: 0.5rem 0 !important;
+    .header-right-col {
+        order: 3;
+        align-items: center !important;
+        justify-self: center !important;
+        text-align: center;
+        gap: 0.5rem !important;
+        width: 100%;
     }
 
-    /* Shrink the logos dramatically but keep them visible */
-    .brand img {
-        height: 80px !important;
-    }
-
-    /* Special case for the combined logos layout */
-    .brand div img {
-        height: 80px !important;
-    }
-    
-    .brand div {
-        flex-direction: row;
-        justify-content: center;
-    }
-
-    .brand div span {
-        font-size: 1.5rem !important;
+    .auth-links {
+        justify-content: center !important;
+        flex-wrap: wrap;
+        gap: 0.5rem !important;
     }
 
     /* Center Account and Cart buttons on the same line */
