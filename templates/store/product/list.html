@@ -46,15 +46,21 @@ neurobotánica y adaptógenos.{% endif %}
 <style>
     .manifesto-carousel {
         position: relative;
-        padding: 6rem 2rem;
+        /* Break out of container */
+        width: 100vw;
+        left: 50%;
+        right: 50%;
+        margin-left: -50vw;
+        margin-right: -50vw;
+        
+        padding: 8rem 2rem;
         margin-bottom: 3rem;
         text-align: center;
         overflow: hidden;
-        /* border-radius: 12px; Optional, can keep it or remove it */
         transition: background-image 1s ease-in-out;
         background-size: cover;
         background-position: center;
-        min-height: 400px;
+        min-height: 600px;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -80,18 +86,18 @@ neurobotánica y adaptógenos.{% endif %}
     .manifesto-text-carousel {
         font-family: var(--font-body);
         line-height: 1.6;
-        font-size: 1.1rem;
+        font-size: 1.15rem;
         white-space: pre-line;
-        max-width: 850px;
+        max-width: 900px;
         margin: 0 auto;
         color: #ffffff;
         text-shadow: 0 2px 10px rgba(0,0,0,0.5);
     }
 
     .manifesto-title-carousel {
-        font-size: 2rem;
+        font-size: 2.2rem;
         margin-bottom: 1.5rem;
-        letter-spacing: 4px;
+        letter-spacing: 6px;
         text-transform: uppercase;
         color: #ffffff;
         text-shadow: 0 2px 10px rgba(0,0,0,0.5);
