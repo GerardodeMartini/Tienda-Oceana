@@ -127,47 +127,53 @@
                 {% endif %}
             </a>
 
-            <!-- Right side: Auth + Cart -->
-            <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 0.5rem; justify-self: end;">
-
-                <!-- Auth Row -->
-                <div class="auth-links" style="display: flex; align-items: center; gap: 1rem;">
+            <!-- Right side: User & Cart -->
+            <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 0.8rem; justify-self: end;">
+                
+                <!-- Row 1: Welcome & Cart -->
+                <div style="display: flex; align-items: center; gap: 1.5rem;">
                     {% if user.is_authenticated %}
-                    <span style="font-size: 0.8rem; letter-spacing: 1px; color: var(--text-muted);">
+                    <span style="font-size: 1rem; letter-spacing: 1px; color: var(--text-main); font-weight: 600;">
                         HOLA, {{ user.first_name|default:"CARLA"|upper }}
                     </span>
-                    {% if user.is_staff %}
-                    <a href="{% url 'store:seller_dashboard' %}"
-                        style="color: var(--success); font-weight: 600; font-size: 0.85rem; white-space: nowrap;">Panel
-                        Vendedor</a>
-                    <a href="{% url 'orders:admin_order_list' %}"
-                        style="color: var(--accent-gold); font-weight: 700; font-size: 0.85rem; white-space: nowrap; border-bottom: 2px solid var(--accent-gold);">Ventas</a>
-                    {% else %}
-                    <a href="{% url 'orders:user_orders' %}"
-                        style="color: var(--primary); font-weight: 600; font-size: 0.85rem; white-space: nowrap;">Mis
-                        Compras</a>
                     {% endif %}
-                    <form action="{% url 'accounts:logout' %}" method="post" style="display:inline; margin: 0;">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-secondary"
-                            style="padding: 0.2rem 0.6rem; font-size: 0.75rem; border-radius: 20px;">Salir</button>
-                    </form>
-                    {% else %}
-                    <a href="{% url 'accounts:login' %}?next={{ request.path }}"
-                        style="font-weight: 600; font-size: 0.85rem; color: var(--text-main);">Ingresar</a>
-                    <a href="{% url 'accounts:register' %}" class="btn"
-                        style="padding: 0.3rem 0.8rem; font-size: 0.85rem;">Crear Cuenta</a>
-                    {% endif %}
+                    
+                    <a href="{% url 'cart:cart_detail' %}"
+                        style="display: flex; align-items: center; background: var(--bg-soft); padding: 0.5rem 1.2rem; border-radius: 50px; font-weight: 700; font-size: 1.1rem; border: 1px solid var(--border-color);">
+                        🛒 Carrito
+                        {% if cart|length > 0 %}
+                        <span class="badge" style="margin-left: 0.6rem; background: var(--primary);">{{ cart|length }}</span>
+                        {% endif %}
+                    </a>
                 </div>
 
-                <!-- Cart Row -->
-                <a href="{% url 'cart:cart_detail' %}"
-                    style="display: flex; align-items: center; background: var(--bg-soft); padding: 0.4rem 1rem; border-radius: 20px; font-weight: 600; font-size: 0.9rem;">
-                    🛒 Carrito
-                    {% if cart|length > 0 %}
-                    <span class="badge" style="margin-left: 0.5rem;">{{ cart|length }}</span>
+                <!-- Row 2: Management & Auth Actions -->
+                <div class="auth-links" style="display: flex; align-items: center; gap: 1.2rem;">
+                    {% if user.is_authenticated %}
+                        {% if user.is_staff %}
+                        <a href="{% url 'store:seller_dashboard' %}"
+                            style="color: var(--success); font-weight: 700; font-size: 1rem; white-space: nowrap;">Panel
+                            Vendedor</a>
+                        <a href="{% url 'orders:admin_order_list' %}"
+                            style="color: var(--accent-gold); font-weight: 700; font-size: 1rem; white-space: nowrap; border-bottom: 2px solid var(--accent-gold);">Ventas</a>
+                        {% else %}
+                        <a href="{% url 'orders:user_orders' %}"
+                            style="color: var(--primary); font-weight: 700; font-size: 1rem; white-space: nowrap;">Mis
+                            Compras</a>
+                        {% endif %}
+                        
+                        <form action="{% url 'accounts:logout' %}" method="post" style="display:inline; margin: 0;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-secondary"
+                                style="padding: 0.4rem 1rem; font-size: 0.9rem; border-radius: 50px; font-weight: 700;">Salir</button>
+                        </form>
+                    {% else %}
+                        <a href="{% url 'accounts:login' %}?next={{ request.path }}"
+                            style="font-weight: 700; font-size: 1.1rem; color: var(--text-main);">Ingresar</a>
+                        <a href="{% url 'accounts:register' %}" class="btn"
+                            style="padding: 0.5rem 1.2rem; font-size: 1rem;">Crear Cuenta</a>
                     {% endif %}
-                </a>
+                </div>
             </div>
 
         </div>
