@@ -4,17 +4,17 @@
 [![Django](https://img.shields.io/badge/Django-4.2+-092E20?style=flat-square&logo=django&logoColor=white)](https://www.djangoproject.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 
-Este ecosistema digital es una plataforma de reclutamiento y comercio electrónico **Fullstack**, diseñada para gestionar dos marcas de bienestar de alta gama (**Océana** y **Heiwa**) bajo una infraestructura técnica unificada. El proyecto destaca por su sistema de tematización dinámica, su arquitectura de roles y una interfaz de usuario premium optimizada para dispositivos móviles.
+Este ecosistema digital es una plataforma de comercio electrónico **Fullstack**, diseñada para gestionar dos marcas de bienestar de alta gama (**Océana** y **Heiwa**) bajo una infraestructura técnica unificada. El proyecto destaca por su sistema de tematización dinámica y una interfaz de usuario premium optimizada para dispositivos móviles.
 
 ---
 
-## 👥 Sistema de Roles de Usuario
+## 🛍️ Arquitectura Multi-Marca
 
-La plataforma expande su funcionalidad de tienda con un sistema de reclutamiento integrado:
+La plataforma está construida para manejar múltiples identidades visuales y catálogos desde un mismo core:
 
-1.  **Candidato**: Usuarios que pueden explorar oportunidades y postularse a empleos dentro del ecosistema de las marcas.
-2.  **Empresa**: Entidades que pueden ofrecer puestos de trabajo y gestionar vacantes.
-3.  **Staff**: Administradores que gestionan la plataforma, supervisan trabajos y postulaciones, garantizando la integridad del sistema.
+-   **Océana**: Estética y productos enfocados en el bienestar marino y natural.
+-   **Heiwa**: Estética inspirada en la paz y el equilibrio (Zen), con su propia línea de productos.
+-   **Middleware de Marca**: Un sistema inteligente que cambia el tema (CSS variables y assets) en tiempo real según el contexto de navegación.
 
 ---
 
@@ -23,7 +23,7 @@ La plataforma expande su funcionalidad de tienda con un sistema de reclutamiento
 Se ha priorizado una estética de alto impacto y una legibilidad superior:
 
 -   **Carrusel de Manifiesto Inmersivo**: Un sistema de fondo dinámico que ocupa el ancho completo (`100vw`) con una relación de aspecto `16:9` (ajustable a vertical en móviles) para mostrar la esencia de cada marca sin comprometer la lectura.
--   **Header Rediseñado**: Rediseño integral de la cabecera con efecto *glassmorphism*, logotipos de mayor escala y una jerarquía visual clara que separa las acciones de usuario (Hola, Carrito) de la gestión administrativa.
+-   **Header Rediseñado**: Rediseño integral de la cabecera con efecto *glassmorphism*, logotipos de mayor escala y una jerarquía visual clara que separa las acciones de usuario (Hola, Carrito) de la navegación por marcas.
 -   **Optimización Móvil Extrema**: Auditoría y corrección de comportamientos responsivos, incluyendo el apilamiento inteligente del header y la prevención de solapamientos de texto en el carrusel mediante alturas mínimas dinámicas.
 -   **Sistema de Notificaciones Moderno**: Plantillas de correo electrónico rediseñadas para alertas de stock bajo y estados de pedido, manteniendo la coherencia visual con la marca.
 
