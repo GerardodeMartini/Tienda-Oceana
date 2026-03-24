@@ -205,7 +205,16 @@ neurobotánica y adaptógenos.{% endif %}
         });
 
         function rotateBackground() {
-            carousel.style.backgroundImage = `url('${images[currentIndex]}')`;
+            const currentImage = images[currentIndex];
+            carousel.style.backgroundImage = `url('${currentImage}')`;
+            
+            // Ajuste específico para la foto de la cara en Heiwa
+            if (currentImage.includes('DSC09738')) {
+                carousel.style.backgroundPosition = 'center 15%';
+            } else {
+                carousel.style.backgroundPosition = 'center';
+            }
+            
             currentIndex = (currentIndex + 1) % images.length;
         }
 
