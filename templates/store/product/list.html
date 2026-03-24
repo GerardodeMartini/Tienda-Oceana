@@ -206,11 +206,16 @@ neurobotánica y adaptógenos.{% endif %}
 
         function rotateBackground() {
             const currentImage = images[currentIndex];
+            
+            // Smoother transition: briefly fade out before change or use CSS transition
+            carousel.style.transition = 'background-image 0.8s ease-in-out, background-position 0.8s ease-in-out';
             carousel.style.backgroundImage = `url('${currentImage}')`;
             
-            // Ajuste específico para la foto de la cara en Heiwa
+            // Audición de Posicionamiento por Imagen (Heiwa)
             if (currentImage.includes('DSC09738')) {
-                carousel.style.backgroundPosition = 'center 15%';
+                carousel.style.backgroundPosition = 'center 15%'; // Foco en rostro (Arriba)
+            } else if (currentImage.includes('amargo sen') || currentImage.includes('heiwa pineal')) {
+                carousel.style.backgroundPosition = 'center 85%'; // Foco en producto/base (Abajo)
             } else {
                 carousel.style.backgroundPosition = 'center';
             }
