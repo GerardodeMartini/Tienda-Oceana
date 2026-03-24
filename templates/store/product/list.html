@@ -178,6 +178,14 @@ neurobotánica y adaptógenos.{% endif %}
                 "{% static 'img/foto portada/heiwa/DSC09738.jpg' %}",
                 "{% static 'img/foto portada/heiwa/heiwa pineal.jpg' %}"
             ];
+            
+            // Refinement for vertical photos: use contain and theme background
+            const carousel = document.getElementById('manifesto-carousel');
+            if (carousel) {
+                carousel.style.backgroundSize = 'contain';
+                carousel.style.backgroundRepeat = 'no-repeat';
+                carousel.style.backgroundColor = '#2A3C28'; // Heiwa primary-dark
+            }
         } else {
             // Oceana o Ecosystem (Default)
             images = [
