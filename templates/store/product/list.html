@@ -169,15 +169,29 @@ neurobotánica y adaptógenos.{% endif %}
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const images = [
-            "{% static 'img/foto portada/5N2A5023-1.jpg' %}",
-            "{% static 'img/foto portada/5N2A5050-1.jpg' %}",
-            "{% static 'img/foto portada/5N2A5186-1.jpg' %}",
-            "{% static 'img/foto portada/5N2A5187-1.jpg' %}",
-            "{% static 'img/foto portada/5N2A5226-1.jpg' %}",
-            "{% static 'img/foto portada/5N2A5525-1.jpg' %}",
-            "{% static 'img/foto portada/5N2A5557-2.jpg' %}"
-        ];
+        const theme = "{{ request.session.theme }}";
+        let images = [];
+        
+        if (theme === 'heiwa') {
+            images = [
+                "{% static 'img/foto portada/heiwa/amargo sen(2).jpg' %}",
+                "{% static 'img/foto portada/heiwa/DSC09738.jpg' %}",
+                "{% static 'img/foto portada/heiwa/heiwa pineal.jpg' %}"
+            ];
+        } else {
+            // Oceana o Ecosystem (Default)
+            images = [
+                "{% static 'img/foto portada/5N2A5023-1.jpg' %}",
+                "{% static 'img/foto portada/5N2A5050-1.jpg' %}",
+                "{% static 'img/foto portada/5N2A5186-1.jpg' %}",
+                "{% static 'img/foto portada/5N2A5187-1.jpg' %}",
+                "{% static 'img/foto portada/5N2A5226-1.jpg' %}",
+                "{% static 'img/foto portada/5N2A5525-1.jpg' %}",
+                "{% static 'img/foto portada/5N2A5557-2.jpg' %}",
+                "{% static 'img/foto portada/crema corp reafirmante.jpg' %}",
+                "{% static 'img/foto portada/leche de limpieza 2.jpg' %}"
+            ];
+        }
         
         const carousel = document.getElementById('manifesto-carousel');
         if (!carousel) return;
