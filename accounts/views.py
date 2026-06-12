@@ -41,11 +41,12 @@ def register(request):
                     new_user.save()
                     
                     # Generar token y link de activacion
-                    current_site = get_current_site(request)
+                    from django.urls import reverse
                     mail_subject = 'Activa tu cuenta en Tienda Océana & Heiwa'
                     uid = urlsafe_base64_encode(force_bytes(new_user.pk))
                     token = default_token_generator.make_token(new_user)
-                    activation_link = f"http://{current_site.domain}/accounts/activate/{uid}/{token}/"
+                    activation_path = reverse('accounts:activate', kwargs={'uidb64': uid, 'token': token})
+                    activation_link = request.build_absolute_uri(activation_path)
                     
                     message = render_to_string('accounts/email/activation_email.html', {
                         'user': new_user,
