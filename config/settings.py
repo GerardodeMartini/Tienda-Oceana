@@ -185,19 +185,10 @@ MEDIA_ROOT = BASE_DIR / 'media'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
-# Email Backend (Anymail: Amazon SES, Brevo, or Resend SMTP)
+# Email Backend (Anymail: Brevo or Resend SMTP)
 EMAIL_PROVIDER = env('EMAIL_PROVIDER', default='BREVO')
 
-if EMAIL_PROVIDER == 'SES':
-    EMAIL_BACKEND = "anymail.backends.amazon_ses.EmailBackend"
-    ANYMAIL = {
-        "AMAZON_SES_CLIENT_PARAMS": {
-            "aws_access_key_id": env('AWS_ACCESS_KEY_ID', default=''),
-            "aws_secret_access_key": env('AWS_SECRET_ACCESS_KEY', default=''),
-            "region_name": env('AWS_SES_REGION_NAME', default='us-east-1'),
-        },
-    }
-elif EMAIL_PROVIDER == 'RESEND':
+if EMAIL_PROVIDER == 'RESEND':
     EMAIL_BACKEND = "anymail.backends.resend.EmailBackend"
     ANYMAIL = {
         "RESEND_API_KEY": env('RESEND_API_KEY', default=''),
