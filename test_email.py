@@ -14,32 +14,50 @@ from django.conf import settings
 from orders.models import Order
 
 def test_send():
-    order = Order.objects.filter(payment_method='transferencia').last()
+    order = Order.objects.last()
     if not order:
-        order = Order.objects.last()
-
-    if order:
-        # Override fields just for the email appearance
-        order.first_name = "Gerardo"
-        order.payment_method = 'transferencia'
-        
-        subject = f'Pedido #{order.id} confirmado - Diseño Prueba'
-        html_message = render_to_string('orders/email/paid_order.html', {'order': order})
-        target_email = 'gerardodemartini@gmail.com'
-        
-        try:
-            send_mail(
-                subject=subject,
-                message='',
-                from_email=settings.DEFAULT_FROM_EMAIL,
-                recipient_list=[target_email],
-                html_message=html_message
-            )
-            print(f"SUCCESS: Email test successfully sent to {target_email}!")
-        except Exception as e:
-            print(f"ERROR: Error sending email: {e}")
-    else:
         print("ERROR: No orders found in the database. Can't render the email without an order.")
+        return
+
+    target_email = settings.ADMIN_EMAIL
+    print(f"Sending test emails to: {target_email}...")
+
+    # 1. Test Transferencia (Bank Transfer)
+    order.first_name = "Gerardo"
+    order.payment_method = 'transferencia'
+    
+    subject_transfer = f'Pedido #{order.id} registrado - Tienda Virtual (Prueba Transferencia)'
+    html_transfer = render_to_string('orders/email/paid_order.html', {'order': order})
+    
+    try:
+        send_mail(
+            subject=subject_transfer,
+            message='',
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[target_email],
+            html_message=html_transfer
+        )
+        print(f"SUCCESS: Transfer email test sent to {target_email}!")
+    except Exception as e:
+        print(f"ERROR sending Transfer email: {e}")
+
+    # 2. Test Mercado Pago
+    order.payment_method = 'mercadopago'
+    
+    subject_mp = f'Pedido #{order.id} confirmado - Tienda Virtual (Prueba Mercado Pago)'
+    html_mp = render_to_string('orders/email/paid_order.html', {'order': order})
+    
+    try:
+        send_mail(
+            subject=subject_mp,
+            message='',
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[target_email],
+            html_message=html_mp
+        )
+        print(f"SUCCESS: Mercado Pago email test sent to {target_email}!")
+    except Exception as e:
+        print(f"ERROR sending Mercado Pago email: {e}")
 
 if __name__ == '__main__':
     test_send()

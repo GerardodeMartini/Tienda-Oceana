@@ -170,7 +170,10 @@ def process_order_completion(order):
 
 def send_order_emails(order, is_completed=False, low_stock_products=None):
     # Email al comprador
-    subject = f'Pedido #{order.id} confirmado - Tienda Virtual'
+    if order.payment_method == 'transferencia':
+        subject = f'Pedido #{order.id} registrado - Tienda Virtual'
+    else:
+        subject = f'Pedido #{order.id} confirmado - Tienda Virtual'
     html_message = render_to_string('orders/email/paid_order.html', {'order': order})
     try:
         send_mail(subject, '', settings.DEFAULT_FROM_EMAIL, [order.email], html_message=html_message)
