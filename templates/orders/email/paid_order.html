@@ -66,14 +66,14 @@
                                             Costo de envío
                                         </td>
                                         <td align="right"
-                                            style="padding: 15px 0 5px 0; font-size: 15px; color: #595959;">
-                                            ${{ order.shipping_cost }}
+                                            style="padding: 15px 0 5px 0; font-size: 15px; color: #595959; font-weight: 600;">
+                                            {% if order.shipping_cost > 0 %}${{ order.shipping_cost }}{% else %}A coordinar con el vendedor{% endif %}
                                         </td>
                                     </tr>
                                     <tr>
                                         <td
                                             style="padding: 15px 0 0 0; font-size: 18px; font-family: 'Playfair Display', Georgia, serif; font-weight: 600; color: #262626;">
-                                            Total
+                                            Total productos
                                         </td>
                                         <td align="right"
                                             style="padding: 15px 0 0 0; font-size: 18px; font-weight: 700; color: #3D5339;">

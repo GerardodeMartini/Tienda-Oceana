@@ -82,12 +82,12 @@
             </tr>
             {% endfor %}
 
-            {% if order.shipping_cost > 0 %}
             <tr style="border-bottom: 1px solid var(--border-color);">
                 <td colspan="3" style="padding: 0.8rem 0.5rem; text-align: right;"><strong>Envío</strong></td>
-                <td style="padding: 0.8rem 0.5rem; text-align: right;">${{ order.shipping_cost }}</td>
+                <td style="padding: 0.8rem 0.5rem; text-align: right;">
+                    {% if order.shipping_cost > 0 %}${{ order.shipping_cost }}{% else %}<span style="color: var(--primary);">A coordinar</span>{% endif %}
+                </td>
             </tr>
-            {% endif %}
 
             <tr>
                 <td colspan="3" style="padding: 1rem 0.5rem; text-align: right; font-size: 1.2rem;">

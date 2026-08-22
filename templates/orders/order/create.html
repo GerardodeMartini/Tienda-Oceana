@@ -45,13 +45,16 @@
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             Envío
-                            <span id="shipping-cost">A convenir</span>
+                            <span id="shipping-cost" style="font-weight: 600; color: var(--primary);">A coordinar</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center fw-bold fs-5">
-                            Total
+                            Total productos
                             <span id="total-price">${{ cart.get_total_price }}</span>
                         </li>
                     </ul>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.75rem; line-height: 1.4;">
+                        ℹ️ <strong>Nota sobre el envío:</strong> El costo del envío no está incluido en este total. Se acordará directamente con el vendedor por WhatsApp luego de realizar el pedido según el destino y transporte elegido.
+                    </p>
                 </div>
 
                 <!-- Precios de envío para JS -->
@@ -64,7 +67,7 @@
                         const totalDisplay = document.getElementById('total-price');
 
                         function updateTotal() {
-                            shippingDisplay.innerText = "A convenir";
+                            shippingDisplay.innerText = "A coordinar";
                             totalDisplay.innerText = `$${(subtotal).toLocaleString('es-AR', { minimumFractionDigits: 2 })}`;
                         }
 
